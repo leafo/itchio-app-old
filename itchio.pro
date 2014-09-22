@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         gameswindow.cpp \
-    logindialog.cpp
+    logindialog.cpp \
+    itchioapi.cpp
 
 HEADERS  += gameswindow.h \
-    logindialog.h
+    logindialog.h \
+    itchioapi.h
 
 FORMS    += gameswindow.ui \
     logindialog.ui

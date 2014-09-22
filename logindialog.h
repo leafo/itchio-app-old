@@ -2,6 +2,7 @@
 #define LOGINDIALOG_H
 
 #include <QDialog>
+#include "itchioapi.h"
 
 namespace Ui {
 class LoginDialog;
@@ -15,8 +16,13 @@ public:
     explicit LoginDialog(QWidget *parent = 0);
     ~LoginDialog();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
-    Ui::LoginDialog *ui;
+    Ui::LoginDialog* ui;
+    ItchioApi* api;
+
 };
 
 #endif // LOGINDIALOG_H
