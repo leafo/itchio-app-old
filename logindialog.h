@@ -17,12 +17,15 @@ public:
     ~LoginDialog();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_loginButton_clicked();
+    void onLoginFailure(QString);
+    void onLogin();
 
 private:
     Ui::LoginDialog* ui;
     ItchioApi* api;
 
+    void setStatus(QString status, bool disable);
 };
 
 #endif // LOGINDIALOG_H

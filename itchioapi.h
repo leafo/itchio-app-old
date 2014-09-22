@@ -12,12 +12,15 @@ class ItchioApi : public QObject
 public:
     explicit ItchioApi(QObject* parent = 0);
     void request(QString path, const char* slot);
+    void login(QString username, QString password);
 
 signals:
+    void onLogin();
+    void onLoginFailure(QString reason);
 
 public slots:
-    void getMyGames();
-    void getLoginAttempt();
+    void getMyGamesRequest();
+    void getLoginRequest();
 
 private:
     QNetworkAccessManager* networkManager;

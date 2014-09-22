@@ -1,6 +1,8 @@
 #include "itchioapi.h"
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QJsonArray>
+#include <QUrlQuery>
 
 ItchioApi::ItchioApi(QObject *parent) :
     QObject(parent)
@@ -11,15 +13,29 @@ ItchioApi::ItchioApi(QObject *parent) :
 
     // connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getMyGames(QNetworkReply*)));
     // networkManager->get(QNetworkRequest(QUrl(base + "/" + apiKey + "/my-games")));
-    request("my-games", SLOT(getMyGames()));
+    // request("my-games", SLOT(getMyGamesRequest()));
+}
+
+void ItchioApi::login(QString username, QString password) {
+    QUrlQuery params;
+    params.addQueryItem("username", username);
+    params.addQueryItem("password", password);
+    params.addQueryItem("source", "desktop");
+
+    QNetworkRequest request(QUrl(base + "/login"));
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    QByteArray paramBytes;
+    paramBytes.append(params.toString());
+    QNetworkReply* reply = networkManager->post(request, paramBytes);
+    connect(reply, SIGNAL(finished()), this, SLOT(getLoginRequest()));
 }
 
 void ItchioApi::request(QString path, const char* slot) {
-    QNetworkReply* reply = networkManager->get(QNetworkRequest(QUrl(base + "/" + apiKey + "/" + path)));
+    QNetworkReply* reply = networkManager->get(QNetworkRequest(QUrl(base + "/" + path)));
     connect(reply, SIGNAL(finished()), this, slot);
 }
 
-void ItchioApi::getMyGames() {
+void ItchioApi::getMyGamesRequest() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
 
@@ -27,10 +43,18 @@ void ItchioApi::getMyGames() {
     reply->deleteLater();
 }
 
-void ItchioApi::getLoginAttempt() {
+void ItchioApi::getLoginRequest() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
+    reply->deleteLater();
 
-    // qDebug() << "got login attempt" << reply;
-    // reply->deleteLater();
+    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
+    QJsonValue errors = res.object()["errors"];
+
+    if (!errors.isNull()) {
+        QString error = errors.toArray()[0].toString();
+        onLoginFailure(error);
+        return;
+    }
+
+    qDebug() << res;
 }
