@@ -1,12 +1,10 @@
-#include "gameswindow.h"
-#include "logindialog.h"
 #include <QApplication>
+
+#include "appcontroller.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    LoginDialog w;
-    w.show();
-
+    AppController controller;
     return a.exec();
 }

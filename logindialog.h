@@ -2,7 +2,7 @@
 #define LOGINDIALOG_H
 
 #include <QDialog>
-#include "itchioapi.h"
+#include "appcontroller.h"
 
 namespace Ui {
 class LoginDialog;
@@ -13,7 +13,7 @@ class LoginDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit LoginDialog(QWidget *parent = 0);
+    explicit LoginDialog(AppController* controller, QWidget *parent = 0);
     ~LoginDialog();
 
 private slots:
@@ -23,7 +23,7 @@ private slots:
 
 private:
     Ui::LoginDialog* ui;
-    ItchioApi* api;
+    AppController* controller;
 
     void setStatus(QString status, bool disable);
 };

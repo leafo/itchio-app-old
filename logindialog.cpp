@@ -1,17 +1,16 @@
 #include "logindialog.h"
 #include "ui_logindialog.h"
-#include "itchioapi.h"
 
 #include <QtDebug>
 
-LoginDialog::LoginDialog(QWidget *parent) :
+LoginDialog::LoginDialog(AppController *controller, QWidget *parent) :
     QDialog(parent),
+    controller(controller),
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
-    api = new ItchioApi(this);
-    connect(api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
-    connect(api, SIGNAL(onLogin()), this, SLOT(onLogin()));
+    connect(controller->api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
+    connect(controller->api, SIGNAL(onLogin()), this, SLOT(onLogin()));
 }
 
 LoginDialog::~LoginDialog()
@@ -20,7 +19,6 @@ LoginDialog::~LoginDialog()
 }
 
 void LoginDialog::onLogin() {
-    setStatus("", false);
     qDebug() << "go to games...";
 }
 
@@ -38,7 +36,7 @@ void LoginDialog::on_loginButton_clicked()
     }
 
     setStatus("Loggin in...", true);
-    api->login(username, password);
+    controller->api->login(username, password);
 }
 
 void LoginDialog::setStatus(QString status, bool disable) {

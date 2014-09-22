@@ -15,11 +15,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         gameswindow.cpp \
     logindialog.cpp \
-    itchioapi.cpp
+    itchioapi.cpp \
+    appcontroller.cpp
 
 HEADERS  += gameswindow.h \
     logindialog.h \
-    itchioapi.h
+    itchioapi.h \
+    appcontroller.h
 
 FORMS    += gameswindow.ui \
     logindialog.ui
