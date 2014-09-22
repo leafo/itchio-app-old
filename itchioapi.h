@@ -24,6 +24,7 @@ public slots:
 
 private:
     QNetworkAccessManager* networkManager;
+    int userId;
     QString apiKey;
     QString base;
 };

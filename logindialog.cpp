@@ -11,6 +11,7 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui->setupUi(this);
     api = new ItchioApi(this);
     connect(api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
+    connect(api, SIGNAL(onLogin()), this, SLOT(onLogin()));
 }
 
 LoginDialog::~LoginDialog()
@@ -19,6 +20,8 @@ LoginDialog::~LoginDialog()
 }
 
 void LoginDialog::onLogin() {
+    setStatus("", false);
+    qDebug() << "go to games...";
 }
 
 void LoginDialog::onLoginFailure(QString error) {

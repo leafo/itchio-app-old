@@ -8,7 +8,6 @@ ItchioApi::ItchioApi(QObject *parent) :
     QObject(parent)
 {
     networkManager = new QNetworkAccessManager(this);
-    apiKey = "x3lFn558r31jiA9u7NLaviD15Bdx2ECt7A8577nN";
     base = "http://localhost.com:8080/api/1";
 
     // connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getMyGames(QNetworkReply*)));
@@ -37,10 +36,10 @@ void ItchioApi::request(QString path, const char* slot) {
 
 void ItchioApi::getMyGamesRequest() {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
-
-    qDebug() << res.object()["games"];
     reply->deleteLater();
+
+    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
+    qDebug() << res.object()["games"];
 }
 
 void ItchioApi::getLoginRequest() {
@@ -53,6 +52,17 @@ void ItchioApi::getLoginRequest() {
     if (!errors.isNull()) {
         QString error = errors.toArray()[0].toString();
         onLoginFailure(error);
+        return;
+    }
+
+    QJsonValue keyValue = res.object()["key"];
+
+    if (!keyValue.isNull()) {
+        QJsonObject key = keyValue.toObject();
+        apiKey = key["key"].toString();
+        userId = key["user_id"].toInt();
+        qDebug() << "Logged in with" << apiKey << userId;
+        onLogin();
         return;
     }
 
