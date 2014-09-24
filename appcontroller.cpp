@@ -11,6 +11,8 @@ AppController::AppController(QObject *parent) :
 }
 
 void AppController::showGames() {
+    loginDialog->hide();
+
     gamesWindow = new GamesWindow(this);
     gamesWindow->show();
 }

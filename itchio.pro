@@ -25,3 +25,6 @@ HEADERS  += gameswindow.h \
 
 FORMS    += gameswindow.ui \
     logindialog.ui
+
+RESOURCES += \
+    resources.qrc
