@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/images">
+        <file>images/itchio-icon-200.png</file>
+    </qresource>
+</RCC>
