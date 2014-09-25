@@ -14,29 +14,18 @@
    <string>GamesWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QScrollArea" name="gamesScrolling">
-    <property name="geometry">
-     <rect>
-      <x>60</x>
-      <y>29</y>
-      <width>281</width>
-      <height>181</height>
-     </rect>
-    </property>
-    <property name="widgetResizable">
-     <bool>true</bool>
-    </property>
-    <widget class="QWidget" name="scrollAreaWidgetContents">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>279</width>
-       <height>179</height>
-      </rect>
-     </property>
-    </widget>
-   </widget>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>My games</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QListView" name="gameListView"/>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -47,16 +36,29 @@
      <height>19</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
+   <widget class="QMenu" name="menuItch_io">
+    <property name="title">
+     <string>itch.io</string>
+    </property>
+    <addaction name="actionRefresh"/>
+    <addaction name="actionQuit"/>
+   </widget>
+   <addaction name="menuItch_io"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionQuit">
+   <property name="text">
+    <string>Quit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionRefresh">
+   <property name="text">
+    <string>Refresh</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

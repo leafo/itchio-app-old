@@ -2,8 +2,10 @@
 #define GAMESWINDOW_H
 
 #include <QMainWindow>
+#include <QStringListModel>
+
 #include "appcontroller.h"
-#include <objects/game.h>
+#include "objects/game.h"
 
 namespace Ui {
 class GamesWindow;
@@ -20,9 +22,18 @@ public:
 public slots:
     void onMyGames(QList<Game*> games);
 
+private slots:
+    void on_actionQuit_triggered();
+
+    void on_actionRefresh_triggered();
+
 private:
     Ui::GamesWindow *ui;
     AppController* controller;
+
+    QStringListModel* gamesModel;
+
+    void refreshGames();
 };
 
 #endif // GAMESWINDOW_H
