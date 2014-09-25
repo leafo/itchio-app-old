@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         gameswindow.cpp \
     logindialog.cpp \
     itchioapi.cpp \
-    appcontroller.cpp
+    appcontroller.cpp \
+    objects/game.cpp
 
 HEADERS  += gameswindow.h \
     logindialog.h \
     itchioapi.h \
-    appcontroller.h
+    appcontroller.h \
+    objects/game.h
 
 FORMS    += gameswindow.ui \
     logindialog.ui

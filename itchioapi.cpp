@@ -29,8 +29,15 @@ void ItchioApi::login(QString username, QString password) {
     connect(reply, SIGNAL(finished()), this, SLOT(getLoginRequest()));
 }
 
+void ItchioApi::myGames()
+{
+    request("my-games", SLOT(getMyGamesRequest()));
+}
+
 void ItchioApi::request(QString path, const char* slot) {
-    QNetworkReply* reply = networkManager->get(QNetworkRequest(QUrl(base + "/" + path)));
+    QString url =  base + "/" + apiKey + "/" + path;
+    qDebug() << "Requesting URL" << url;
+    QNetworkReply* reply = networkManager->get(QNetworkRequest(QUrl(url)));
     connect(reply, SIGNAL(finished()), this, slot);
 }
 
@@ -39,7 +46,21 @@ void ItchioApi::getMyGamesRequest() {
     reply->deleteLater();
 
     QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
-    qDebug() << res.object()["games"];
+    QJsonValue games = res.object()["games"];
+    QList<Game*> gameList;
+    foreach (const QJsonValue& gameValue, games.toArray()) {
+        QJsonObject gameObject = gameValue.toObject();
+        Game* game = new Game(this);
+        game->id = gameObject["id"].toInt();
+        game->url = gameObject["url"].toString();
+        game->title = gameObject["title"].toString();
+        game->shortText = gameObject["short_text"].toString();
+        game->coverImageUrl = gameObject["cover_url"].toString();
+        gameList << game;
+    }
+
+    qDebug() << "sending" << gameList.length() << "games";
+    onMyGames(gameList);
 }
 
 void ItchioApi::getLoginRequest() {

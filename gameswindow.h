@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "appcontroller.h"
+#include <objects/game.h>
 
 namespace Ui {
 class GamesWindow;
@@ -15,6 +16,9 @@ class GamesWindow : public QMainWindow
 public:
     explicit GamesWindow(AppController* controller, QWidget *parent = 0);
     ~GamesWindow();
+
+public slots:
+    void onMyGames(QList<Game*> games);
 
 private:
     Ui::GamesWindow *ui;

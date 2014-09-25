@@ -5,8 +5,8 @@
 
 LoginDialog::LoginDialog(AppController *controller, QWidget *parent) :
     QDialog(parent),
-    controller(controller),
-    ui(new Ui::LoginDialog)
+    ui(new Ui::LoginDialog),
+    controller(controller)
 {
     ui->setupUi(this);
     connect(controller->api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
