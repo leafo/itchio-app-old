@@ -20,7 +20,7 @@ public:
 signals:
     void onLogin();
     void onLoginFailure(QString reason);
-    void onMyGames(QList<Game*> games);
+    void onMyGames(QList<Game> games);
 
 public slots:
     void getMyGamesRequest();

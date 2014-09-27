@@ -10,7 +10,7 @@ GamesWindow::GamesWindow(AppController *controller, QWidget *parent) :
 {
     ui->setupUi(this);
     refreshGames();
-    connect(controller->api, SIGNAL(onMyGames(QList<Game*>)), this, SLOT(onMyGames(QList<Game*>)));
+    connect(controller->api, SIGNAL(onMyGames(QList<Game>)), this, SLOT(onMyGames(QList<Game>)));
 }
 
 GamesWindow::~GamesWindow()
@@ -18,7 +18,7 @@ GamesWindow::~GamesWindow()
     delete ui;
 }
 
-void GamesWindow::onMyGames(QList<Game*> games)
+void GamesWindow::onMyGames(QList<Game> games)
 {
     qDebug() << "got my games in games window...." << games.length();
 
@@ -29,8 +29,8 @@ void GamesWindow::onMyGames(QList<Game*> games)
 
     gamesModel = new QStringListModel(this);
     QStringList gameTitles;
-    foreach (Game* game, games) {
-        gameTitles << game->title;
+    foreach (Game game, games) {
+        gameTitles << game.title;
     }
     gamesModel->setStringList(gameTitles);
     ui->gameListView->setModel(gamesModel);

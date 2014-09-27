@@ -20,7 +20,7 @@ public:
     ~GamesWindow();
 
 public slots:
-    void onMyGames(QList<Game*> games);
+    void onMyGames(QList<Game> games);
 
 private slots:
     void on_actionQuit_triggered();

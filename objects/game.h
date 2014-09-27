@@ -3,21 +3,15 @@
 
 #include <QObject>
 
-class Game : public QObject
+class Game
 {
-    Q_OBJECT
 public:
-    explicit Game(QObject *parent = 0);
+    Game();
     int id;
     QString title;
     QString url;
     QString shortText;
     QString coverImageUrl;
-
-signals:
-
-public slots:
-
 };
 
 #endif // GAME_H
