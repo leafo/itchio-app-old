@@ -14,6 +14,9 @@ public:
     QString coverImageUrl;
 
     static Game fromJson(QJsonObject& object);
+
+    static int COVER_WIDTH;
+    static int COVER_HEIGHT;
 };
 
 #endif // GAME_H

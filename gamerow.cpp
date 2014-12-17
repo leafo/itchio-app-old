@@ -13,6 +13,14 @@ GameRow::GameRow(QWidget *parent, Game game) :
 
     QPushButton* downloadButton =  new QPushButton("Download");
 
+    QLabel* imageHolder = new QLabel();
+    double ratio = double(Game::COVER_WIDTH) / Game::COVER_HEIGHT;
+
+    imageHolder->setFixedWidth(int(30 * ratio));
+    imageHolder->setFixedHeight(30);
+    imageHolder->setStyleSheet("QLabel { background-color: rgba(0,0,0,0.2); }");
+
+    rowLayout->addWidget(imageHolder);
     rowLayout->addWidget(new QLabel(game.title), 1);
     rowLayout->addWidget(downloadButton, 0);
 
