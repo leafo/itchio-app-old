@@ -12,6 +12,8 @@ public:
     QString url;
     QString shortText;
     QString coverImageUrl;
+
+    static Game fromJson(QJsonObject& object);
 };
 
 #endif // GAME_H

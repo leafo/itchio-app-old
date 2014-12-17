@@ -52,13 +52,7 @@ void ItchioApi::getMyGamesRequest() {
     QList<Game> gameList;
     foreach (const QJsonValue& gameValue, games.toArray()) {
         QJsonObject gameObject = gameValue.toObject();
-        Game game;
-        game.id = gameObject["id"].toInt();
-        game.url = gameObject["url"].toString();
-        game.title = gameObject["title"].toString();
-        game.shortText = gameObject["short_text"].toString();
-        game.coverImageUrl = gameObject["cover_url"].toString();
-        gameList << game;
+        gameList << Game::fromJson(gameObject);
     }
 
     qDebug() << "sending" << gameList.length() << "games";
