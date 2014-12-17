@@ -19,7 +19,7 @@ GameRow::GameRow(QWidget *parent, Game game) :
     game(game)
 {
     QHBoxLayout* rowLayout = new QHBoxLayout;
-    QPushButton* downloadButton =  new QPushButton("Download");
+    downloadButton = new QPushButton("Download");
 
     imageHolder = new QLabel();
     double ratio = double(Game::COVER_WIDTH) / Game::COVER_HEIGHT;
@@ -28,6 +28,10 @@ GameRow::GameRow(QWidget *parent, Game game) :
     imageHolder->setFixedHeight(COVER_HEIGHT);
     imageHolder->setStyleSheet("QLabel { background-color: rgba(0,0,0,0.2); }");
     imageHolder->setScaledContents(true);
+
+    downloadProgress = new QProgressBar();
+    downloadProgress->setMinimum(0);
+    downloadProgress->setMaximum(100);
 
     rowLayout->addWidget(imageHolder);
     rowLayout->addWidget(new QLabel(game.title), 1);
@@ -47,6 +51,11 @@ GameRow::~GameRow()
 void GameRow::onClickDownload()
 {
     qDebug() << "clicked download" << game.title;
+    layout()->removeWidget(downloadButton);
+    downloadButton->hide();
+
+    qobject_cast<QHBoxLayout*>(layout())->addWidget(downloadProgress, 0);
+    downloadProgress->setMaximum(0);
 }
 
 void GameRow::onDownloadThumbnail()

@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QProgressBar>
+#include <QPushButton>
+
 #include "objects/game.h"
 
 namespace Ui {
@@ -26,6 +29,8 @@ private slots:
 private:
     Game game;
     QLabel* imageHolder;
+    QProgressBar* downloadProgress;
+    QPushButton* downloadButton;
 
     void refreshThumbnail();
 };
