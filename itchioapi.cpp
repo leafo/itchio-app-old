@@ -27,6 +27,8 @@ void ItchioApi::login(QString username, QString password) {
     paramBytes.append(params.toString());
     QNetworkReply* reply = networkManager->post(request, paramBytes);
     connect(reply, SIGNAL(finished()), this, SLOT(getLoginRequest()));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)),
+            this, SLOT(errorLoginRequest(QNetworkReply::NetworkError)));
 }
 
 void ItchioApi::myGames()
@@ -88,4 +90,9 @@ void ItchioApi::getLoginRequest() {
     }
 
     qDebug() << res;
+}
+
+void ItchioApi::errorLoginRequest(QNetworkReply::NetworkError error)
+{
+    onLoginFailure("Failed to connect to itch.io");
 }

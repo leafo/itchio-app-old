@@ -25,6 +25,7 @@ signals:
 public slots:
     void getMyGamesRequest();
     void getLoginRequest();
+    void errorLoginRequest(QNetworkReply::NetworkError);
 
 private:
     QNetworkAccessManager* networkManager;
