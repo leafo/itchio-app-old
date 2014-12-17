@@ -23,14 +23,15 @@ void GamesWindow::onMyGames(QList<Game> games)
     qDebug() << "got my games in games window...." << games.length();
     QScrollArea* scroller = ui->gameScroller;
     QWidget* wrapper = new QWidget;
-    QVBoxLayout* layout = new QVBoxLayout(wrapper);
+    QVBoxLayout* layout = new QVBoxLayout;
 
     foreach (Game game, games) {
-        qDebug() << "creating game row...";
-        GameRow* gameRow = new GameRow(0, game);
-        layout->addWidget(gameRow);
+        qDebug() << "creating game row" << game.title;
+        layout->addWidget(new QLabel(game.title));
     }
-    // scroller->setWidget(wrapper);
+
+    wrapper->setLayout(layout);
+    scroller->setWidget(wrapper);
 }
 void GamesWindow::on_actionQuit_triggered()
 {
