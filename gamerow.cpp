@@ -12,6 +12,8 @@
 
 #include <QPixmap>
 
+int GameRow::COVER_HEIGHT = 50;
+
 GameRow::GameRow(QWidget *parent, Game game) :
     QWidget(parent),
     game(game)
@@ -22,8 +24,8 @@ GameRow::GameRow(QWidget *parent, Game game) :
     imageHolder = new QLabel();
     double ratio = double(Game::COVER_WIDTH) / Game::COVER_HEIGHT;
 
-    imageHolder->setFixedWidth(int(30 * ratio));
-    imageHolder->setFixedHeight(30);
+    imageHolder->setFixedWidth(int(COVER_HEIGHT * ratio));
+    imageHolder->setFixedHeight(COVER_HEIGHT);
     imageHolder->setStyleSheet("QLabel { background-color: rgba(0,0,0,0.2); }");
     imageHolder->setScaledContents(true);
 

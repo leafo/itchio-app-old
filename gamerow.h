@@ -17,6 +17,8 @@ public:
     explicit GameRow(QWidget *parent, Game game);
     ~GameRow();
 
+    static int COVER_HEIGHT;
+
 private slots:
     void onClickDownload();
     void onDownloadThumbnail();
