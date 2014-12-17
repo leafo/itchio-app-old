@@ -17,16 +17,19 @@ SOURCES += main.cpp\
     logindialog.cpp \
     itchioapi.cpp \
     appcontroller.cpp \
-    objects/game.cpp
+    objects/game.cpp \
+    gamerow.cpp
 
 HEADERS  += gameswindow.h \
     logindialog.h \
     itchioapi.h \
     appcontroller.h \
-    objects/game.h
+    objects/game.h \
+    gamerow.h
 
 FORMS    += gameswindow.ui \
-    logindialog.ui
+    logindialog.ui \
+    gamerow.ui
 
 RESOURCES += \
     resources.qrc

@@ -31,8 +31,6 @@ private:
     Ui::GamesWindow *ui;
     AppController* controller;
 
-    QStringListModel* gamesModel;
-
     void refreshGames();
 };
 

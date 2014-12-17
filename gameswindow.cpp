@@ -1,12 +1,12 @@
 #include <QDebug>
 #include "gameswindow.h"
 #include "ui_gameswindow.h"
+#include "gamerow.h"
 
 GamesWindow::GamesWindow(AppController *controller, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GamesWindow),
-    controller(controller),
-    gamesModel(0)
+    controller(controller)
 {
     ui->setupUi(this);
     refreshGames();
@@ -21,20 +21,16 @@ GamesWindow::~GamesWindow()
 void GamesWindow::onMyGames(QList<Game> games)
 {
     qDebug() << "got my games in games window...." << games.length();
+    QScrollArea* scroller = ui->gameScroller;
+    QWidget* wrapper = new QWidget;
+    QVBoxLayout* layout = new QVBoxLayout(wrapper);
 
-    // TODO: what about the hanging references to games from the api?
-    if (gamesModel) {
-        delete gamesModel;
-    }
-
-    gamesModel = new QStringListModel(this);
-    QStringList gameTitles;
     foreach (Game game, games) {
-        gameTitles << game.title;
+        qDebug() << "creating game row...";
+        GameRow* gameRow = new GameRow(0, game);
+        layout->addWidget(gameRow);
     }
-    gamesModel->setStringList(gameTitles);
-    ui->gameListView->setModel(gamesModel);
-    ui->gameListView->setDisabled(false);
+    // scroller->setWidget(wrapper);
 }
 void GamesWindow::on_actionQuit_triggered()
 {
@@ -48,6 +44,5 @@ void GamesWindow::on_actionRefresh_triggered()
 
 void GamesWindow::refreshGames()
 {
-    ui->gameListView->setDisabled(true);
     controller->api->myGames();
 }
