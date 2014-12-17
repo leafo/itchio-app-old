@@ -28,8 +28,7 @@ HEADERS  += gameswindow.h \
     gamerow.h
 
 FORMS    += gameswindow.ui \
-    logindialog.ui \
-    gamerow.ui
+    logindialog.ui
 
 RESOURCES += \
     resources.qrc

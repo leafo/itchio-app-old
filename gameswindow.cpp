@@ -3,6 +3,8 @@
 #include "ui_gameswindow.h"
 #include "gamerow.h"
 
+#include <QPushButton>
+
 GamesWindow::GamesWindow(AppController *controller, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::GamesWindow),
@@ -26,8 +28,7 @@ void GamesWindow::onMyGames(QList<Game> games)
     QVBoxLayout* layout = new QVBoxLayout;
 
     foreach (Game game, games) {
-        qDebug() << "creating game row" << game.title;
-        layout->addWidget(new QLabel(game.title));
+        layout->addWidget(new GameRow(NULL, game));
     }
 
     wrapper->setLayout(layout);

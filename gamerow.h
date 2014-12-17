@@ -16,8 +16,10 @@ public:
     explicit GameRow(QWidget *parent, Game game);
     ~GameRow();
 
+private slots:
+    void onClickDownload();
+
 private:
-    Ui::GameRow *ui;
     Game game;
 };
 
