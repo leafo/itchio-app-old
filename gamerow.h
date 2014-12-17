@@ -2,6 +2,7 @@
 #define GAMEROW_H
 
 #include <QWidget>
+#include <QLabel>
 #include "objects/game.h"
 
 namespace Ui {
@@ -18,9 +19,13 @@ public:
 
 private slots:
     void onClickDownload();
+    void onDownloadThumbnail();
 
 private:
     Game game;
+    QLabel* imageHolder;
+
+    void refreshThumbnail();
 };
 
 #endif // GAMEROW_H
