@@ -8,7 +8,7 @@ ItchioApi::ItchioApi(QObject *parent) :
     QObject(parent)
 {
     networkManager = new QNetworkAccessManager(this);
-    base = "http://localhost.com:8080/api/1";
+    base = "http://itch.io/api/1";
 
     // connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getMyGames(QNetworkReply*)));
     // networkManager->get(QNetworkRequest(QUrl(base + "/" + apiKey + "/my-games")));
