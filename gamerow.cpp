@@ -60,6 +60,8 @@ void GameRow::onClickDownload()
 void GameRow::onDownloadThumbnail()
 {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    reply->deleteLater();
+
     if (reply->error() != QNetworkReply::NoError) {
         qDebug() << "Error downloading thumbnail" << reply->errorString();
         return;
