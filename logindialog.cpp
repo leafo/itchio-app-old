@@ -35,7 +35,7 @@ void LoginDialog::on_loginButton_clicked()
         return;
     }
 
-    setStatus("Loggin in...", true);
+    setStatus("Logging in...", true);
     controller->api->login(username, password);
 }
 
