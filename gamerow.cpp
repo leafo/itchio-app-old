@@ -26,7 +26,6 @@ GameRow::GameRow(QWidget *parent, Game game) :
 
     imageHolder->setFixedWidth(int(COVER_HEIGHT * ratio));
     imageHolder->setFixedHeight(COVER_HEIGHT);
-    imageHolder->setStyleSheet("QLabel { background-color: rgba(0,0,0,0.2); }");
     imageHolder->setScaledContents(true);
 
     downloadProgress = new QProgressBar();

@@ -18,11 +18,13 @@ LoginDialog::~LoginDialog()
     delete ui;
 }
 
-void LoginDialog::onLogin() {
+void LoginDialog::onLogin()
+{
     controller->showGames();
 }
 
-void LoginDialog::onLoginFailure(QString error) {
+void LoginDialog::onLoginFailure(QString error)
+{
     setStatus(error, false);
 }
 
@@ -35,11 +37,12 @@ void LoginDialog::on_loginButton_clicked()
         return;
     }
 
-    setStatus("Loggin in...", true);
+    setStatus("Logging in...", true);
     controller->api->login(username, password);
 }
 
-void LoginDialog::setStatus(QString status, bool disable) {
+void LoginDialog::setStatus(QString status, bool disable)
+{
     ui->statusLabel->setText(status);
     ui->usernameInput->setDisabled(disable);
     ui->passwordInput->setDisabled(disable);

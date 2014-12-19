@@ -23,7 +23,7 @@ GamesWindow::~GamesWindow()
 void GamesWindow::onMyGames(QList<Game> games)
 {
     qDebug() << "got my games in games window...." << games.length();
-    QScrollArea* scroller = ui->gameScroller;
+    QScrollArea* scroller = ui->scrollArea;
     QWidget* wrapper = new QWidget;
     QVBoxLayout* layout = new QVBoxLayout;
 

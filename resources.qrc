@@ -2,4 +2,7 @@
     <qresource prefix="/images">
         <file>images/itchio-icon-200.png</file>
     </qresource>
+    <qresource prefix="/">
+        <file>stylesheet.qss</file>
+    </qresource>
 </RCC>
