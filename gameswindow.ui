@@ -23,9 +23,15 @@
      </widget>
     </item>
     <item>
-     <widget class="QScrollArea" name="scrollArea">
+     <widget class="QScrollArea" name="gameScroller">
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
       </property>
       <property name="widgetResizable">
        <bool>true</bool>
@@ -35,8 +41,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>474</width>
-         <height>207</height>
+         <width>484</width>
+         <height>246</height>
         </rect>
        </property>
        <property name="autoFillBackground">
@@ -53,7 +59,7 @@
      <x>0</x>
      <y>0</y>
      <width>500</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuItch_io">
@@ -65,7 +71,6 @@
    </widget>
    <addaction name="menuItch_io"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionQuit">
    <property name="text">
     <string>Quit</string>

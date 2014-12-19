@@ -1,4 +1,7 @@
-QLineEdit { background-color: white }
+
+LoginDialog, GamesWindow {
+    background: #222;
+}
 
 QPushButton {
         border-radius: 1px;
@@ -8,48 +11,31 @@ QPushButton {
         height: 30px;
         font-size: inherit;
         padding: 0 10px;
-        background: #fa6666;
+        background: #FA5C5C;
         color: white;
 }
 
 QLineEdit {
-        border: 1px solid #aaa;
-        padding: 2px;
+        border: 2px solid #dadada;
         border-radius: 2px;
         color: #333;
+        background: white;
 }
 
 QLabel {
         color: white;
-        font-weight: bold;
 }
 
-QDialog {
-        background: #222;
+#gameScroller {
+    border: 2px solid #555;
 }
 
-QMainWindow {
-        background: #222;
+#gameScroller #scrollWrapper {
+    background-color: #333;
 }
 
-QFrame {
-        border: none;
-}
-
-QScrollArea QWidget {
-        padding: 2px;
-        border: 2px #555;
-        background-color: #333;
-}
-
-QScrollArea QPushButton {
-        border-radius: 1px;
-        border: 0;
-        text-align: center;
-        line-height: 30px;
-        height: 30px;
-        font-size: inherit;
-        padding: 0 10px;
-        background: #fa6666;
-        color: white;
+#gameScroller #imageHolder {
+    border: 1px solid #222;
+    border-radius: 2px;
+    background-color: rgba(0,0,0,0.1);
 }

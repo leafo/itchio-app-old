@@ -12,7 +12,7 @@
 
 #include <QPixmap>
 
-int GameRow::COVER_HEIGHT = 50;
+int GameRow::COVER_HEIGHT = 80;
 
 GameRow::GameRow(QWidget *parent, Game game) :
     QWidget(parent),
@@ -27,6 +27,7 @@ GameRow::GameRow(QWidget *parent, Game game) :
     imageHolder->setFixedWidth(int(COVER_HEIGHT * ratio));
     imageHolder->setFixedHeight(COVER_HEIGHT);
     imageHolder->setScaledContents(true);
+    imageHolder->setObjectName("imageHolder");
 
     downloadProgress = new QProgressBar();
     downloadProgress->setMinimum(0);
