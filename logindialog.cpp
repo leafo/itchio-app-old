@@ -32,7 +32,7 @@ void LoginDialog::on_loginButton_clicked()
 {
     QString username = ui->usernameInput->text();
     QString password =  ui->passwordInput->text();
-    if (username == "" or password == "") {
+    if (username == "" || password == "") {
         setStatus("Please enter username and password", false);
         return;
     }
