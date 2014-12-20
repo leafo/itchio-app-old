@@ -33,7 +33,8 @@ FORMS    += gameswindow.ui \
 RESOURCES += \
     resources.qrc
 
-LIBS += `pkg-config --libs openssl`
+CONFIG += link_pkgconfig
+PKGCONFIG += openssl
 
 DISTFILES += \
     stylesheet.qss
