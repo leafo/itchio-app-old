@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QStringListModel>
+#include <QCloseEvent>
 
 #include "appcontroller.h"
 #include "objects/game.h"
@@ -28,6 +29,8 @@ private slots:
     void on_actionRefresh_triggered();
 
 private:
+    void closeEvent(QCloseEvent *event);
+
     Ui::GamesWindow *ui;
     AppController* controller;
 

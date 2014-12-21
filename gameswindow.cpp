@@ -10,6 +10,8 @@ GamesWindow::GamesWindow(AppController *controller, QWidget *parent) :
     ui(new Ui::GamesWindow),
     controller(controller)
 {
+    setWindowFlags( Qt::CustomizeWindowHint | Qt::WindowMaximizeButtonHint | Qt::WindowCloseButtonHint );
+
     ui->setupUi(this);
     refreshGames();
     connect(controller->api, SIGNAL(onMyGames(QList<Game>)), this, SLOT(onMyGames(QList<Game>)));
@@ -37,7 +39,7 @@ void GamesWindow::onMyGames(QList<Game> games)
 }
 void GamesWindow::on_actionQuit_triggered()
 {
-    QCoreApplication::exit();
+    controller->hide();
 }
 
 void GamesWindow::on_actionRefresh_triggered()
@@ -48,4 +50,10 @@ void GamesWindow::on_actionRefresh_triggered()
 void GamesWindow::refreshGames()
 {
     controller->api->myGames();
+}
+
+void GamesWindow::closeEvent(QCloseEvent *event)
+{
+    event->ignore();
+    controller->hide();
 }
