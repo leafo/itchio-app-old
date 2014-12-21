@@ -10,14 +10,16 @@ AppController::AppController(QObject *parent) :
     showLogin();
 }
 
-void AppController::showGames() {
+void AppController::showGames()
+{
     loginDialog->hide();
 
     gamesWindow = new GamesWindow(this);
     gamesWindow->show();
 }
 
-void AppController::showLogin() {
+void AppController::showLogin()
+{
     loginDialog = new LoginDialog(this);
     loginDialog->show();
 }

@@ -5,7 +5,8 @@
 int Game::COVER_WIDTH = 315;
 int Game::COVER_HEIGHT = 250;
 
-Game::Game() {
+Game::Game()
+{
 }
 
 Game Game::fromJson(QJsonObject &object)

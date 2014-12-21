@@ -15,7 +15,8 @@ ItchioApi::ItchioApi(QObject *parent) :
     // request("my-games", SLOT(getMyGamesRequest()));
 }
 
-void ItchioApi::login(QString username, QString password) {
+void ItchioApi::login(QString username, QString password)
+{
     QUrlQuery params;
     params.addQueryItem("username", username);
     params.addQueryItem("password", password);
@@ -34,14 +35,16 @@ void ItchioApi::myGames()
     request("my-games", SLOT(getMyGamesRequest()));
 }
 
-void ItchioApi::request(QString path, const char* slot) {
+void ItchioApi::request(QString path, const char* slot)
+{
     QString url =  base + "/" + apiKey + "/" + path;
     qDebug() << "Requesting URL" << url;
     QNetworkReply* reply = networkManager->get(QNetworkRequest(QUrl(url)));
     connect(reply, SIGNAL(finished()), this, slot);
 }
 
-void ItchioApi::getMyGamesRequest() {
+void ItchioApi::getMyGamesRequest()
+{
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
 
@@ -57,7 +60,8 @@ void ItchioApi::getMyGamesRequest() {
     onMyGames(gameList);
 }
 
-void ItchioApi::getLoginRequest() {
+void ItchioApi::getLoginRequest()
+{
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
 
