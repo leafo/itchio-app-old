@@ -7,8 +7,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     QFile styleFile(":/stylesheet.qss");
-    if(styleFile.open(QIODevice::ReadOnly))
-    {
+    if(styleFile.open(QIODevice::ReadOnly)) {
         QTextStream textStream(&styleFile);
         QString styleSheet = textStream.readAll();
         styleFile.close();
