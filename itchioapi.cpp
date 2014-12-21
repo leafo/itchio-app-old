@@ -37,7 +37,7 @@ void ItchioApi::myGames()
 
 void ItchioApi::myPurchases()
 {
-    request("my-games", SLOT(getMyPurchasesRequest()));
+    request("my-owned-keys", SLOT(getMyPurchasesRequest()));
 }
 
 void ItchioApi::request(QString path, const char* slot)
@@ -71,14 +71,13 @@ void ItchioApi::getMyPurchasesRequest()
     reply->deleteLater();
 
     QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
-    QJsonValue games = res.object()["games"];
+    QJsonValue games = res.object()["owned_keys"];
     QList<Game> gameList;
     foreach (const QJsonValue& gameValue, games.toArray()) {
         QJsonObject gameObject = gameValue.toObject();
-        gameList << Game::fromJson(gameObject);
+        gameList << Game::fromJson(gameObject["game"].toObject());
     }
 
-    qDebug() << "sending" << gameList.length() << "games";
     onMyPurchases(gameList);
 }
 

@@ -15,6 +15,7 @@ GamesWindow::GamesWindow(AppController *controller, QWidget *parent) :
     ui->setupUi(this);
     refreshGames();
     connect(controller->api, SIGNAL(onMyGames(QList<Game>)), this, SLOT(onMyGames(QList<Game>)));
+    connect(controller->api, SIGNAL(onMyPurchases(QList<Game>)), this, SLOT(onMyPurchases(QList<Game>)));
 }
 
 GamesWindow::~GamesWindow()
@@ -25,7 +26,7 @@ GamesWindow::~GamesWindow()
 void GamesWindow::onMyGames(QList<Game> games)
 {
     qDebug() << "got my games in games window...." << games.length();
-    QScrollArea* scroller = ui->gameScroller;
+    QScrollArea* scroller = ui->myGameScroller;
     QWidget* wrapper = new QWidget;
     wrapper->setObjectName("scrollWrapper");
     QVBoxLayout* layout = new QVBoxLayout;
@@ -37,6 +38,22 @@ void GamesWindow::onMyGames(QList<Game> games)
     wrapper->setLayout(layout);
     scroller->setWidget(wrapper);
 }
+
+void GamesWindow::onMyPurchases(QList<Game> games)
+{
+    QScrollArea* scroller = ui->myPurchasesScroller;
+    QWidget* wrapper = new QWidget;
+    wrapper->setObjectName("scrollWrapper");
+    QVBoxLayout* layout = new QVBoxLayout;
+
+    foreach (Game game, games) {
+        layout->addWidget(new GameRow(NULL, game));
+    }
+
+    wrapper->setLayout(layout);
+    scroller->setWidget(wrapper);
+}
+
 void GamesWindow::on_actionQuit_triggered()
 {
     controller->hide();
@@ -50,6 +67,7 @@ void GamesWindow::on_actionRefresh_triggered()
 void GamesWindow::refreshGames()
 {
     controller->api->myGames();
+    controller->api->myPurchases();
 }
 
 void GamesWindow::closeEvent(QCloseEvent *event)
