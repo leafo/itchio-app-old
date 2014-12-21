@@ -8,7 +8,8 @@
 #include "appcontroller.h"
 #include "objects/game.h"
 
-namespace Ui {
+namespace Ui
+{
 class GamesWindow;
 }
 

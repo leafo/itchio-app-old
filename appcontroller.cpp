@@ -12,13 +12,15 @@ AppController::AppController(QObject *parent) :
     showTrayIcon();
 }
 
-void AppController::hide() {
+void AppController::hide()
+{
     activeWindow->showMinimized();
 
     activeWindow->setWindowFlags(activeWindow->windowFlags() ^ QFlag(8));
 }
 
-void AppController::show() {
+void AppController::show()
+{
     activeWindow->setWindowFlags(activeWindow->windowFlags() ^ QFlag(8));
 
     QApplication::setActiveWindow(activeWindow);
@@ -26,16 +28,21 @@ void AppController::show() {
     activeWindow->setWindowState(Qt::WindowActive);
 }
 
-void AppController::quit() {
+void AppController::quit()
+{
     QCoreApplication::exit();
 }
 
-void AppController::trayIconDoubleLeftClick(QSystemTrayIcon::ActivationReason reason){
+void AppController::trayIconDoubleLeftClick(QSystemTrayIcon::ActivationReason reason)
+{
     if(reason == QSystemTrayIcon::DoubleClick
-            && !activeWindow->isVisible()) show();
+            && !activeWindow->isVisible()) {
+        show();
+    }
 }
 
-void AppController::showTrayIcon() {
+void AppController::showTrayIcon()
+{
     trayIcon = new QSystemTrayIcon(this);
     trayIconMenu = new QMenu();
 
@@ -54,13 +61,15 @@ void AppController::showTrayIcon() {
 
 
 
-void AppController::showLogin() {
+void AppController::showLogin()
+{
     loginDialog = new LoginDialog(this);
     activeWindow = loginDialog;
     loginDialog->show();
 }
 
-void AppController::showGames() {
+void AppController::showGames()
+{
     loginDialog->hide();
 
     gamesWindow = new GamesWindow(this);
