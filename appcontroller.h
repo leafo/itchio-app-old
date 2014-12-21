@@ -10,6 +10,7 @@
 #include <QAction>
 
 #include "itchioapi.h"
+#include "traynotifications.h"
 
 class LoginDialog;
 class GamesWindow;
@@ -22,6 +23,7 @@ public:
     ItchioApi* api;
 
     void showTrayIcon();
+    void showTrayIconNotification(TrayNotifications notification, int duration);
     void showLogin();
     void showGames();
 
@@ -31,6 +33,7 @@ public slots:
     void show();
     void hide();
     void quit();
+
     void trayIconDoubleLeftClick(QSystemTrayIcon::ActivationReason reason);
 
 private slots:

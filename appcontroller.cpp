@@ -59,7 +59,16 @@ void AppController::showTrayIcon()
     trayIcon->show();
 }
 
-
+void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
+{
+    if(trayIcon->supportsMessages()) {
+        switch(notification) {
+        case NOTIFICATION_TEST:
+            trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
+            break;
+        }
+    }
+}
 
 void AppController::showLogin()
 {
