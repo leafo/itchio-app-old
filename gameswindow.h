@@ -3,11 +3,13 @@
 
 #include <QMainWindow>
 #include <QStringListModel>
+#include <QCloseEvent>
 
 #include "appcontroller.h"
 #include "objects/game.h"
 
-namespace Ui {
+namespace Ui
+{
 class GamesWindow;
 }
 
@@ -28,6 +30,8 @@ private slots:
     void on_actionRefresh_triggered();
 
 private:
+    void closeEvent(QCloseEvent *event);
+
     Ui::GamesWindow *ui;
     AppController* controller;
 

@@ -8,6 +8,8 @@ LoginDialog::LoginDialog(AppController *controller, QWidget *parent) :
     ui(new Ui::LoginDialog),
     controller(controller)
 {
+    setWindowFlags( Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint );
+
     ui->setupUi(this);
     connect(controller->api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
     connect(controller->api, SIGNAL(onLogin()), this, SLOT(onLogin()));
@@ -47,4 +49,10 @@ void LoginDialog::setStatus(QString status, bool disable)
     ui->usernameInput->setDisabled(disable);
     ui->passwordInput->setDisabled(disable);
     ui->loginButton->setDisabled(disable);
+}
+
+void LoginDialog::closeEvent(QCloseEvent *event)
+{
+    event->ignore();
+    controller->hide();
 }

@@ -8,7 +8,8 @@
 
 #include "objects/game.h"
 
-namespace Ui {
+namespace Ui
+{
 class GameRow;
 }
 

@@ -2,9 +2,12 @@
 #define LOGINDIALOG_H
 
 #include <QDialog>
+#include <QCloseEvent>
+
 #include "appcontroller.h"
 
-namespace Ui {
+namespace Ui
+{
 class LoginDialog;
 }
 
@@ -22,6 +25,8 @@ private slots:
     void onLogin();
 
 private:
+    void closeEvent(QCloseEvent *event);
+
     Ui::LoginDialog* ui;
     AppController* controller;
 
