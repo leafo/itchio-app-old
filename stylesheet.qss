@@ -26,18 +26,33 @@ QLabel {
         color: white;
 }
 
-#gameScroller {
+
+#myPurchasesScroller {
     border: 2px solid #555;
 }
 
-#gameScroller #scrollWrapper {
+#myPurchasesScroller #scrollWrapper {
     background-color: #333;
 }
 
-#gameScroller #imageHolder {
+#myPurchasesScroller #imageHolder {
     border: 1px solid #222;
     border-radius: 2px;
     background-color: rgba(0,0,0,0.1);
+}
+
+#myGameScroller {
+    border: 2px solid #555;
+}
+
+#myGameScroller #scrollWrapper {
+    background-color: #333;
+}
+
+#myGameScroller #imageHolder {
+    border: 1px solid #222;
+    border-radius: 2px;
+    background-color: rgba(1,0,0,0.1);
 }
 
 QScrollBar:vertical {
@@ -75,3 +90,26 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
     background: none;
 }
 
+QTabWidget::pane {
+    background-color: #EA4C4C;
+}
+
+QTabBar::tab {
+    background: #FA5C5C;
+    color: white;
+}
+
+QTabBar::tab:!selected {
+    background: #DA3C3C;
+}
+
+QTabWidget::tab-bar {
+    left: 10px;
+}
+
+#tab {
+    background-color: #333;
+}
+#tab_2 {
+    background-color: #333;
+}
