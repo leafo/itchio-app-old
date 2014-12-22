@@ -12,18 +12,23 @@
 #include "itchioapi.h"
 #include "traynotifications.h"
 
+class AppWindow;
 class LoginDialog;
 class GamesWindow;
 
 class AppController : public QObject
 {
     Q_OBJECT
+
 public:
     explicit AppController(QObject *parent = 0);
     ItchioApi* api;
 
     void showTrayIcon();
     void showTrayIconNotification(TrayNotifications notification, int duration);
+
+    void showWindowMain();
+
     void showLogin();
     void showGames();
 
@@ -34,7 +39,7 @@ public slots:
     void hide();
     void quit();
 
-    void trayIconDoubleLeftClick(QSystemTrayIcon::ActivationReason reason);
+    void trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason);
 
 private slots:
 
@@ -47,6 +52,7 @@ private:
 
     QAction* actionQuit;
 
+    AppWindow* appWindow;
     LoginDialog* loginDialog;
     GamesWindow* gamesWindow;
 

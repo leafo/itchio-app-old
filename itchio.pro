@@ -13,29 +13,29 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        gameswindow.cpp \
-    logindialog.cpp \
     itchioapi.cpp \
     appcontroller.cpp \
+    appwindow.cpp \
+    gameswindow.cpp \
+    logindialog.cpp \
     objects/game.cpp \
     gamerow.cpp
 
-HEADERS  += gameswindow.h \
-    logindialog.h \
-    itchioapi.h \
+HEADERS  += itchioapi.h \
     appcontroller.h \
+    appwindow.h \
+    gameswindow.h \
+    logindialog.h \
     objects/game.h \
-    gamerow.h \
-    traynotifications.h
+    gamerow.h
 
-FORMS    += gameswindow.ui \
+FORMS    += appwindow.ui \
+    gameswindow.ui \
     logindialog.ui
+
 
 RESOURCES += \
     resources.qrc
 
 # CONFIG += link_pkgconfig
 # PKGCONFIG += openssl
-
-DISTFILES += \
-    stylesheet.qss

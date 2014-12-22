@@ -1,14 +1,15 @@
 #include <QDebug>
 #include "appcontroller.h"
-#include "gameswindow.h"
+#include "appwindow.h"
 #include "logindialog.h"
+#include "gameswindow.h"
 
 AppController::AppController(QObject *parent) :
     QObject(parent)
 {
     api = new ItchioApi(this);
 
-    showLogin();
+    showWindowMain();
     showTrayIcon();
 }
 
@@ -16,16 +17,16 @@ void AppController::hide()
 {
     activeWindow->showMinimized();
 
-    activeWindow->setWindowFlags(activeWindow->windowFlags() ^ QFlag(8));
+    activeWindow->setWindowFlags(activeWindow->windowFlags() ^ Qt::Tool);
 }
 
 void AppController::show()
 {
-    activeWindow->setWindowFlags(activeWindow->windowFlags() ^ QFlag(8));
+    activeWindow->setWindowFlags(activeWindow->windowFlags() ^ Qt::Tool);
 
     QApplication::setActiveWindow(activeWindow);
     activeWindow->show();
-    activeWindow->setWindowState(Qt::WindowActive);
+    activeWindow->setWindowState(activeWindow->windowState() & (~Qt::WindowMinimized | Qt::WindowActive));
 }
 
 void AppController::quit()
@@ -33,10 +34,11 @@ void AppController::quit()
     QCoreApplication::exit();
 }
 
-void AppController::trayIconDoubleLeftClick(QSystemTrayIcon::ActivationReason reason)
+void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
 {
     if(reason == QSystemTrayIcon::DoubleClick
-            && !activeWindow->isVisible()) {
+            && !activeWindow->isVisible())
+    {
         show();
     }
 }
@@ -50,7 +52,7 @@ void AppController::showTrayIcon()
 
     connect (actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
     connect (trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-             this, SLOT(trayIconDoubleLeftClick(QSystemTrayIcon::ActivationReason)));
+             this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
 
     trayIconMenu->addAction (actionQuit);
 
@@ -68,6 +70,15 @@ void AppController::showTrayIconNotification(TrayNotifications notification, int
             break;
         }
     }
+}
+
+void AppController::showWindowMain()
+{
+    appWindow = new AppWindow(this);
+    appWindow->setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
+
+    activeWindow = appWindow;
+    appWindow->show();
 }
 
 void AppController::showLogin()
