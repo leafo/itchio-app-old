@@ -13,6 +13,9 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     ui->setupUi(this);
 
     topBar = findChild<QWidget*>("topBar");
+    appWindowLayout = findChild<QGridLayout*>("appWindowLayout");
+
+    appWindowLayout->addWidget(new QSizeGrip(this), 0, 0, 0, 0, Qt::AlignBottom | Qt::AlignRight);
 }
 
 AppWindow::~AppWindow()

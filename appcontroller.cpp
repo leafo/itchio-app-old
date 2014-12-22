@@ -15,18 +15,17 @@ AppController::AppController(QObject *parent) :
 
 void AppController::hide()
 {
-    activeWindow->showMinimized();
+    appWindow->showMinimized();
 
-    activeWindow->setWindowFlags(activeWindow->windowFlags() ^ Qt::Tool);
+    appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
 }
 
 void AppController::show()
 {
-    activeWindow->setWindowFlags(activeWindow->windowFlags() ^ Qt::Tool);
+    appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
 
-    QApplication::setActiveWindow(activeWindow);
-    activeWindow->show();
-    activeWindow->setWindowState(activeWindow->windowState() & (~Qt::WindowMinimized | Qt::WindowActive));
+    appWindow->show();
+    appWindow->setWindowState((appWindow->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
 }
 
 void AppController::quit()
@@ -37,7 +36,7 @@ void AppController::quit()
 void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
 {
     if(reason == QSystemTrayIcon::DoubleClick
-            && !activeWindow->isVisible())
+            && !appWindow->isVisible())
     {
         show();
     }
@@ -77,22 +76,5 @@ void AppController::showWindowMain()
     appWindow = new AppWindow(this);
     appWindow->setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
-    activeWindow = appWindow;
     appWindow->show();
-}
-
-void AppController::showLogin()
-{
-    loginDialog = new LoginDialog(this);
-    activeWindow = loginDialog;
-    loginDialog->show();
-}
-
-void AppController::showGames()
-{
-    loginDialog->hide();
-
-    gamesWindow = new GamesWindow(this);
-    activeWindow = gamesWindow;
-    gamesWindow->show();
 }

@@ -4,21 +4,22 @@ AppWindow
     background: #222;
 }
 
-#topBar{
+#topBar
+{
     background-color: #333;
 }
 
 QPushButton
 {
-    border-radius: 1px;
-    border: 0;
-    text-align: center;
-    line-height: 30px;
-    height: 30px;
-    font-size: inherit;
-    padding: 0 10px;
-    background: #FA5C5C;
-    color: white;
+        border-radius: 1px;
+        border: 0;
+        text-align: center;
+        line-height: 30px;
+        height: 30px;
+        font-size: inherit;
+        padding: 0 10px;
+        background: #FA5C5C;
+        color: white;
 }
 
 QPushButton:focus:!pressed
@@ -39,32 +40,50 @@ QPushButton:pressed
 
 QLineEdit
 {
-    border: 2px solid #dadada;
-    border-radius: 2px;
-    color: #333;
-    background: white;
+        border: 2px solid #dadada;
+        border-radius: 2px;
+        color: #333;
+        background: white;
 }
 
 QLabel
 {
-    color: white;
+        color: white;
 }
 
-#gameScroller
+
+#myPurchasesScroller
 {
     border: 2px solid #555;
 }
 
-#gameScroller #scrollWrapper
+#myPurchasesScroller #scrollWrapper
 {
     background-color: #333;
 }
 
-#gameScroller #imageHolder
+#myPurchasesScroller #imageHolder
 {
     border: 1px solid #222;
     border-radius: 2px;
     background-color: rgba(0,0,0,0.1);
+}
+
+#myGameScroller
+{
+    border: 2px solid #555;
+}
+
+#myGameScroller #scrollWrapper
+{
+    background-color: #333;
+}
+
+#myGameScroller #imageHolder
+{
+    border: 1px solid #222;
+    border-radius: 2px;
+    background-color: rgba(1,0,0,0.1);
 }
 
 QScrollBar:vertical
@@ -72,7 +91,7 @@ QScrollBar:vertical
     border: 0;
     background: rgba(51,51,51,0);
     width: 7px;
-    margin: 0;
+    margin: 0
 }
 
 QScrollBar::handle:vertical
@@ -105,5 +124,36 @@ QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
 
 QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 {
-    background:  none;
+    background: none;
+}
+
+QTabWidget::pane
+{
+    background-color: #EA4C4C;
+}
+
+QTabBar::tab
+{
+    background: #FA5C5C;
+    color: white;
+}
+
+QTabBar::tab:!selected
+{
+    background: #DA3C3C;
+}
+
+QTabWidget::tab-bar
+{
+    left: 10px;
+}
+
+#tab
+{
+    background-color: #333;
+}
+
+#tab_2
+{
+    background-color: #333;
 }

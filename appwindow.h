@@ -2,6 +2,7 @@
 #define APPWINDOW_H
 
 #include <QSizeGrip>
+#include <QGridLayout>
 #include <QMainWindow>
 #include <QObject>
 #include <QSize>
@@ -41,6 +42,7 @@ private:
     AppController* controller;
 
     QWidget* topBar;
+    QGridLayout* appWindowLayout;
 
     void setStatus(QString status, bool disable);
 

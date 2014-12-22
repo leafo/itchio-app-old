@@ -13,8 +13,6 @@
 #include "traynotifications.h"
 
 class AppWindow;
-class LoginDialog;
-class GamesWindow;
 
 class AppController : public QObject
 {
@@ -28,9 +26,6 @@ public:
     void showTrayIconNotification(TrayNotifications notification, int duration);
 
     void showWindowMain();
-
-    void showLogin();
-    void showGames();
 
 signals:
 
@@ -53,8 +48,6 @@ private:
     QAction* actionQuit;
 
     AppWindow* appWindow;
-    LoginDialog* loginDialog;
-    GamesWindow* gamesWindow;
 
 };
 

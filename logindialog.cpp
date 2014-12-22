@@ -22,7 +22,7 @@ LoginDialog::~LoginDialog()
 
 void LoginDialog::onLogin()
 {
-    controller->showGames();
+    //controller->showGames();
 }
 
 void LoginDialog::onLoginFailure(QString error)
