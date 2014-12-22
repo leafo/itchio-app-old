@@ -23,6 +23,7 @@ public:
 
 public slots:
     void onMyGames(QList<Game> games);
+    void onMyPurchases(QList<Game> games);
 
 private slots:
     void on_actionQuit_triggered();

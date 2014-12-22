@@ -16,14 +16,17 @@ public:
     void request(QString path, const char* slot);
     void login(QString username, QString password);
     void myGames();
+    void myPurchases();
 
 signals:
     void onLogin();
     void onLoginFailure(QString reason);
     void onMyGames(QList<Game> games);
+    void onMyPurchases(QList<Game> games);
 
 public slots:
     void getMyGamesRequest();
+    void getMyPurchasesRequest();
     void getLoginRequest();
 
 private:
