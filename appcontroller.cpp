@@ -1,16 +1,17 @@
 #include <QDebug>
 #include "appcontroller.h"
 #include "appwindow.h"
-#include "logindialog.h"
-#include "gameswindow.h"
+#include "widgets/loginwidget.h"
+
+//TODO: Minimizing to tray and restoring the window multiple times, after moving it for the first time and while not maximized, cause the window to move if taskbars are present. Cause not known.
 
 AppController::AppController(QObject *parent) :
     QObject(parent)
 {
     api = new ItchioApi(this);
 
-    showWindowMain();
     showTrayIcon();
+    showAppWindow();
 }
 
 void AppController::hide()
@@ -36,8 +37,7 @@ void AppController::quit()
 void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
 {
     if(reason == QSystemTrayIcon::DoubleClick
-            && !appWindow->isVisible())
-    {
+            && !appWindow->isVisible()) {
         show();
     }
 }
@@ -71,10 +71,15 @@ void AppController::showTrayIconNotification(TrayNotifications notification, int
     }
 }
 
-void AppController::showWindowMain()
+void AppController::showAppWindow()
 {
     appWindow = new AppWindow(this);
     appWindow->setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
     appWindow->show();
+}
+
+void AppController::onLogin()
+{
+    appWindow->loginWidget->deleteLater();
 }

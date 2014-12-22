@@ -22,10 +22,19 @@ public:
     explicit AppController(QObject *parent = 0);
     ItchioApi* api;
 
+    void onLogin();
+
     void showTrayIcon();
     void showTrayIconNotification(TrayNotifications notification, int duration);
+    void showAppWindow();
 
-    void showWindowMain();
+private:
+    QAction* actionQuit;
+
+    AppWindow* appWindow;
+
+    QSystemTrayIcon* trayIcon;
+    QMenu* trayIconMenu;
 
 signals:
 
@@ -37,17 +46,6 @@ public slots:
     void trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason);
 
 private slots:
-
-
-private:
-    QWidget* activeWindow;
-
-    QSystemTrayIcon* trayIcon;
-    QMenu* trayIconMenu;
-
-    QAction* actionQuit;
-
-    AppWindow* appWindow;
 
 };
 

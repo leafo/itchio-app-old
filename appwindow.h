@@ -1,19 +1,21 @@
 #ifndef APPWINDOW_H
 #define APPWINDOW_H
 
-#include <QSizeGrip>
+#include <QCloseEvent>
 #include <QGridLayout>
 #include <QMainWindow>
 #include <QObject>
-#include <QSize>
 #include <QPoint>
-#include <QCloseEvent>
+#include <QSize>
+#include <QSizeGrip>
 
 #include "appcontroller.h"
 
+class LoginWidget;
+
 namespace Ui
 {
-    class AppWindow;
+class AppWindow;
 }
 
 class AppWindow : public QMainWindow
@@ -24,7 +26,7 @@ public:
     explicit AppWindow(AppController* controller, QWidget* parent = 0);
     ~AppWindow();
 
-    QPoint oldPosition;
+    LoginWidget* loginWidget;
 
 private:
     void closeEvent(QCloseEvent *event);
@@ -33,24 +35,29 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
 
-    void close();
+    void setStatus(QString status, bool disable);
 
+    void close();
     void maximize();
     void restore();
-
-    QSize oldSize;
-
-    int dragClickX;
-    int dragClickY;
-    QObject* firstClicked = NULL;
 
     Ui::AppWindow* ui;
     AppController* controller;
 
+    QSize oldSize;
+    QPoint oldPosition;
+    int dragClickX;
+    int dragClickY;
+    QObject* firstClicked = NULL;
+
+    QSizeGrip* sizeGrip;
     QWidget* topBar;
     QGridLayout* appWindowLayout;
+    QGridLayout* widgetsLayout;
 
-    void setStatus(QString status, bool disable);
+signals:
+
+public slots:
 
 private slots:
     void on_topBarCloseButton_clicked();
