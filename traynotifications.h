@@ -1,0 +1,9 @@
+#ifndef TRAYNOTIFICATIONS
+#define TRAYNOTIFICATIONS
+
+enum TrayNotifications {
+    NOTIFICATION_TEST = 0
+};
+
+#endif // TRAYNOTIFICATIONS
+

@@ -25,7 +25,8 @@ HEADERS  += gameswindow.h \
     itchioapi.h \
     appcontroller.h \
     objects/game.h \
-    gamerow.h
+    gamerow.h \
+    traynotifications.h
 
 FORMS    += gameswindow.ui \
     logindialog.ui
