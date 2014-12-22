@@ -95,12 +95,12 @@ QTabWidget::pane {
 }
 
 QTabBar::tab {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #FA5C5C, stop: 0.4 #FA5C5C, stop: 0.5 #FA5C5C, stop: 1.0 #FA5C5C);
+    background: #FA5C5C;
     color: white;
 }
 
 QTabBar::tab:!selected {
-    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #DA3C3C, stop: 0.4 #DA3C3C, stop: 0.5 #DA3C3C, stop: 1.0 #DA3C3C);
+    background: #DA3C3C;
 }
 
 QTabWidget::tab-bar {
