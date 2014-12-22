@@ -24,6 +24,8 @@ public:
     explicit AppWindow(AppController* controller, QWidget* parent = 0);
     ~AppWindow();
 
+    QPoint oldPosition;
+
 private:
     void closeEvent(QCloseEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -31,12 +33,16 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
 
-    int leftClickX;
-    int leftClickY;
-    QObject* firstClicked = NULL;
+    void close();
+
+    void maximize();
+    void restore();
 
     QSize oldSize;
-    QPoint oldPosition;
+
+    int dragClickX;
+    int dragClickY;
+    QObject* firstClicked = NULL;
 
     Ui::AppWindow* ui;
     AppController* controller;

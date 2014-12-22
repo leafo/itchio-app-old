@@ -16,6 +16,8 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     appWindowLayout = findChild<QGridLayout*>("appWindowLayout");
 
     appWindowLayout->addWidget(new QSizeGrip(this), 0, 0, 0, 0, Qt::AlignBottom | Qt::AlignRight);
+
+
 }
 
 AppWindow::~AppWindow()
@@ -29,8 +31,8 @@ void AppWindow::mousePressEvent(QMouseEvent *event)
         firstClicked = childAt(event->x(), event->y());
 
         if(firstClicked == topBar){
-            leftClickX = event->x();
-            leftClickY = event->y();
+            dragClickX = event->x();
+            dragClickY = event->y();
         }
     }
 }
@@ -45,35 +47,45 @@ void AppWindow::mouseReleaseEvent(QMouseEvent *event)
 void AppWindow::mouseMoveEvent(QMouseEvent *event)
 {
     if(firstClicked == topBar && !isMaximized()){
-       move(event->globalX()-leftClickX, event->globalY()-leftClickY);
+       move(event->globalX()-dragClickX, event->globalY()-dragClickY);
     }
 }
 
 void AppWindow::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if(childAt(event->x(), event->y()) == topBar){
-        if(!isMaximized())
-        {
-            oldSize = size();
-            oldPosition = pos();
-            showMaximized();
-        }
-        else
-        {
-            showNormal();
-            resize(oldSize);
-            setGeometry(oldPosition.x(), oldPosition.y(), oldSize.width(), oldSize.height());
-        }
+        if(!isMaximized()) maximize();
+        else restore();
     }
 }
 
 void AppWindow::closeEvent(QCloseEvent *event)
 {
     event->ignore();
-    controller->hide();
+
+    close();
 }
 
 void AppWindow::on_topBarCloseButton_clicked()
 {
+    close();
+}
+
+void AppWindow::close()
+{
     controller->hide();
+}
+
+void AppWindow::maximize()
+{
+    oldSize = size();
+    oldPosition = pos();
+
+    showMaximized();
+}
+
+void AppWindow::restore()
+{
+    showNormal();
+    setGeometry(oldPosition.x(), oldPosition.y(), oldSize.width(), oldSize.height());
 }
