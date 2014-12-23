@@ -26,6 +26,7 @@ void LibraryWidget::onMyPurchases(QList<Game> games) {
 
 void LibraryWidget::addGamesTab(const QString& title, QList<Game> games) {
     QScrollArea* scroller = new QScrollArea();
+    scroller->setObjectName("gamesScroller");
 
     QWidget* wrapper = new QWidget;
     wrapper->setObjectName("scrollWrapper");
