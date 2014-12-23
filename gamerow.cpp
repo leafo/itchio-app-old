@@ -28,6 +28,8 @@ GameRow::GameRow(QWidget *parent, Game game, DownloadKey key, AppController* con
     downloadMenu = new QMenu("Choose download");
     downloadButton->setMenu(downloadMenu);
     connect(downloadMenu, SIGNAL(aboutToShow()), SLOT(onTriggerMenu()));
+    connect(controller->api, SIGNAL(onDownloadKeyUploads(DownloadKey,QList<Upload>)),
+            SLOT(onDownloadKeyUploads(DownloadKey,QList<Upload>)));
 
     imageHolder = new QLabel();
     double ratio = double(Game::COVER_WIDTH) / Game::COVER_HEIGHT;
@@ -98,6 +100,20 @@ void GameRow::onTriggerMenu()
     loaderAction->setDisabled(true);
     downloadMenu->addAction(loaderAction);
     controller->api->downloadKeyUploads(downloadKey);
+}
+
+void GameRow::onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads)
+{
+    // need to pass correct download key first
+    // if (key.id != downloadKey.id) {
+    //     return;
+    // }
+
+    downloadMenu->clear();
+
+    foreach (Upload upload, uploads) {
+        downloadMenu->addAction(new QAction(upload.filename, downloadMenu));
+    }
 }
 
 void GameRow::refreshThumbnail()

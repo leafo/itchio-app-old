@@ -28,6 +28,7 @@ private slots:
     void onClickDownload();
     void onDownloadThumbnail();
     void onTriggerMenu();
+    void onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads);
 
 private:
     AppController* controller;

@@ -123,6 +123,16 @@ void ItchioApi::getDownloadKeyUploads()
     reply->deleteLater();
 
     QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
-    qDebug() << res;
+
+
+    QJsonValue uploads = res.object()["uploads"];
+
+    QList<Upload> uploadList;
+    foreach (const QJsonValue& uploadValue, uploads.toArray()) {
+        QJsonObject uploadObject = uploadValue.toObject();
+        uploadList << Upload::fromJson(uploadObject);
+    }
+
+    onDownloadKeyUploads(DownloadKey(), uploadList);
 }
 
