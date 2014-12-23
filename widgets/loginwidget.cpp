@@ -9,8 +9,10 @@ LoginWidget::LoginWidget(QWidget *parent, AppController *controller) :
     controller(controller)
 {
     ui->setupUi(this);
+
     connect(controller->api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
     connect(controller->api, SIGNAL(onLogin()), this, SLOT(onLogin()));
+    connect(controller->api, SIGNAL(onLoginByKeyFailure()), this, SLOT(onLoginByKeyFailure()));
 }
 
 LoginWidget::~LoginWidget()
@@ -26,7 +28,7 @@ void LoginWidget::setStatus(QString status, bool disable)
     ui->loginButton->setDisabled(disable);
 }
 
-void LoginWidget::on_loginButton_clicked()
+void LoginWidget::onLoginTentative()
 {
     QString username = ui->loginUsernameInput->text();
     QString password =  ui->loginPasswordInput->text();
@@ -50,12 +52,22 @@ void LoginWidget::onLogin()
     controller->onLogin();
 }
 
+void LoginWidget::onLoginByKeyFailure()
+{
+
+}
+
+void LoginWidget::on_loginButton_clicked()
+{
+    onLoginTentative();
+}
+
 void LoginWidget::on_loginUsernameInput_returnPressed()
 {
-    on_loginButton_clicked();
+    onLoginTentative();
 }
 
 void LoginWidget::on_loginPasswordInput_returnPressed()
 {
-    on_loginButton_clicked();
+    onLoginTentative();
 }

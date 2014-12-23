@@ -8,9 +8,12 @@
 #include <QMenu>
 #include <QIcon>
 #include <QAction>
+#include <QSettings>
 
 #include "itchioapi.h"
 #include "traynotifications.h"
+#include "settings.h"
+#include "appsettings.h"
 
 class AppWindow;
 
@@ -20,7 +23,10 @@ class AppController : public QObject
 
 public:
     explicit AppController(QObject *parent = 0);
+
     ItchioApi* api;
+
+    AppSettings* settings;
 
     void onLogin();
 
@@ -29,6 +35,8 @@ public:
     void showAppWindow();
 
 private:
+    QString settingsFile;
+
     QAction* actionQuit;
 
     AppWindow* appWindow;
@@ -39,6 +47,8 @@ private:
 signals:
 
 public slots:
+    void setupSettings();
+
     void show();
     void hide();
     void quit();

@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "appcontroller.h"
+#include "appsettings.h"
 
 namespace Ui
 {
@@ -25,8 +26,10 @@ private:
     void setStatus(QString status, bool disable);
 
 private slots:
-    void onLoginFailure(QString);
+    void onLoginTentative();
+    void onLoginFailure(QString error);
     void onLogin();
+    void onLoginByKeyFailure();
 
     void on_loginButton_clicked();
     void on_loginUsernameInput_returnPressed();

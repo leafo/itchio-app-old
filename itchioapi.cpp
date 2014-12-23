@@ -9,17 +9,32 @@ ItchioApi::ItchioApi(QObject *parent) :
 {
     networkManager = new QNetworkAccessManager(this);
     base = "https://itch.io/api/1";
-    // base = "http://localhost.com:8080/api/1";
+
+    // connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getMyGames(QNetworkReply*)));
+    // networkManager->get(QNetworkRequest(QUrl(base + "/" + userKey + "/my-games")));
+    // request("my-games", SLOT(getMyGamesRequest()));
 }
 
-void ItchioApi::login(QString username, QString password)
+void ItchioApi::login(QString username, QString password, QString apikey)
 {
-    QUrlQuery params;
-    params.addQueryItem("username", username);
-    params.addQueryItem("password", password);
-    params.addQueryItem("source", "desktop");
+    userName = username;
+    userKey = apikey;
 
-    QNetworkRequest request(QUrl(base + "/login"));
+    QUrlQuery params;
+    QNetworkRequest request;
+
+    if(userKey == "") {
+        params.addQueryItem("username", username);
+        params.addQueryItem("password", password);
+        params.addQueryItem("source", "desktop");
+
+        request.setUrl(QUrl(base + "/login"));
+    } else {
+        params.addQueryItem("", userKey);
+
+        request.setUrl(QUrl(base + "/" + userKey + "/me"));
+    }
+
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     QByteArray paramBytes;
     paramBytes.append(params.toString());
@@ -44,7 +59,7 @@ void ItchioApi::downloadKeyUploads(DownloadKey key)
 
 void ItchioApi::request(QString path, const char* slot)
 {
-    QString url =  base + "/" + apiKey + "/" + path;
+    QString url =  base + "/" + userKey + "/" + path;
     qDebug() << "Requesting URL" << url;
     QNetworkReply* reply = networkManager->get(QNetworkRequest(QUrl(url)));
     connect(reply, SIGNAL(finished()), this, slot);
@@ -95,26 +110,48 @@ void ItchioApi::getLoginRequest()
     }
 
     QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
+    //qDebug() << res;
+
     QJsonValue errors = res.object()["errors"];
 
     if (!errors.isNull()) {
         QString error = errors.toArray()[0].toString();
-        onLoginFailure(error);
+
+        if(error == "invalid key") {
+            onLoginByKeyFailure();
+        } else {
+            onLoginFailure(error);
+        }
+
         return;
     }
 
-    QJsonValue keyValue = res.object()["key"];
+    QJsonValue keyValue;
 
-    if (!keyValue.isNull()) {
-        QJsonObject key = keyValue.toObject();
-        apiKey = key["key"].toString();
-        userId = key["user_id"].toInt();
-        qDebug() << "Logged in with" << apiKey << userId;
-        onLogin();
-        return;
+    if(userKey == "") {
+        keyValue = res.object()["key"];
+
+        if (!keyValue.isNull()) {
+            QJsonObject key = keyValue.toObject();
+            userKey = key["key"].toString();
+            userId = key["user_id"].toInt();
+            qDebug() << "\nLogged in with" << userKey << userId;
+
+            onLogin();
+            return;
+        }
+    } else {
+        keyValue = res.object()["user"];
+
+        if (!keyValue.isNull()) {
+            QJsonObject key = keyValue.toObject();
+            userName = key["username"].toString();
+            userId = key["id"].toInt();
+            qDebug() << "\nLogged in with" << userKey << userId;
+            onLogin();
+            return;
+        }
     }
-
-    qDebug() << res;
 }
 
 void ItchioApi::getDownloadKeyUploads()
@@ -135,4 +172,3 @@ void ItchioApi::getDownloadKeyUploads()
 
     onDownloadKeyUploads(DownloadKey(), uploadList);
 }
-

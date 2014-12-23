@@ -1,6 +1,7 @@
 #include <QDebug>
 #include "appcontroller.h"
 #include "appwindow.h"
+
 #include "widgets/loginwidget.h"
 #include "widgets/librarywidget.h"
 
@@ -11,8 +12,20 @@ AppController::AppController(QObject *parent) :
 {
     api = new ItchioApi(this);
 
+    setupSettings();
+
     showTrayIcon();
     showAppWindow();
+}
+
+void AppController::setupSettings()
+{
+    settingsFile = "settings.scratch";
+    settings = new AppSettings(settingsFile, QSettings::IniFormat);
+
+    if(settings->loadSettings(API_KEY) != "") {
+        api->login("hue", "hue", settings->loadSettings(API_KEY));
+    }
 }
 
 void AppController::hide()
@@ -82,6 +95,10 @@ void AppController::showAppWindow()
 
 void AppController::onLogin()
 {
+    settings->saveSettings(API_KEY, api->userKey);
+    settings->saveSettings(USERNAME, api->userName);
+
+    appWindow->loginWidget->hide();
     appWindow->loginWidget->deleteLater();
     appWindow->setupLibrary();
 }
