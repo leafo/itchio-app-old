@@ -103,7 +103,8 @@ void AppWindow::setupLogin()
     loginWidget = new LoginWidget(this, controller);
     widgetsLayout->addWidget(loginWidget);
     loginWidget->show();
-    sizeGrip->raise();
+
+    onWidgetChange(loginWidget);
 }
 
 void AppWindow::setupLibrary()
@@ -112,14 +113,19 @@ void AppWindow::setupLibrary()
     widgetsLayout->addWidget(libraryWidget);
     libraryWidget->show();
 
-    loginToLibrarySizeDiference = size() - minimumSize();
+    onWidgetChange(libraryWidget);
+}
 
-    if(width() < libraryWidget->minimumWidth()) {
-        setGeometry(x() - loginToLibrarySizeDiference.width(), y(), width(), libraryWidget->minimumHeight());
+void AppWindow::onWidgetChange(QWidget* newWidget)
+{
+    newWidgetSizeDiference = size() - minimumSize();
+
+    if(width() < newWidget->minimumWidth()) {
+        setGeometry(x() - newWidgetSizeDiference.width(), y(), width(), newWidget->minimumHeight());
     }
 
-    if(height() < libraryWidget->minimumHeight()) {
-        setGeometry(x(), y() - loginToLibrarySizeDiference.height(), width(), libraryWidget->minimumHeight());
+    if(height() < newWidget->minimumHeight()) {
+        setGeometry(x(), y() - newWidgetSizeDiference.height(), width(), newWidget->minimumHeight());
     }
 
     sizeGrip->raise();

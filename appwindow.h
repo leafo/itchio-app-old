@@ -56,7 +56,7 @@ private:
     int dragClickY;
     QObject* firstClicked;
 
-    QSize loginToLibrarySizeDiference;
+    QSize newWidgetSizeDiference;
 
     QSizeGrip* sizeGrip;
     QWidget* topBar;
@@ -68,6 +68,7 @@ signals:
 public slots:
 
 private slots:
+    void onWidgetChange(QWidget* newWidget);
     void on_topBarCloseButton_clicked();
 
 };
