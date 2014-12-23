@@ -19,7 +19,6 @@ SOURCES += main.cpp \
     appwindow.cpp \
     widgets/loginwidget.cpp \
 	widgets/librarywidget.cpp \
-    gameswindow.cpp \
     objects/game.cpp \
     gamerow.cpp \
     objects/user.cpp
@@ -32,14 +31,12 @@ HEADERS += itchioapi.h \
     appwindow.h \
     widgets/loginwidget.h \
 	widgets/librarywidget.h \
-    gameswindow.h \
     objects/game.h \
 	gamerow.h \
     objects/user.h
 
 
 FORMS += appwindow.ui \
-    gameswindow.ui \
     widgets/loginwidget.ui \
     widgets/librarywidget.ui
 
