@@ -90,9 +90,6 @@ void AppController::showAppWindow()
     appWindow = new AppWindow(this);
 
     appWindow->show();
-
-    secondaryWindows.append(new SecondaryWindow(new SettingsWidget(this), this));
-    secondaryWindows.value(0)->show();
 }
 
 void AppController::onLogin()
