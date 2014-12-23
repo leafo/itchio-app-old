@@ -18,7 +18,8 @@ LibraryWidget::LibraryWidget(QWidget *parent, AppController *controller) :
     controller->api->myOwnedKeys();
 }
 
-void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys) {
+void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys)
+{
     QList<Game> games;
     foreach (DownloadKey key, downloadKeys) {
         games << key.game;
@@ -27,7 +28,8 @@ void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys) {
     addGamesTab("My Purchases", games);
 }
 
-void LibraryWidget::addGamesTab(const QString& title, QList<Game> games) {
+void LibraryWidget::addGamesTab(const QString& title, QList<Game> games)
+{
     QScrollArea* scroller = new QScrollArea();
     scroller->setObjectName("gamesScroller");
 
