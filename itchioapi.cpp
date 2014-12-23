@@ -71,11 +71,13 @@ void ItchioApi::getMyPurchasesRequest()
     reply->deleteLater();
 
     QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
-    QJsonValue games = res.object()["owned_keys"];
+    QJsonValue keys = res.object()["owned_keys"];
+
     QList<Game> gameList;
-    foreach (const QJsonValue& gameValue, games.toArray()) {
-        QJsonObject gameObject = gameValue.toObject();
-        //gameList << Game::fromJson(gameObject["game"].toObject());
+    foreach (const QJsonValue& keyValue, keys.toArray()) {
+        QJsonObject keyObject = keyValue.toObject();
+        QJsonObject gameObject =  keyObject["game"].toObject();
+        gameList << Game::fromJson(gameObject);
     }
 
     onMyPurchases(gameList);
