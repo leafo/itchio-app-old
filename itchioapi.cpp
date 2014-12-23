@@ -9,10 +9,7 @@ ItchioApi::ItchioApi(QObject *parent) :
 {
     networkManager = new QNetworkAccessManager(this);
     base = "https://itch.io/api/1";
-
-    // connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getMyGames(QNetworkReply*)));
-    // networkManager->get(QNetworkRequest(QUrl(base + "/" + apiKey + "/my-games")));
-    // request("my-games", SLOT(getMyGamesRequest()));
+    base = "http://localhost.com:8080/api/1";
 }
 
 void ItchioApi::login(QString username, QString password)
@@ -38,6 +35,11 @@ void ItchioApi::myGames()
 void ItchioApi::myOwnedKeys()
 {
     request("my-owned-keys", SLOT(getMyOwnedKeys()));
+}
+
+void ItchioApi::downloadKeyUploads(DownloadKey key)
+{
+    request(QString("download-key/%1/uploads").arg(key.id), SLOT(getDownloadKeyUploads()));
 }
 
 void ItchioApi::request(QString path, const char* slot)
@@ -114,3 +116,13 @@ void ItchioApi::getLoginRequest()
 
     qDebug() << res;
 }
+
+void ItchioApi::getDownloadKeyUploads()
+{
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    reply->deleteLater();
+
+    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
+    qDebug() << res;
+}
+
