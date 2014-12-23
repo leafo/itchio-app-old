@@ -9,7 +9,7 @@ ItchioApi::ItchioApi(QObject *parent) :
 {
     networkManager = new QNetworkAccessManager(this);
     base = "https://itch.io/api/1";
-    base = "http://localhost.com:8080/api/1";
+    // base = "http://localhost.com:8080/api/1";
 }
 
 void ItchioApi::login(QString username, QString password)
