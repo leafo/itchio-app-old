@@ -1,7 +1,6 @@
 #include "librarywidget.h"
 #include "ui_librarywidget.h"
 
-#include <gameswindow.h>
 #include <QScrollArea>
 
 #include "gamerow.h"
@@ -15,12 +14,16 @@ LibraryWidget::LibraryWidget(QWidget *parent, AppController *controller) :
 {
     ui->setupUi(this);
 
-    connect(controller->api, SIGNAL(onMyPurchases(QList<Game>)), this, SLOT(onMyPurchases(QList<Game>)));
-    controller->api->myPurchases();
+    connect(controller->api, SIGNAL(onMyOwnedKeys(QList<DownloadKey>)), this, SLOT(onMyOwnedKeys(QList<DownloadKey>)));
+    controller->api->myOwnedKeys();
 }
 
-void LibraryWidget::onMyPurchases(QList<Game> games) {
-    qDebug() << "got my purchases" << games.count() ;
+void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys) {
+    QList<Game> games;
+    foreach (DownloadKey key, downloadKeys) {
+        games << key.game;
+    }
+
     addGamesTab("My Purchases", games);
 }
 

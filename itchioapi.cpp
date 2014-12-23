@@ -35,9 +35,9 @@ void ItchioApi::myGames()
     request("my-games", SLOT(getMyGamesRequest()));
 }
 
-void ItchioApi::myPurchases()
+void ItchioApi::myOwnedKeys()
 {
-    request("my-owned-keys", SLOT(getMyPurchasesRequest()));
+    request("my-owned-keys", SLOT(getMyOwnedKeys()));
 }
 
 void ItchioApi::request(QString path, const char* slot)
@@ -65,7 +65,7 @@ void ItchioApi::getMyGamesRequest()
     onMyGames(gameList);
 }
 
-void ItchioApi::getMyPurchasesRequest()
+void ItchioApi::getMyOwnedKeys()
 {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
@@ -73,14 +73,13 @@ void ItchioApi::getMyPurchasesRequest()
     QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
     QJsonValue keys = res.object()["owned_keys"];
 
-    QList<Game> gameList;
+    QList<DownloadKey> keyList;
     foreach (const QJsonValue& keyValue, keys.toArray()) {
         QJsonObject keyObject = keyValue.toObject();
-        QJsonObject gameObject =  keyObject["game"].toObject();
-        gameList << Game::fromJson(gameObject);
+        keyList <<  DownloadKey::fromJson(keyObject);
     }
 
-    onMyPurchases(gameList);
+    onMyOwnedKeys(keyList);
 }
 
 void ItchioApi::getLoginRequest()

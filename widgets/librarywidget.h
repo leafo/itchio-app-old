@@ -20,7 +20,7 @@ public:
 
 
 public slots:
-    void onMyPurchases(QList<Game> games);
+    void onMyOwnedKeys(QList<DownloadKey> downloadKeys);
 
 private:
     Ui::LibraryWidget *ui;

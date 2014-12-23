@@ -7,6 +7,7 @@
 #include <QUrl>
 
 #include "objects/game.h"
+#include "objects/downloadkey.h"
 
 class ItchioApi : public QObject
 {
@@ -16,17 +17,17 @@ public:
     void request(QString path, const char* slot);
     void login(QString username, QString password);
     void myGames();
-    void myPurchases();
+    void myOwnedKeys();
 
 signals:
     void onLogin();
     void onLoginFailure(QString reason);
     void onMyGames(QList<Game> games);
-    void onMyPurchases(QList<Game> games);
+    void onMyOwnedKeys(QList<DownloadKey> games);
 
 public slots:
     void getMyGamesRequest();
-    void getMyPurchasesRequest();
+    void getMyOwnedKeys();
     void getLoginRequest();
 
 private:
