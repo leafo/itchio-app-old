@@ -8,8 +8,6 @@ LoginWidget::LoginWidget(AppController *controller, QWidget *parent) :
     ui(new Ui::LoginWidget),
     controller(controller)
 {
-    setWindowFlags( Qt::CustomizeWindowHint | Qt::WindowCloseButtonHint );
-
     ui->setupUi(this);
     connect(controller->api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
     connect(controller->api, SIGNAL(onLogin()), this, SLOT(onLogin()));
@@ -50,4 +48,14 @@ void LoginWidget::onLoginFailure(QString error)
 void LoginWidget::onLogin()
 {
     controller->onLogin();
+}
+
+void LoginWidget::on_loginUsernameInput_returnPressed()
+{
+    on_loginButton_clicked();
+}
+
+void LoginWidget::on_loginPasswordInput_returnPressed()
+{
+    on_loginButton_clicked();
 }

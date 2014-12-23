@@ -25,11 +25,12 @@ private:
     void setStatus(QString status, bool disable);
 
 private slots:
-    void on_loginButton_clicked();
-
     void onLoginFailure(QString);
     void onLogin();
 
+    void on_loginButton_clicked();
+    void on_loginUsernameInput_returnPressed();
+    void on_loginPasswordInput_returnPressed();
 };
 
 #endif // LOGINWIDGET_H

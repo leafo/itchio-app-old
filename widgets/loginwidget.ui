@@ -312,6 +312,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>loginUsernameInput</tabstop>
+  <tabstop>loginPasswordInput</tabstop>
+  <tabstop>loginButton</tabstop>
+ </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>

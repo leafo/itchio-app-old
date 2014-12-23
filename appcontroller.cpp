@@ -2,6 +2,7 @@
 #include "appcontroller.h"
 #include "appwindow.h"
 #include "widgets/loginwidget.h"
+#include "widgets/librarywidget.h"
 
 //TODO: Minimizing to tray and restoring the window multiple times, after moving it for the first time and while not maximized, cause the window to move if taskbars are present. Cause not known.
 
@@ -82,4 +83,5 @@ void AppController::showAppWindow()
 void AppController::onLogin()
 {
     appWindow->loginWidget->deleteLater();
+    appWindow->setupLibrary();
 }

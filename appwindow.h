@@ -12,6 +12,7 @@
 #include "appcontroller.h"
 
 class LoginWidget;
+class LibraryWidget;
 
 namespace Ui
 {
@@ -27,6 +28,11 @@ public:
     ~AppWindow();
 
     LoginWidget* loginWidget;
+    LibraryWidget* libraryWidget;
+
+    void setupSizeGrip();
+    void setupLogin();
+    void setupLibrary();
 
 private:
     void closeEvent(QCloseEvent *event);
@@ -49,6 +55,8 @@ private:
     int dragClickX;
     int dragClickY;
     QObject* firstClicked = NULL;
+
+    QSize loginToLibrarySizeDiference;
 
     QSizeGrip* sizeGrip;
     QWidget* topBar;
