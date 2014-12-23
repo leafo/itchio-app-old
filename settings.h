@@ -3,7 +3,8 @@
 
 enum Settings {
     API_KEY = 0,
-    USERNAME = 1
+    API_URL = 1,
+    USERNAME = 2,
 };
 
 

@@ -16,7 +16,7 @@ class ItchioApi : public QObject
     Q_OBJECT
 
 public:
-    explicit ItchioApi(QObject* parent = 0);
+    explicit ItchioApi(QObject* parent, QString apiUrl);
     void request(QString path, const char* slot);
     void loginWithPassword(QString username, QString password);
     void loginWithApiKey(QString apiKey);
@@ -30,6 +30,7 @@ public:
     int userId;
 
     static const char* USER_AGENT;
+    static const char* DEFAULT_API_URL;
 
 private:
     QString base;

@@ -16,8 +16,8 @@ public:
 
     QString loadSetting(Settings setting);
     void saveSetting(Settings setting, QVariant data);
-
     QString settingName(Settings setting);
+    QString settingDefault(Settings setting);
 };
 
 #endif // SETTINGS_H

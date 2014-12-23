@@ -5,12 +5,13 @@
 #include <QUrlQuery>
 
 const char* ItchioApi::USER_AGENT =  "itch.io app 0.0";
+const char* ItchioApi::DEFAULT_API_URL = "https://itch.io/api/1";
 
-ItchioApi::ItchioApi(QObject *parent) :
+ItchioApi::ItchioApi(QObject *parent, QString apiUrl) :
     QObject(parent)
 {
     networkManager = new QNetworkAccessManager(this);
-    base = "https://itch.io/api/1";
+    base = apiUrl;
 }
 
 void ItchioApi::loginWithPassword(QString username, QString password)
@@ -37,7 +38,6 @@ void ItchioApi::loginWithPassword(QString username, QString password)
 }
 
 void ItchioApi::loginWithApiKey(QString apiKey) {
-    qDebug() << "login with api key";
     userKey = apiKey;
     request("me", SLOT(getLoginRequest()));
 }

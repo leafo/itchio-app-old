@@ -10,9 +10,12 @@
 AppController::AppController(QObject *parent) :
     QObject(parent)
 {
-    api = new ItchioApi(this);
-
     setupSettings();
+    api = new ItchioApi(this, settings->loadSetting(API_URL));
+
+    if(settings->loadSetting(API_KEY) != "") {
+        api->loginWithApiKey(settings->loadSetting(API_KEY));
+    }
 
     showTrayIcon();
     showAppWindow();
@@ -22,10 +25,6 @@ void AppController::setupSettings()
 {
     settingsFile = "settings.scratch";
     settings = new AppSettings(settingsFile, QSettings::IniFormat);
-
-    if(settings->loadSetting(API_KEY) != "") {
-        api->loginWithApiKey(settings->loadSetting(API_KEY));
-    }
 }
 
 void AppController::hide()
