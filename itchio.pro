@@ -17,13 +17,15 @@ SOURCES += main.cpp \
     appcontroller.cpp \
     appsettings.cpp \
     appwindow.cpp \
+	secondarywindow.cpp \
     widgets/loginwidget.cpp \
     widgets/librarywidget.cpp \
+	widgets/secondary/settingswidget.cpp \
     objects/game.cpp \
     gamerow.cpp \
     objects/user.cpp \
     objects/downloadkey.cpp \
-    objects/upload.cpp
+	objects/upload.cpp
 
 
 HEADERS += itchioapi.h \
@@ -32,18 +34,22 @@ HEADERS += itchioapi.h \
     appcontroller.h \
     appsettings.h \
     appwindow.h \
+	secondarywindow.h \
     widgets/loginwidget.h \
     widgets/librarywidget.h \
+	widgets/secondary/settingswidget.h \
     objects/game.h \
     gamerow.h \
     objects/user.h \
     objects/downloadkey.h \
-    objects/upload.h
+	objects/upload.h
 
 
 FORMS += appwindow.ui \
     widgets/loginwidget.ui \
-    widgets/librarywidget.ui
+    widgets/librarywidget.ui \
+    secondarywindow.ui \
+    widgets/secondary/settingswidget.ui
 
 RESOURCES += \
     resources.qrc \

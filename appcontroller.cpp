@@ -1,9 +1,10 @@
 #include <QDebug>
 #include "appcontroller.h"
 #include "appwindow.h"
-
+#include "secondarywindow.h"
 #include "widgets/loginwidget.h"
 #include "widgets/librarywidget.h"
+#include "widgets/secondary/settingswidget.h"
 
 //TODO: Minimizing to tray and restoring the window multiple times, after moving it for the first time and while not maximized, cause the window to move if taskbars are present. Cause not known.
 
@@ -87,9 +88,11 @@ void AppController::showTrayIconNotification(TrayNotifications notification, int
 void AppController::showAppWindow()
 {
     appWindow = new AppWindow(this);
-    appWindow->setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
     appWindow->show();
+
+    secondaryWindows.append(new SecondaryWindow(new SettingsWidget(this), this));
+    secondaryWindows.value(0)->show();
 }
 
 void AppController::onLogin()

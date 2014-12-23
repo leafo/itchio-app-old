@@ -12,6 +12,7 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     firstClicked(NULL)
 {
     setWindowFlags( Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
+    setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
     ui->setupUi(this);
 
@@ -118,14 +119,14 @@ void AppWindow::setupLibrary()
 
 void AppWindow::onWidgetChange(QWidget* newWidget)
 {
-    newWidgetSizeDiference = size() - minimumSize();
+    newWidgetSizeDiference = newWidget->minimumSize() - size();
 
     if(width() < newWidget->minimumWidth()) {
-        setGeometry(x() - newWidgetSizeDiference.width(), y(), width(), newWidget->minimumHeight());
+        setGeometry(x() - newWidgetSizeDiference.width()/2, y(), width(), newWidget->minimumHeight());
     }
 
     if(height() < newWidget->minimumHeight()) {
-        setGeometry(x(), y() - newWidgetSizeDiference.height(), width(), newWidget->minimumHeight());
+        setGeometry(x(), y() - newWidgetSizeDiference.height()/2, width(), newWidget->minimumHeight());
     }
 
     sizeGrip->raise();

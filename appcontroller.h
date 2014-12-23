@@ -9,6 +9,7 @@
 #include <QIcon>
 #include <QAction>
 #include <QSettings>
+#include <QVector>
 
 #include "itchioapi.h"
 #include "traynotifications.h"
@@ -16,6 +17,7 @@
 #include "appsettings.h"
 
 class AppWindow;
+class SecondaryWindow;
 
 class AppController : public QObject
 {
@@ -40,6 +42,7 @@ private:
     QAction* actionQuit;
 
     AppWindow* appWindow;
+    QVector<SecondaryWindow*> secondaryWindows;
 
     QSystemTrayIcon* trayIcon;
     QMenu* trayIconMenu;
