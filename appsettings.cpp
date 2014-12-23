@@ -15,13 +15,13 @@ AppSettings::~AppSettings()
 
 QString AppSettings::loadSettings(Settings setting)
 {
-    switch(setting){
-        case API_KEY:
-            return value("API_KEY", "").toString();
-            break;
-        case USERNAME:
-            return value("USERNAME", "").toString();
-            break;
+    switch(setting) {
+    case API_KEY:
+        return value("API_KEY", "").toString();
+        break;
+    case USERNAME:
+        return value("USERNAME", "").toString();
+        break;
     }
 
     return "";
@@ -29,12 +29,12 @@ QString AppSettings::loadSettings(Settings setting)
 
 void AppSettings::saveSettings(Settings setting, QVariant data)
 {
-    switch(setting){
-        case API_KEY:
-            setValue("API_KEY", data);
-            break;
-        case USERNAME:
-            setValue("USERNAME", data);
-            break;
+    switch(setting) {
+    case API_KEY:
+        setValue("API_KEY", data);
+        break;
+    case USERNAME:
+        setValue("USERNAME", data);
+        break;
     }
 }

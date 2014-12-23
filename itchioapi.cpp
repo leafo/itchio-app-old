@@ -23,16 +23,13 @@ void ItchioApi::login(QString username, QString password, QString apikey)
     QUrlQuery params;
     QNetworkRequest request;
 
-    if(userKey == "")
-    {
+    if(userKey == "") {
         params.addQueryItem("username", username);
         params.addQueryItem("password", password);
         params.addQueryItem("source", "desktop");
 
         request.setUrl(QUrl(base + "/login"));
-    }
-    else
-    {
+    } else {
         params.addQueryItem("", userKey);
 
         request.setUrl(QUrl(base + "/" + userKey + "/me"));
@@ -120,16 +117,18 @@ void ItchioApi::getLoginRequest()
     if (!errors.isNull()) {
         QString error = errors.toArray()[0].toString();
 
-        if(error == "invalid key") onLoginByKeyFailure();
-        else onLoginFailure(error);
+        if(error == "invalid key") {
+            onLoginByKeyFailure();
+        } else {
+            onLoginFailure(error);
+        }
 
         return;
     }
 
     QJsonValue keyValue;
 
-    if(userKey == "")
-    {
+    if(userKey == "") {
         keyValue = res.object()["key"];
 
         if (!keyValue.isNull()) {
@@ -141,9 +140,7 @@ void ItchioApi::getLoginRequest()
             onLogin();
             return;
         }
-    }
-    else
-    {
+    } else {
         keyValue = res.object()["user"];
 
         if (!keyValue.isNull()) {

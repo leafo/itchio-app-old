@@ -23,7 +23,9 @@ void AppController::setupSettings()
     settingsFile = "settings.scratch";
     settings = new AppSettings(settingsFile, QSettings::IniFormat);
 
-    if(settings->loadSettings(API_KEY) != "") api->login("hue", "hue", settings->loadSettings(API_KEY));
+    if(settings->loadSettings(API_KEY) != "") {
+        api->login("hue", "hue", settings->loadSettings(API_KEY));
+    }
 }
 
 void AppController::hide()
@@ -75,11 +77,10 @@ void AppController::showTrayIcon()
 void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
 {
     if(trayIcon->supportsMessages()) {
-        switch(notification)
-        {
-            case NOTIFICATION_TEST:
-                trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
-                break;
+        switch(notification) {
+        case NOTIFICATION_TEST:
+            trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
+            break;
         }
     }
 }
