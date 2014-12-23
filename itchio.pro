@@ -15,10 +15,10 @@ TEMPLATE = app
 SOURCES += main.cpp \
     itchioapi.cpp \
     appcontroller.cpp \
-	appsettings.cpp \
+    appsettings.cpp \
     appwindow.cpp \
     widgets/loginwidget.cpp \
-	widgets/librarywidget.cpp \
+    widgets/librarywidget.cpp \
     objects/game.cpp \
     gamerow.cpp \
     objects/user.cpp \
@@ -27,15 +27,15 @@ SOURCES += main.cpp \
 
 
 HEADERS += itchioapi.h \
-	traynotifications.h \
-	settings.h \
+    traynotifications.h \
+    settings.h \
     appcontroller.h \
-	appsettings.h \
+    appsettings.h \
     appwindow.h \
     widgets/loginwidget.h \
-	widgets/librarywidget.h \
+    widgets/librarywidget.h \
     objects/game.h \
-	gamerow.h \
+    gamerow.h \
     objects/user.h \
     objects/downloadkey.h \
     objects/upload.h
@@ -44,7 +44,6 @@ HEADERS += itchioapi.h \
 FORMS += appwindow.ui \
     widgets/loginwidget.ui \
     widgets/librarywidget.ui
-
 
 RESOURCES += \
     resources.qrc \
