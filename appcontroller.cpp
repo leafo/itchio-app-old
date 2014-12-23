@@ -24,7 +24,7 @@ void AppController::setupSettings()
     settings = new AppSettings(settingsFile, QSettings::IniFormat);
 
     if(settings->loadSetting(API_KEY) != "") {
-        api->login("hue", "hue", settings->loadSetting(API_KEY));
+        api->loginWithApiKey(settings->loadSetting(API_KEY));
     }
 }
 

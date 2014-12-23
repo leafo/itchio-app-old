@@ -39,7 +39,7 @@ void LoginWidget::onLoginTentative()
     }
 
     setStatus("Logging in...", true);
-    controller->api->login(username, password);
+    controller->api->loginWithPassword(username, password);
 }
 
 void LoginWidget::onLoginFailure(QString error)

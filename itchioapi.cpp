@@ -13,33 +13,33 @@ ItchioApi::ItchioApi(QObject *parent) :
     base = "https://itch.io/api/1";
 }
 
-void ItchioApi::login(QString username, QString password, QString apikey)
+void ItchioApi::loginWithPassword(QString username, QString password)
 {
     userName = username;
-    userKey = apikey;
 
     QUrlQuery params;
     QNetworkRequest request;
 
-    if(userKey == "") {
-        params.addQueryItem("username", username);
-        params.addQueryItem("password", password);
-        params.addQueryItem("source", "desktop");
+    params.addQueryItem("username", username);
+    params.addQueryItem("password", password);
+    params.addQueryItem("source", "desktop");
 
-        request.setUrl(QUrl(base + "/login"));
-    } else {
-        params.addQueryItem("", userKey);
-
-        request.setUrl(QUrl(base + "/" + userKey + "/me"));
-    }
+    request.setUrl(QUrl(base + "/login"));
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     request.setHeader(QNetworkRequest::UserAgentHeader, USER_AGENT);
 
     QByteArray paramBytes;
     paramBytes.append(params.toString());
+
     QNetworkReply* reply = networkManager->post(request, paramBytes);
     connect(reply, SIGNAL(finished()), this, SLOT(getLoginRequest()));
+}
+
+void ItchioApi::loginWithApiKey(QString apiKey) {
+    qDebug() << "login with api key";
+    userKey = apiKey;
+    request("me", SLOT(getLoginRequest()));
 }
 
 void ItchioApi::myGames()

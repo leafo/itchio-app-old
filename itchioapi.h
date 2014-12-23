@@ -18,7 +18,9 @@ class ItchioApi : public QObject
 public:
     explicit ItchioApi(QObject* parent = 0);
     void request(QString path, const char* slot);
-    void login(QString username, QString password, QString apikey = "");
+    void loginWithPassword(QString username, QString password);
+    void loginWithApiKey(QString apiKey);
+
     void myGames();
     void myOwnedKeys();
     void downloadKeyUploads(DownloadKey key);
