@@ -21,7 +21,8 @@ SOURCES += main.cpp \
 	widgets/librarywidget.cpp \
     objects/game.cpp \
     gamerow.cpp \
-    objects/user.cpp
+    objects/user.cpp \
+    objects/downloadkey.cpp
 
 
 HEADERS += itchioapi.h \
@@ -33,7 +34,8 @@ HEADERS += itchioapi.h \
 	widgets/librarywidget.h \
     objects/game.h \
 	gamerow.h \
-    objects/user.h
+    objects/user.h \
+    objects/downloadkey.h
 
 
 FORMS += appwindow.ui \

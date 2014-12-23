@@ -8,7 +8,7 @@ class Game
 {
 public:
     Game();
-    int id;
+    unsigned int id;
     QString title;
     QString url;
     QString shortText;

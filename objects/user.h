@@ -8,7 +8,7 @@ class User
 public:
     User();
 
-    int id;
+    unsigned int id;
     QString username;
     QString displayName;
     QString url;
