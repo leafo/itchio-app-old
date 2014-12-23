@@ -15,22 +15,25 @@ TEMPLATE = app
 SOURCES += main.cpp \
     itchioapi.cpp \
     appcontroller.cpp \
+	appsettings.cpp \
     appwindow.cpp \
     widgets/loginwidget.cpp \
+	widgets/librarywidget.cpp \
     gameswindow.cpp \
     objects/game.cpp \
     gamerow.cpp \
-    widgets/librarywidget.cpp
 
 
 HEADERS += itchioapi.h \
+	traynotifications.h \
     appcontroller.h \
+	appsettings.h \
     appwindow.h \
     widgets/loginwidget.h \
+	widgets/librarywidget.h \
     gameswindow.h \
     objects/game.h \
-    gamerow.h \
-    widgets/librarywidget.h
+	gamerow.h \
 
 
 FORMS += appwindow.ui \
