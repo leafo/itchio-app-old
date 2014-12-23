@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string notr="true"/>
   </property>
   <layout class="QGridLayout" name="secondaryWindowMainLayout">
    <property name="leftMargin">

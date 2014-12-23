@@ -11,10 +11,12 @@ SecondaryWindow::SecondaryWindow(QWidget* widget, AppController* controller, QWi
     controller(controller),
     firstClicked(NULL)
 {
-    setWindowFlags( Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
+    setWindowFlags(Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
     setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
     ui->setupUi(this);
+
+    setWindowTitle(widget->windowTitle());
 
     topBar = findChild<QWidget*>("topBar");
 
