@@ -8,7 +8,8 @@
 AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     QMainWindow(parent),
     ui(new Ui::AppWindow),
-    controller(controller)
+    controller(controller),
+    firstClicked(NULL)
 {
     setWindowFlags( Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
 
