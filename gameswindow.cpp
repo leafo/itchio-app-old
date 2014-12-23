@@ -5,7 +5,7 @@
 
 #include <QPushButton>
 
-GamesWindow::GamesWindow(AppController *controller, QWidget *parent) :
+GamesWindow::GamesWindow(QWidget *parent, AppController *controller) :
     QMainWindow(parent),
     ui(new Ui::GamesWindow),
     controller(controller)
