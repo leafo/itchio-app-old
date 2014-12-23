@@ -23,7 +23,7 @@ void AppController::setupSettings()
     settingsFile = "settings.scratch";
     settings = new AppSettings(settingsFile, QSettings::IniFormat);
 
-    api->login("hue", "hue", settings->loadSettings(API_KEY));
+    if(settings->loadSettings(API_KEY) != "") api->login("hue", "hue", settings->loadSettings(API_KEY));
 }
 
 void AppController::hide()
