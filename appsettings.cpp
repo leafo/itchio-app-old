@@ -41,7 +41,7 @@ QString AppSettings::settingName(Settings setting)
 
 QString AppSettings::settingDefault(Settings setting)
 {
-    if (setting = API_URL) {
+    if (setting == API_URL) {
         return ItchioApi::DEFAULT_API_URL;
     }
 
