@@ -15,7 +15,7 @@ class LibraryWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit LibraryWidget(AppController* controller, QWidget *parent = 0);
+    explicit LibraryWidget(QWidget *parent, AppController* controller);
     ~LibraryWidget();
 
 private:

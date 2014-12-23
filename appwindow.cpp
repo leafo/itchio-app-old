@@ -99,7 +99,7 @@ void AppWindow::setupSizeGrip()
 
 void AppWindow::setupLogin()
 {
-    loginWidget = new LoginWidget(controller, this);
+    loginWidget = new LoginWidget(this, controller);
     widgetsLayout->addWidget(loginWidget);
     loginWidget->show();
     sizeGrip->raise();
@@ -107,7 +107,7 @@ void AppWindow::setupLogin()
 
 void AppWindow::setupLibrary()
 {
-    libraryWidget = new LibraryWidget(controller, this);
+    libraryWidget = new LibraryWidget(this, controller);
     widgetsLayout->addWidget(libraryWidget);
     libraryWidget->show();
 

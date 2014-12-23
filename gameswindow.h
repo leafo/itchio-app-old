@@ -18,7 +18,7 @@ class GamesWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit GamesWindow(AppController* controller, QWidget *parent = 0);
+    explicit GamesWindow(QWidget *parent, AppController* controller);
     ~GamesWindow();
 
 public slots:
