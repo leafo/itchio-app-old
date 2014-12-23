@@ -23,8 +23,8 @@ void AppController::setupSettings()
     settingsFile = "settings.scratch";
     settings = new AppSettings(settingsFile, QSettings::IniFormat);
 
-    if(settings->loadSettings(API_KEY) != "") {
-        api->login("hue", "hue", settings->loadSettings(API_KEY));
+    if(settings->loadSetting(API_KEY) != "") {
+        api->login("hue", "hue", settings->loadSetting(API_KEY));
     }
 }
 
@@ -95,8 +95,8 @@ void AppController::showAppWindow()
 
 void AppController::onLogin()
 {
-    settings->saveSettings(API_KEY, api->userKey);
-    settings->saveSettings(USERNAME, api->userName);
+    settings->saveSetting(API_KEY, api->userKey);
+    settings->saveSetting(USERNAME, api->userName);
 
     appWindow->loginWidget->hide();
     appWindow->loginWidget->deleteLater();

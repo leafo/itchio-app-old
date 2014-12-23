@@ -14,9 +14,10 @@ public:
     AppSettings(const QString & fileName, Format format, QWidget* parent = 0);
     ~AppSettings();
 
-    QString loadSettings(Settings setting);
-    void saveSettings(Settings setting, QVariant data);
+    QString loadSetting(Settings setting);
+    void saveSetting(Settings setting, QVariant data);
 
+    QString settingName(Settings setting);
 };
 
 #endif // SETTINGS_H
