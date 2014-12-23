@@ -1,31 +1,33 @@
 #include <QDebug>
 #include "appcontroller.h"
-#include "gameswindow.h"
-#include "logindialog.h"
+#include "appwindow.h"
+#include "widgets/loginwidget.h"
+#include "widgets/librarywidget.h"
+
+//TODO: Minimizing to tray and restoring the window multiple times, after moving it for the first time and while not maximized, cause the window to move if taskbars are present. Cause not known.
 
 AppController::AppController(QObject *parent) :
     QObject(parent)
 {
     api = new ItchioApi(this);
 
-    showLogin();
     showTrayIcon();
+    showAppWindow();
 }
 
 void AppController::hide()
 {
-    activeWindow->showMinimized();
+    appWindow->showMinimized();
 
-    activeWindow->setWindowFlags(activeWindow->windowFlags() ^ QFlag(8));
+    appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
 }
 
 void AppController::show()
 {
-    activeWindow->setWindowFlags(activeWindow->windowFlags() ^ QFlag(8));
+    appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
 
-    QApplication::setActiveWindow(activeWindow);
-    activeWindow->show();
-    activeWindow->setWindowState(Qt::WindowActive);
+    appWindow->show();
+    appWindow->setWindowState((appWindow->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
 }
 
 void AppController::quit()
@@ -33,10 +35,10 @@ void AppController::quit()
     QCoreApplication::exit();
 }
 
-void AppController::trayIconDoubleLeftClick(QSystemTrayIcon::ActivationReason reason)
+void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
 {
     if(reason == QSystemTrayIcon::DoubleClick
-            && !activeWindow->isVisible()) {
+            && !appWindow->isVisible()) {
         show();
     }
 }
@@ -50,7 +52,7 @@ void AppController::showTrayIcon()
 
     connect (actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
     connect (trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-             this, SLOT(trayIconDoubleLeftClick(QSystemTrayIcon::ActivationReason)));
+             this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
 
     trayIconMenu->addAction (actionQuit);
 
@@ -70,18 +72,16 @@ void AppController::showTrayIconNotification(TrayNotifications notification, int
     }
 }
 
-void AppController::showLogin()
+void AppController::showAppWindow()
 {
-    loginDialog = new LoginDialog(this);
-    activeWindow = loginDialog;
-    loginDialog->show();
+    appWindow = new AppWindow(this);
+    appWindow->setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
+
+    appWindow->show();
 }
 
-void AppController::showGames()
+void AppController::onLogin()
 {
-    loginDialog->hide();
-
-    gamesWindow = new GamesWindow(this);
-    activeWindow = gamesWindow;
-    gamesWindow->show();
+    appWindow->loginWidget->deleteLater();
+    appWindow->setupLibrary();
 }

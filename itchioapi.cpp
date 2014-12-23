@@ -8,7 +8,7 @@ ItchioApi::ItchioApi(QObject *parent) :
     QObject(parent)
 {
     networkManager = new QNetworkAccessManager(this);
-    base = "http://itch.io/api/1";
+    base = "https://itch.io/api/1";
 
     // connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getMyGames(QNetworkReply*)));
     // networkManager->get(QNetworkRequest(QUrl(base + "/" + apiKey + "/my-games")));
@@ -75,7 +75,7 @@ void ItchioApi::getMyPurchasesRequest()
     QList<Game> gameList;
     foreach (const QJsonValue& gameValue, games.toArray()) {
         QJsonObject gameObject = gameValue.toObject();
-        gameList << Game::fromJson(gameObject["game"].toObject());
+        //gameList << Game::fromJson(gameObject["game"].toObject());
     }
 
     onMyPurchases(gameList);

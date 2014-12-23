@@ -1,9 +1,16 @@
 
-LoginDialog, GamesWindow {
+AppWindow
+{
     background: #222;
 }
 
-QPushButton {
+#topBar
+{
+    background-color: #333;
+}
+
+QPushButton
+{
         border-radius: 1px;
         border: 0;
         text-align: center;
@@ -15,101 +22,138 @@ QPushButton {
         color: white;
 }
 
-QLineEdit {
+QPushButton:focus:!pressed
+{
+    background: #fa6666;
+    outline: 0;
+}
+
+QPushButton:hover:!pressed
+{
+    background: #fa6666;
+}
+
+QPushButton:pressed
+{
+    background: #e44949
+}
+
+QLineEdit
+{
         border: 2px solid #dadada;
         border-radius: 2px;
         color: #333;
         background: white;
 }
 
-QLabel {
+QLabel
+{
         color: white;
 }
 
 
-#myPurchasesScroller {
+#myPurchasesScroller
+{
     border: 2px solid #555;
 }
 
-#myPurchasesScroller #scrollWrapper {
+#myPurchasesScroller #scrollWrapper
+{
     background-color: #333;
 }
 
-#myPurchasesScroller #imageHolder {
+#myPurchasesScroller #imageHolder
+{
     border: 1px solid #222;
     border-radius: 2px;
     background-color: rgba(0,0,0,0.1);
 }
 
-#myGameScroller {
+#myGameScroller
+{
     border: 2px solid #555;
 }
 
-#myGameScroller #scrollWrapper {
+#myGameScroller #scrollWrapper
+{
     background-color: #333;
 }
 
-#myGameScroller #imageHolder {
+#myGameScroller #imageHolder
+{
     border: 1px solid #222;
     border-radius: 2px;
     background-color: rgba(1,0,0,0.1);
 }
 
-QScrollBar:vertical {
+QScrollBar:vertical
+{
     border: 0;
     background: rgba(51,51,51,0);
     width: 7px;
     margin: 0
 }
 
-QScrollBar::handle:vertical {
+QScrollBar::handle:vertical
+{
     background: rgba(170, 170, 170, 0.5);
     min-height: 20px;
 }
 
 /* above */
-QScrollBar::add-line:vertical {
+QScrollBar::add-line:vertical
+{
     height: 0;
     subcontrol-position: bottom;
     subcontrol-origin: margin;
 }
 
 /* below */
-QScrollBar::sub-line:vertical {
+QScrollBar::sub-line:vertical
+{
     height: 0;
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
 
-QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+{
     width: 0;
     height: 0;
 }
 
-QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+{
     background: none;
 }
 
-QTabWidget::pane {
+QTabWidget::pane
+{
     background-color: #EA4C4C;
 }
 
-QTabBar::tab {
+QTabBar::tab
+{
     background: #FA5C5C;
     color: white;
 }
 
-QTabBar::tab:!selected {
+QTabBar::tab:!selected
+{
     background: #DA3C3C;
 }
 
-QTabWidget::tab-bar {
+QTabWidget::tab-bar
+{
     left: 10px;
 }
 
-#tab {
+#tab
+{
     background-color: #333;
 }
-#tab_2 {
+
+#tab_2
+{
     background-color: #333;
 }

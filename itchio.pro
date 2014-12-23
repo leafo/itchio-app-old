@@ -12,30 +12,42 @@ TARGET = itchio
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        gameswindow.cpp \
-    logindialog.cpp \
+SOURCES += main.cpp \
     itchioapi.cpp \
     appcontroller.cpp \
+	appsettings.cpp \
+    appwindow.cpp \
+    widgets/loginwidget.cpp \
+	widgets/librarywidget.cpp \
+    gameswindow.cpp \
     objects/game.cpp \
-    gamerow.cpp
+    gamerow.cpp \
 
-HEADERS  += gameswindow.h \
-    logindialog.h \
-    itchioapi.h \
+
+HEADERS += itchioapi.h \
+	traynotifications.h \
     appcontroller.h \
+	appsettings.h \
+    appwindow.h \
+    widgets/loginwidget.h \
+	widgets/librarywidget.h \
+    gameswindow.h \
     objects/game.h \
-    gamerow.h \
-    traynotifications.h
+	gamerow.h \
 
-FORMS    += gameswindow.ui \
-    logindialog.ui
+
+FORMS += appwindow.ui \
+    gameswindow.ui \
+    widgets/loginwidget.ui \
+    widgets/librarywidget.ui
+
 
 RESOURCES += \
-    resources.qrc
+    resources.qrc \
 
-# CONFIG += link_pkgconfig
-# PKGCONFIG += openssl
+CONFIG += link_pkgconfig
 
-DISTFILES += \
-    stylesheet.qss
+unix:PKGCONFIG += openssl
+
+win32:LIBS += -LC:/OpenSSL-Win32/lib -lubsec
+win32:INCLUDEPATH += C:/OpenSSL-Win32/include
