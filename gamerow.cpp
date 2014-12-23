@@ -5,6 +5,8 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QUrlQuery>
+#include <QMenu>
+#include <QAction>
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -14,12 +16,20 @@
 
 int GameRow::COVER_HEIGHT = 80;
 
-GameRow::GameRow(QWidget *parent, Game game) :
+GameRow::GameRow(QWidget *parent, Game game, DownloadKey key, AppController* controller) :
     QWidget(parent),
-    game(game)
+    game(game),
+    downloadKey(key),
+    controller(controller)
 {
     QHBoxLayout* rowLayout = new QHBoxLayout;
     downloadButton = new QPushButton("Download");
+
+    downloadMenu = new QMenu("Choose download");
+    downloadButton->setMenu(downloadMenu);
+    connect(downloadMenu, SIGNAL(aboutToShow()), SLOT(onTriggerMenu()));
+    connect(controller->api, SIGNAL(onDownloadKeyUploads(DownloadKey,QList<Upload>)),
+            SLOT(onDownloadKeyUploads(DownloadKey,QList<Upload>)));
 
     imageHolder = new QLabel();
     double ratio = double(Game::COVER_WIDTH) / Game::COVER_HEIGHT;
@@ -34,12 +44,20 @@ GameRow::GameRow(QWidget *parent, Game game) :
     downloadProgress->setMaximum(100);
 
     rowLayout->addWidget(imageHolder);
-    rowLayout->addWidget(new QLabel(game.title), 1);
+
+
+    QWidget* infoWidget = new QWidget();
+    QVBoxLayout* infoWidgetLayout = new QVBoxLayout();
+    infoWidgetLayout->addWidget(new QLabel(game.title));
+    infoWidgetLayout->addWidget(new QLabel(game.user.nameForDisplay()));
+    infoWidget->setLayout(infoWidgetLayout);
+
+    rowLayout->addWidget(infoWidget, 1);
     rowLayout->addWidget(downloadButton, 0);
 
     setLayout(rowLayout);
 
-    connect(downloadButton, SIGNAL(clicked()), SLOT(onClickDownload()));
+    // connect(downloadButton, SIGNAL(clicked()), SLOT(onClickDownload()));
 
     refreshThumbnail();
 }
@@ -72,6 +90,36 @@ void GameRow::onDownloadThumbnail()
     QPixmap pixmap;
     if (pixmap.loadFromData(imageData)) {
         imageHolder->setPixmap(pixmap);
+    }
+}
+
+void GameRow::onTriggerMenu()
+{
+    downloadMenu->clear();
+    QAction* loaderAction = new QAction("Loading...", downloadMenu);
+    loaderAction->setDisabled(true);
+    downloadMenu->addAction(loaderAction);
+    controller->api->downloadKeyUploads(downloadKey);
+}
+
+void GameRow::onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads)
+{
+    // need to pass correct download key first
+    // if (key.id != downloadKey.id) {
+    //     return;
+    // }
+
+    downloadMenu->clear();
+
+    if (uploads.count() == 0) {
+        QAction* loaderAction = new QAction("No files", downloadMenu);
+        loaderAction->setDisabled(true);
+        downloadMenu->addAction(loaderAction);
+        return;
+    }
+
+    foreach (Upload upload, uploads) {
+        downloadMenu->addAction(new QAction(upload.filename, downloadMenu));
     }
 }
 

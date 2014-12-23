@@ -53,35 +53,17 @@ QLabel
         color: white;
 }
 
-
-#myPurchasesScroller
+LibraryWidget #gamesScroller
 {
     border: 2px solid #555;
 }
 
-#myPurchasesScroller #scrollWrapper
+LibraryWidget #scrollWrapper
 {
     background-color: #333;
 }
 
-#myPurchasesScroller #imageHolder
-{
-    border: 1px solid #222;
-    border-radius: 2px;
-    background-color: rgba(0,0,0,0.1);
-}
-
-#myGameScroller
-{
-    border: 2px solid #555;
-}
-
-#myGameScroller #scrollWrapper
-{
-    background-color: #333;
-}
-
-#myGameScroller #imageHolder
+LibraryWidget #imageHolder
 {
     border: 1px solid #222;
     border-radius: 2px;

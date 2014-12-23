@@ -54,7 +54,7 @@ private:
     QPoint oldPosition;
     int dragClickX;
     int dragClickY;
-    QObject* firstClicked = NULL;
+    QObject* firstClicked;
 
     QSize loginToLibrarySizeDiference;
 

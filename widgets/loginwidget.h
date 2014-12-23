@@ -16,7 +16,7 @@ class LoginWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit LoginWidget(AppController* controller, QWidget* parent = 0);
+    explicit LoginWidget(QWidget* parent, AppController* controller);
     ~LoginWidget();
 
 private:

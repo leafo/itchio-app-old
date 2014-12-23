@@ -3,7 +3,7 @@
 
 #include <QtDebug>
 
-LoginWidget::LoginWidget(AppController *controller, QWidget *parent) :
+LoginWidget::LoginWidget(QWidget *parent, AppController *controller) :
     QWidget(parent),
     ui(new Ui::LoginWidget),
     controller(controller)

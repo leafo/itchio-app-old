@@ -50,6 +50,16 @@ void ItchioApi::myGames()
     request("my-games", SLOT(getMyGamesRequest()));
 }
 
+void ItchioApi::myOwnedKeys()
+{
+    request("my-owned-keys", SLOT(getMyOwnedKeys()));
+}
+
+void ItchioApi::downloadKeyUploads(DownloadKey key)
+{
+    request(QString("download-key/%1/uploads").arg(key.id), SLOT(getDownloadKeyUploads()));
+}
+
 void ItchioApi::request(QString path, const char* slot)
 {
     QString url =  base + "/" + userKey + "/" + path;
@@ -73,6 +83,23 @@ void ItchioApi::getMyGamesRequest()
 
     qDebug() << "sending" << gameList.length() << "games";
     onMyGames(gameList);
+}
+
+void ItchioApi::getMyOwnedKeys()
+{
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    reply->deleteLater();
+
+    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
+    QJsonValue keys = res.object()["owned_keys"];
+
+    QList<DownloadKey> keyList;
+    foreach (const QJsonValue& keyValue, keys.toArray()) {
+        QJsonObject keyObject = keyValue.toObject();
+        keyList <<  DownloadKey::fromJson(keyObject);
+    }
+
+    onMyOwnedKeys(keyList);
 }
 
 void ItchioApi::getLoginRequest()
@@ -128,5 +155,23 @@ void ItchioApi::getLoginRequest()
             return;
         }
     }
+}
 
+void ItchioApi::getDownloadKeyUploads()
+{
+    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    reply->deleteLater();
+
+    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
+
+
+    QJsonValue uploads = res.object()["uploads"];
+
+    QList<Upload> uploadList;
+    foreach (const QJsonValue& uploadValue, uploads.toArray()) {
+        QJsonObject uploadObject = uploadValue.toObject();
+        uploadList << Upload::fromJson(uploadObject);
+    }
+
+    onDownloadKeyUploads(DownloadKey(), uploadList);
 }

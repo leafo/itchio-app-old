@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "appcontroller.h"
+#include "gamerow.h"
 
 namespace Ui
 {
@@ -15,12 +16,18 @@ class LibraryWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit LibraryWidget(AppController* controller, QWidget *parent = 0);
+    explicit LibraryWidget(QWidget *parent, AppController* controller);
     ~LibraryWidget();
+
+
+public slots:
+    void onMyOwnedKeys(QList<DownloadKey> downloadKeys);
 
 private:
     Ui::LibraryWidget *ui;
     AppController* controller;
+
+    void addGamesTab(const QString& title, QList<GameRow *> gameRows);
 };
 
 #endif // LIBRARYWIDGET_H
