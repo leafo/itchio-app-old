@@ -17,6 +17,8 @@ Game Game::fromJson(QJsonObject &object)
     game.title = object["title"].toString();
     game.shortText = object["short_text"].toString();
     game.coverImageUrl = object["cover_url"].toString();
+    QJsonObject userObject =  object["user"].toObject();
+    game.user = User::fromJson(userObject);
 
     return game;
 }

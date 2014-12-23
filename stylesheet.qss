@@ -51,7 +51,6 @@ QLabel
         color: white;
 }
 
-
 LibraryWidget #gamesScroller
 {
     border: 2px solid #555;

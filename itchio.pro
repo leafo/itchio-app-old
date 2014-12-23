@@ -22,6 +22,7 @@ SOURCES += main.cpp \
     gameswindow.cpp \
     objects/game.cpp \
     gamerow.cpp \
+    objects/user.cpp
 
 
 HEADERS += itchioapi.h \
@@ -34,6 +35,7 @@ HEADERS += itchioapi.h \
     gameswindow.h \
     objects/game.h \
 	gamerow.h \
+    objects/user.h
 
 
 FORMS += appwindow.ui \

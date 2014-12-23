@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <QObject>
+#include <objects/user.h>
 
 class Game
 {
@@ -12,6 +13,7 @@ public:
     QString url;
     QString shortText;
     QString coverImageUrl;
+    User user;
 
     static Game fromJson(QJsonObject& object);
 
