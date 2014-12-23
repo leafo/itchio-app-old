@@ -111,6 +111,13 @@ void GameRow::onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads)
 
     downloadMenu->clear();
 
+    if (uploads.count() == 0) {
+        QAction* loaderAction = new QAction("No files", downloadMenu);
+        loaderAction->setDisabled(true);
+        downloadMenu->addAction(loaderAction);
+        return;
+    }
+
     foreach (Upload upload, uploads) {
         downloadMenu->addAction(new QAction(upload.filename, downloadMenu));
     }
