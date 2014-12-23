@@ -14,6 +14,8 @@
 
 #include <QPixmap>
 
+#include "itchioapi.h"
+
 int GameRow::COVER_HEIGHT = 80;
 
 GameRow::GameRow(QWidget *parent, Game game, DownloadKey key, AppController* controller) :
@@ -132,6 +134,11 @@ void GameRow::refreshThumbnail()
     QNetworkAccessManager* networkManager = new QNetworkAccessManager(this);
 
     qDebug() << "Fetching cover" << game.coverImageUrl;
-    QNetworkReply* reply = networkManager->get(QNetworkRequest(QUrl(game.coverImageUrl)));
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(game.coverImageUrl));
+    request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
+
+    QNetworkReply* reply = networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(onDownloadThumbnail()));
 }

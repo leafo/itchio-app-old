@@ -31,10 +31,9 @@ private slots:
     void onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads);
 
 private:
-    AppController* controller;
-
     Game game;
     DownloadKey downloadKey;
+    AppController* controller;
 
     QLabel* imageHolder;
     QProgressBar* downloadProgress;

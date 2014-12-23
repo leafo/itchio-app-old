@@ -27,6 +27,8 @@ public:
     QString userName;
     int userId;
 
+    static const char* USER_AGENT;
+
 private:
     QString base;
     QNetworkAccessManager* networkManager;

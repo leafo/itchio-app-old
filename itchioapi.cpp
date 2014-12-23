@@ -4,15 +4,13 @@
 #include <QJsonArray>
 #include <QUrlQuery>
 
+const char* ItchioApi::USER_AGENT =  "itch.io app 0.0";
+
 ItchioApi::ItchioApi(QObject *parent) :
     QObject(parent)
 {
     networkManager = new QNetworkAccessManager(this);
     base = "https://itch.io/api/1";
-
-    // connect(networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(getMyGames(QNetworkReply*)));
-    // networkManager->get(QNetworkRequest(QUrl(base + "/" + userKey + "/my-games")));
-    // request("my-games", SLOT(getMyGamesRequest()));
 }
 
 void ItchioApi::login(QString username, QString password, QString apikey)
@@ -36,6 +34,8 @@ void ItchioApi::login(QString username, QString password, QString apikey)
     }
 
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setHeader(QNetworkRequest::UserAgentHeader, USER_AGENT);
+
     QByteArray paramBytes;
     paramBytes.append(params.toString());
     QNetworkReply* reply = networkManager->post(request, paramBytes);
@@ -61,7 +61,12 @@ void ItchioApi::request(QString path, const char* slot)
 {
     QString url =  base + "/" + userKey + "/" + path;
     qDebug() << "Requesting URL" << url;
-    QNetworkReply* reply = networkManager->get(QNetworkRequest(QUrl(url)));
+
+    QNetworkRequest request;
+    request.setUrl(QUrl(url));
+    request.setHeader(QNetworkRequest::UserAgentHeader, USER_AGENT);
+
+    QNetworkReply* reply = networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, slot);
 }
 
