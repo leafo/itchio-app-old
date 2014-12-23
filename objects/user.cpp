@@ -6,6 +6,15 @@ User::User()
 {
 }
 
+QString User::nameForDisplay()
+{
+    if (displayName == "") {
+        return username;
+    } else {
+        return displayName;
+    }
+}
+
 User User::fromJson(QJsonObject &object)
 {
     User user;

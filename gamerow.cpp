@@ -34,7 +34,15 @@ GameRow::GameRow(QWidget *parent, Game game) :
     downloadProgress->setMaximum(100);
 
     rowLayout->addWidget(imageHolder);
-    rowLayout->addWidget(new QLabel(game.title), 1);
+
+
+    QWidget* infoWidget = new QWidget();
+    QVBoxLayout* infoWidgetLayout = new QVBoxLayout();
+    infoWidgetLayout->addWidget(new QLabel(game.title));
+    infoWidgetLayout->addWidget(new QLabel(game.user.nameForDisplay()));
+    infoWidget->setLayout(infoWidgetLayout);
+
+    rowLayout->addWidget(infoWidget, 1);
     rowLayout->addWidget(downloadButton, 0);
 
     setLayout(rowLayout);

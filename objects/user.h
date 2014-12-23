@@ -14,6 +14,8 @@ public:
     QString url;
     QString avatarUrl;
 
+    QString nameForDisplay();
+
     static User fromJson(QJsonObject& object);
 };
 
