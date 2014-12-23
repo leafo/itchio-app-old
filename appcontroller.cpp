@@ -1,6 +1,7 @@
 #include <QDebug>
 #include "appcontroller.h"
 #include "appwindow.h"
+
 #include "widgets/loginwidget.h"
 #include "widgets/librarywidget.h"
 
@@ -11,8 +12,18 @@ AppController::AppController(QObject *parent) :
 {
     api = new ItchioApi(this);
 
+    setupSettings();
+
     showTrayIcon();
     showAppWindow();
+}
+
+void AppController::setupSettings()
+{
+    settingsFile = "settings.scratch";
+    settings = new AppSettings(settingsFile, QSettings::IniFormat);
+
+    api->login("hue", "hue", settings->loadSettings(API_KEY));
 }
 
 void AppController::hide()
@@ -64,10 +75,11 @@ void AppController::showTrayIcon()
 void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
 {
     if(trayIcon->supportsMessages()) {
-        switch(notification) {
-        case NOTIFICATION_TEST:
-            trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
-            break;
+        switch(notification)
+        {
+            case NOTIFICATION_TEST:
+                trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
+                break;
         }
     }
 }
@@ -82,6 +94,10 @@ void AppController::showAppWindow()
 
 void AppController::onLogin()
 {
+    settings->saveSettings(API_KEY, api->userKey);
+    settings->saveSettings(USERNAME, api->userName);
+
+    appWindow->loginWidget->hide();
     appWindow->loginWidget->deleteLater();
     appWindow->setupLibrary();
 }
