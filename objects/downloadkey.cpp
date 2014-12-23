@@ -4,7 +4,6 @@ DownloadKey::DownloadKey()
 {
 }
 
-
 DownloadKey DownloadKey::fromJson(QJsonObject &object)
 {
     DownloadKey key;

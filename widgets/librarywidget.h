@@ -4,6 +4,7 @@
 #include <QWidget>
 
 #include "appcontroller.h"
+#include "gamerow.h"
 
 namespace Ui
 {
@@ -26,7 +27,7 @@ private:
     Ui::LibraryWidget *ui;
     AppController* controller;
 
-    void addGamesTab(const QString& title, QList<Game> games);
+    void addGamesTab(const QString& title, QList<GameRow *> gameRows);
 };
 
 #endif // LIBRARYWIDGET_H

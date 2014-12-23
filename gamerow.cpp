@@ -5,6 +5,8 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QUrlQuery>
+#include <QMenu>
+#include <QAction>
 
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -14,12 +16,18 @@
 
 int GameRow::COVER_HEIGHT = 80;
 
-GameRow::GameRow(QWidget *parent, Game game) :
+GameRow::GameRow(QWidget *parent, Game game, DownloadKey key, AppController* controller) :
     QWidget(parent),
-    game(game)
+    game(game),
+    downloadKey(key),
+    controller(controller)
 {
     QHBoxLayout* rowLayout = new QHBoxLayout;
     downloadButton = new QPushButton("Download");
+
+    downloadMenu = new QMenu("Choose download");
+    downloadButton->setMenu(downloadMenu);
+    connect(downloadMenu, SIGNAL(aboutToShow()), SLOT(onTriggerMenu()));
 
     imageHolder = new QLabel();
     double ratio = double(Game::COVER_WIDTH) / Game::COVER_HEIGHT;
@@ -47,7 +55,7 @@ GameRow::GameRow(QWidget *parent, Game game) :
 
     setLayout(rowLayout);
 
-    connect(downloadButton, SIGNAL(clicked()), SLOT(onClickDownload()));
+    // connect(downloadButton, SIGNAL(clicked()), SLOT(onClickDownload()));
 
     refreshThumbnail();
 }
@@ -81,6 +89,15 @@ void GameRow::onDownloadThumbnail()
     if (pixmap.loadFromData(imageData)) {
         imageHolder->setPixmap(pixmap);
     }
+}
+
+void GameRow::onTriggerMenu()
+{
+    downloadMenu->clear();
+    QAction* loaderAction = new QAction("Loading...", downloadMenu);
+    loaderAction->setDisabled(true);
+    downloadMenu->addAction(loaderAction);
+    controller->api->downloadKeyUploads(downloadKey);
 }
 
 void GameRow::refreshThumbnail()

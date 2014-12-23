@@ -3,8 +3,6 @@
 
 #include <QScrollArea>
 
-#include "gamerow.h"
-
 #include <QtDebug>
 
 LibraryWidget::LibraryWidget(QWidget *parent, AppController *controller) :
@@ -20,15 +18,15 @@ LibraryWidget::LibraryWidget(QWidget *parent, AppController *controller) :
 
 void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys)
 {
-    QList<Game> games;
+    QList<GameRow*> gameRows;
     foreach (DownloadKey key, downloadKeys) {
-        games << key.game;
+        gameRows << new GameRow(this, key.game, key, controller);
     }
 
-    addGamesTab("My Purchases", games);
+    addGamesTab("My Purchases", gameRows);
 }
 
-void LibraryWidget::addGamesTab(const QString& title, QList<Game> games)
+void LibraryWidget::addGamesTab(const QString& title, QList<GameRow*> gameRows)
 {
     QScrollArea* scroller = new QScrollArea();
     scroller->setObjectName("gamesScroller");
@@ -37,8 +35,8 @@ void LibraryWidget::addGamesTab(const QString& title, QList<Game> games)
     wrapper->setObjectName("scrollWrapper");
     QVBoxLayout* layout = new QVBoxLayout;
 
-    foreach (Game game, games) {
-        layout->addWidget(new GameRow(NULL, game));
+    foreach (GameRow* row, gameRows) {
+        layout->addWidget(row);
     }
 
     wrapper->setLayout(layout);
