@@ -56,7 +56,4 @@ RESOURCES += \
 
 CONFIG += link_pkgconfig
 
-unix:PKGCONFIG += openssl
-
-win32:LIBS += -LC:/OpenSSL-Win32/lib -lubsec
-win32:INCLUDEPATH += C:/OpenSSL-Win32/include
+PKGCONFIG += openssl
