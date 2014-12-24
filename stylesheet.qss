@@ -1,10 +1,10 @@
 
-AppWindow
+AppWindow, SecondaryWindow
 {
     background: #222;
 }
 
-#topBar
+QMainWindow #topBar
 {
     background-color: #333;
 }

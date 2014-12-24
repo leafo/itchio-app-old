@@ -12,6 +12,7 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     firstClicked(NULL)
 {
     setWindowFlags( Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
+    setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
     ui->setupUi(this);
 
@@ -103,7 +104,8 @@ void AppWindow::setupLogin()
     loginWidget = new LoginWidget(this, controller);
     widgetsLayout->addWidget(loginWidget);
     loginWidget->show();
-    sizeGrip->raise();
+
+    onWidgetChange(loginWidget);
 }
 
 void AppWindow::setupLibrary()
@@ -112,14 +114,19 @@ void AppWindow::setupLibrary()
     widgetsLayout->addWidget(libraryWidget);
     libraryWidget->show();
 
-    loginToLibrarySizeDiference = size() - minimumSize();
+    onWidgetChange(libraryWidget);
+}
 
-    if(width() < libraryWidget->minimumWidth()) {
-        setGeometry(x() - loginToLibrarySizeDiference.width(), y(), width(), libraryWidget->minimumHeight());
+void AppWindow::onWidgetChange(QWidget* newWidget)
+{
+    newWidgetSizeDiference = newWidget->minimumSize() - size();
+
+    if(width() < newWidget->minimumWidth()) {
+        setGeometry(x() - newWidgetSizeDiference.width()/2, y(), width(), newWidget->minimumHeight());
     }
 
-    if(height() < libraryWidget->minimumHeight()) {
-        setGeometry(x(), y() - loginToLibrarySizeDiference.height(), width(), libraryWidget->minimumHeight());
+    if(height() < newWidget->minimumHeight()) {
+        setGeometry(x(), y() - newWidgetSizeDiference.height()/2, width(), newWidget->minimumHeight());
     }
 
     sizeGrip->raise();
