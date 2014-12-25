@@ -97,7 +97,6 @@ void AppWindow::setupSizeGrip()
 {
     sizeGrip = new QSizeGrip(this);
     appWindowLayout->addWidget(sizeGrip, 0, 0, 0, 0, Qt::AlignBottom | Qt::AlignRight);
-    sizeGrip->show();
 }
 
 void AppWindow::setupLogin()
@@ -118,6 +117,7 @@ void AppWindow::setupLibrary()
     libraryWidget = new LibraryWidget(this, controller);
     widgetsLayout->addWidget(libraryWidget);
     libraryWidget->show();
+    sizeGrip->show();
 
     onWidgetChange(libraryWidget);
 }
