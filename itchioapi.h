@@ -16,14 +16,14 @@ class ItchioApi : public QObject
     Q_OBJECT
 
 public:
-    explicit ItchioApi(QObject* parent, QString apiUrl);
-    void request(QString path, const char* slot);
-    void loginWithPassword(QString username, QString password);
-    void loginWithApiKey(QString apiKey);
+    explicit ItchioApi(QObject* const parent, const QString& apiUrl);
+    void request(const QString& path, const char* slot);
+    void loginWithPassword(const QString& username, const QString& password);
+    void loginWithApiKey(const QString& apiKey);
 
     void myGames();
     void myOwnedKeys();
-    void downloadKeyUploads(DownloadKey key);
+    void downloadKeyUploads(const DownloadKey& key);
 
     QString userKey;
     QString userName;
@@ -33,8 +33,8 @@ public:
     static const char* DEFAULT_API_URL;
 
 private:
-    QString base;
-    QNetworkAccessManager* networkManager;
+    const QString base;
+    QNetworkAccessManager* const networkManager;
 
 signals:
     void onLogin();

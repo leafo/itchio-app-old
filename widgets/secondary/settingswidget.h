@@ -17,7 +17,7 @@ class SettingsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit SettingsWidget(AppController* controller, QWidget *parent = 0);
+    explicit SettingsWidget(AppController* const controller, QWidget* const parent = 0);
     ~SettingsWidget();
 
 private slots:
@@ -28,8 +28,8 @@ private slots:
     void on_showTrayNotificationsBox_clicked();
 
 private:
-    Ui::SettingsWidget *ui;
-    AppController* controller;
+    Ui::SettingsWidget* const ui;
+    AppController* const controller;
 
     QCheckBox* keepLoggedInBox;
     QCheckBox* automaticallyCheckForUpdatesBox;

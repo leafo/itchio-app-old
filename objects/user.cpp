@@ -6,7 +6,7 @@ User::User()
 {
 }
 
-QString User::nameForDisplay()
+QString User::nameForDisplay() const
 {
     if (displayName == "") {
         return username;
@@ -15,7 +15,7 @@ QString User::nameForDisplay()
     }
 }
 
-User User::fromJson(QJsonObject &object)
+User User::fromJson(const QJsonObject &object)
 {
     User user;
 

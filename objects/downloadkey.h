@@ -13,7 +13,7 @@ public:
     unsigned int id;
     Game game;
 
-    static DownloadKey fromJson(QJsonObject &object);
+    static DownloadKey fromJson(const QJsonObject &object);
 };
 
 #endif // DOWNLOADKEY_H

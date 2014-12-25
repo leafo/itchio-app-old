@@ -19,21 +19,21 @@ class GameRow : public QWidget
     Q_OBJECT
 
 public:
-    explicit GameRow(QWidget *parent, Game game, DownloadKey key, AppController* controller);
+    explicit GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller);
     ~GameRow();
 
-    static int COVER_HEIGHT;
+    static const int COVER_HEIGHT = 80;
 
 private slots:
     void onClickDownload();
     void onDownloadThumbnail();
     void onTriggerMenu();
-    void onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads);
+    void onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& uploads);
 
 private:
     Game game;
     DownloadKey downloadKey;
-    AppController* controller;
+    AppController* const controller;
 
     QLabel* imageHolder;
     QProgressBar* downloadProgress;
