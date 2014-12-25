@@ -60,7 +60,7 @@
       </spacer>
      </item>
      <item row="4" column="1" colspan="2" alignment="Qt::AlignLeft|Qt::AlignVCenter">
-      <widget class="QCheckBox" name="showNotificationsBox">
+      <widget class="QCheckBox" name="showTrayNotificationsBox">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>

@@ -14,7 +14,7 @@ AppController::AppController(QObject *parent) :
     setupSettings();
     api = new ItchioApi(this, settings->loadSetting(API_URL));
 
-    if(settings->loadSetting(API_KEY) != "") {
+    if(settings->loadSetting(KEEP_LOGGED_IN) == "1" && settings->loadSetting(API_KEY) != "") {
         api->loginWithApiKey(settings->loadSetting(API_KEY));
     }
 
@@ -90,12 +90,18 @@ void AppController::showAppWindow()
     appWindow = new AppWindow(this);
 
     appWindow->show();
+
+    secondaryWindows.append(new SecondaryWindow(new SettingsWidget(this), this));
+    secondaryWindows.value(0)->show();
 }
 
 void AppController::onLogin()
 {
-    settings->saveSetting(API_KEY, api->userKey);
-    settings->saveSetting(USERNAME, api->userName);
+    if(settings->loadSetting((KEEP_LOGGED_IN)) == "1")
+    {
+        settings->saveSetting(API_KEY, api->userKey);
+        settings->saveSetting(USERNAME, api->userName);
+    }
 
     appWindow->loginWidget->hide();
     appWindow->loginWidget->deleteLater();

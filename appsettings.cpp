@@ -16,7 +16,7 @@ AppSettings::~AppSettings()
 }
 
 QString AppSettings::loadSetting(Settings setting)
-{
+{      
     return value(settingName(setting), settingDefault(setting)).toString();
 }
 
@@ -34,6 +34,12 @@ QString AppSettings::settingName(Settings setting)
         return "username";
     case API_URL:
         return "api_url";
+    case KEEP_LOGGED_IN:
+        return "keep_logged_in";
+    case AUTO_UPDATE_CHECK:
+        return "auto_update_check";
+    case SHOW_TRAY_NOTIFICATION:
+        return "display_tray_notifications";
     }
 
     return "";
@@ -41,8 +47,19 @@ QString AppSettings::settingName(Settings setting)
 
 QString AppSettings::settingDefault(Settings setting)
 {
-    if (setting == API_URL) {
+    switch(setting){
+    case API_KEY:
+        return "";
+    case USERNAME:
+        return "";
+    case API_URL:
         return ItchioApi::DEFAULT_API_URL;
+    case KEEP_LOGGED_IN:
+        return "1";
+    case AUTO_UPDATE_CHECK:
+        return "1";
+    case SHOW_TRAY_NOTIFICATION:
+        return "1";
     }
 
     return "";
