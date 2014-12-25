@@ -101,7 +101,7 @@ void AppWindow::setupSizeGrip()
 
 void AppWindow::setupLogin()
 {
-    currentWidget = "login";
+    currentWidget = "Login";
 
     loginWidget = new LoginWidget(this, controller);
     widgetsLayout->addWidget(loginWidget);
@@ -113,7 +113,7 @@ void AppWindow::setupLogin()
 
 void AppWindow::setupLibrary()
 {
-    currentWidget = "library";
+    currentWidget = "Library";
     libraryWidget = new LibraryWidget(this, controller);
     widgetsLayout->addWidget(libraryWidget);
     libraryWidget->show();
@@ -124,6 +124,8 @@ void AppWindow::setupLibrary()
 
 void AppWindow::onWidgetChange(QWidget* newWidget)
 {
+    setWindowTitle(currentWidget + " - itch.io");
+
     newWidgetSizeDiference = newWidget->minimumSize() - size();
 
     if(width() < newWidget->minimumWidth()) {

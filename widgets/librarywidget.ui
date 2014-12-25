@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Library</string>
   </property>
   <layout class="QGridLayout" name="libraryWidgetLayout">
    <property name="leftMargin">

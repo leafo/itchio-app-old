@@ -18,7 +18,7 @@ SecondaryWindow::SecondaryWindow(QWidget* widget, AppController* controller, QWi
 
     ui->setupUi(this);
 
-    setWindowTitle(widget->windowTitle());
+    setWindowTitle(widget->windowTitle() + " - itch.io");
 
     name = widget->objectName();
 
