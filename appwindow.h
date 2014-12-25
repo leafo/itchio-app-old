@@ -34,6 +34,8 @@ public:
     void setupLogin();
     void setupLibrary();
 
+    QString currentWidget;
+
 private:
     void closeEvent(QCloseEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -50,11 +52,12 @@ private:
     Ui::AppWindow* ui;
     AppController* controller;
 
+    QObject* firstClicked;
+
     QSize oldSize;
     QPoint oldPosition;
     int dragClickX;
     int dragClickY;
-    QObject* firstClicked;
 
     QSize newWidgetSizeDiference;
 

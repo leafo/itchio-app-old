@@ -9,6 +9,7 @@ SecondaryWindow::SecondaryWindow(QWidget* widget, AppController* controller, QWi
     QDialog(parent),
     ui(new Ui::SecondaryWindow),
     controller(controller),
+    name(""),
     firstClicked(NULL)
 {
     setWindowFlags(Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
@@ -18,9 +19,15 @@ SecondaryWindow::SecondaryWindow(QWidget* widget, AppController* controller, QWi
 
     setWindowTitle(widget->windowTitle());
 
+    name = widget->objectName();
+
     topBar = findChild<QWidget*>("topBar");
 
     resize(widget->minimumSize());
+
+    widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
+    widgetsLayout->addWidget(widget);
+    widget->show();
 }
 
 SecondaryWindow::~SecondaryWindow()

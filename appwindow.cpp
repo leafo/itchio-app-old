@@ -7,6 +7,7 @@
 
 AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     QMainWindow(parent),
+    currentWidget(""),
     ui(new Ui::AppWindow),
     controller(controller),
     firstClicked(NULL)
@@ -57,7 +58,7 @@ void AppWindow::mouseMoveEvent(QMouseEvent *event)
 
 void AppWindow::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if(childAt(event->x(), event->y()) == topBar) {
+    if(childAt(event->x(), event->y()) == topBar && currentWidget != "login") {
         if(!isMaximized()) {
             maximize();
         } else {
@@ -101,15 +102,19 @@ void AppWindow::setupSizeGrip()
 
 void AppWindow::setupLogin()
 {
+    currentWidget = "login";
+
     loginWidget = new LoginWidget(this, controller);
     widgetsLayout->addWidget(loginWidget);
     loginWidget->show();
 
     onWidgetChange(loginWidget);
+    sizeGrip->hide();
 }
 
 void AppWindow::setupLibrary()
 {
+    currentWidget = "library";
     libraryWidget = new LibraryWidget(this, controller);
     widgetsLayout->addWidget(libraryWidget);
     libraryWidget->show();
