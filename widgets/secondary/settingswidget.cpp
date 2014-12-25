@@ -16,14 +16,19 @@ SettingsWidget::SettingsWidget(AppController *controller, QWidget *parent) :
     automaticallyCheckForUpdatesBox = findChild<QCheckBox*>("automaticallyCheckForUpdatesBox");
     showTrayNotificationsBox = findChild<QCheckBox*>("showTrayNotificationsBox");
 
-    keepLoggedInBox->setChecked(controller->settings->loadSetting(KEEP_LOGGED_IN) == "1");
-    automaticallyCheckForUpdatesBox->setChecked(controller->settings->loadSetting(AUTO_UPDATE_CHECK) == "1");
-    showTrayNotificationsBox->setChecked(controller->settings->loadSetting(SHOW_TRAY_NOTIFICATION) == "1");
+    refresh();
 }
 
 SettingsWidget::~SettingsWidget()
 {
     delete ui;
+}
+
+void SettingsWidget::refresh()
+{
+    keepLoggedInBox->setChecked(controller->settings->loadSetting(KEEP_LOGGED_IN) == "1");
+    automaticallyCheckForUpdatesBox->setChecked(controller->settings->loadSetting(AUTO_UPDATE_CHECK) == "1");
+    showTrayNotificationsBox->setChecked(controller->settings->loadSetting(SHOW_TRAY_NOTIFICATION) == "1");
 }
 
 void SettingsWidget::on_keepLoggedInBox_clicked()

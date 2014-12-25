@@ -21,6 +21,8 @@ public:
     ~SettingsWidget();
 
 private slots:
+    void refresh();
+
     void on_keepLoggedInBox_clicked();
 
     void on_automaticallyCheckForUpdatesBox_clicked();

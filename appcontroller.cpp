@@ -79,15 +79,15 @@ void AppController::showTrayIcon()
     trayIcon = new QSystemTrayIcon(this);
     trayIconMenu = new QMenu();
 
+    actionSettings = new QAction("Settings", this);
+    trayIconMenu->addAction(actionSettings);
+    connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
+
+    trayIconMenu->addSeparator();
+
     actionQuit = new QAction("Quit", this);
     trayIconMenu->addAction(actionQuit);
     connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
-
-
-    actionSettings = new QAction("Settings", this);
-    trayIconMenu->addAction(actionSettings);
-
-    connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
 
 
     connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
