@@ -7,10 +7,11 @@
 
 SecondaryWindow::SecondaryWindow(QWidget* widget, AppController* controller, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::SecondaryWindow),
-    controller(controller),
     name(""),
-    firstClicked(NULL)
+    firstClicked(NULL),
+    ui(new Ui::SecondaryWindow),
+    controller(controller)
+
 {
     setWindowFlags(Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
     setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
