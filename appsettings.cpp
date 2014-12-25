@@ -16,7 +16,7 @@ AppSettings::~AppSettings()
 }
 
 QString AppSettings::loadSetting(Settings setting)
-{      
+{
     return value(settingName(setting), settingDefault(setting)).toString();
 }
 
@@ -47,7 +47,7 @@ QString AppSettings::settingName(Settings setting)
 
 QString AppSettings::settingDefault(Settings setting)
 {
-    switch(setting){
+    switch(setting) {
     case API_KEY:
         return "";
     case USERNAME:

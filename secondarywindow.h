@@ -10,7 +10,8 @@
 
 #include "appcontroller.h"
 
-namespace Ui {
+namespace Ui
+{
 class SecondaryWindow;
 }
 

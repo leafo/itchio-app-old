@@ -7,7 +7,8 @@
 #include "appcontroller.h"
 #include "appsettings.h"
 
-namespace Ui {
+namespace Ui
+{
 class SettingsWidget;
 }
 
