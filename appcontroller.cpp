@@ -46,7 +46,6 @@ void AppController::show()
     appWindow->oldPosition = appWindow->pos();
 
     appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
-
     appWindow->show();
     appWindow->setWindowState((appWindow->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
 }
@@ -54,6 +53,12 @@ void AppController::show()
 void AppController::quit()
 {
     QCoreApplication::exit();
+}
+
+void AppController::showSettings()
+{
+    SecondaryWindow* settingsWindow = new SecondaryWindow(new SettingsWidget(this), this);
+    settingsWindow->show();
 }
 
 void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
@@ -70,12 +75,18 @@ void AppController::showTrayIcon()
     trayIconMenu = new QMenu();
 
     actionQuit = new QAction("Quit", this);
+    trayIconMenu->addAction(actionQuit);
+    connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
 
-    connect (actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
-    connect (trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+
+    actionSettings = new QAction("Settings", this);
+    trayIconMenu->addAction(actionSettings);
+
+    connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
+
+
+    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
              this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
-
-    trayIconMenu->addAction (actionQuit);
 
     trayIcon->setIcon(QIcon(":/images/images/itchio-icon-16.png"));
     trayIcon->setContextMenu (trayIconMenu);
@@ -98,9 +109,6 @@ void AppController::showAppWindow()
     appWindow = new AppWindow(this);
 
     appWindow->show();
-
-    //secondaryWindows.append(new SecondaryWindow(new SettingsWidget(this), this));
-    //secondaryWindows.value(0)->show();
 }
 
 void AppController::onLogin()

@@ -40,21 +40,22 @@ private:
     QString settingsFile;
 
     QAction* actionQuit;
+    QAction* actionSettings;
 
     AppWindow* appWindow;
-    QVector<SecondaryWindow*> secondaryWindows;
 
     QSystemTrayIcon* trayIcon;
     QMenu* trayIconMenu;
 
+    void setupSettings();
+
 signals:
 
 public slots:
-    void setupSettings();
-
     void show();
     void hide();
     void quit();
+    void showSettings();
 
     void trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason);
 
