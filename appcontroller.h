@@ -43,6 +43,7 @@ private:
     QAction* actionSettings;
 
     AppWindow* appWindow;
+    SecondaryWindow* settingsWindow;
 
     QSystemTrayIcon* trayIcon;
     QMenu* trayIconMenu;

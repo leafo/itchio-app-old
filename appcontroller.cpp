@@ -9,7 +9,8 @@
 //TODO: Create custom maximizing pipeline to better handle taskbars.
 
 AppController::AppController(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    settingsWindow(NULL)
 {
     setupSettings();
     api = new ItchioApi(this, settings->loadSetting(API_URL));
@@ -57,8 +58,12 @@ void AppController::quit()
 
 void AppController::showSettings()
 {
-    SecondaryWindow* settingsWindow = new SecondaryWindow(new SettingsWidget(this), this);
+    if (settingsWindow == 0) {
+        settingsWindow = new SecondaryWindow(new SettingsWidget(this), this);
+    }
+
     settingsWindow->show();
+    settingsWindow->raise();
 }
 
 void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
