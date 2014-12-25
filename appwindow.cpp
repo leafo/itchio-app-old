@@ -4,6 +4,9 @@
 #include "widgets/librarywidget.h"
 
 #include <QtDebug>
+#include <QDesktopWidget>
+
+//TODO: QDesktopWidget::​screenNumber might not be working properly. Returns 0 in all screens.
 
 AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     QMainWindow(parent),
@@ -16,6 +19,8 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
     ui->setupUi(this);
+
+    move(QApplication::desktop()->screen(QApplication::desktop()->screenNumber(this))->rect().center() - rect().center());
 
     appWindowLayout = findChild<QGridLayout*>("appWindowLayout");
     widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
@@ -126,14 +131,20 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
 {
     setWindowTitle(currentWidget + " - itch.io");
 
-    newWidgetSizeDiference = newWidget->minimumSize() - size();
+    QSize oldSize = size();
 
-    if(width() < newWidget->minimumWidth()) {
-        setGeometry(x() - newWidgetSizeDiference.width()/2, y(), width(), newWidget->minimumHeight());
+    setMinimumSize(newWidget->minimumSize().width(), newWidget->minimumSize().height() + topBar->height());
+
+    QSize newSize = size();
+
+    if(oldSize.width() < newSize.width())
+    {
+        move(x() + (oldSize.width() - newSize.width())/2, y());
     }
 
-    if(height() < newWidget->minimumHeight()) {
-        setGeometry(x(), y() - newWidgetSizeDiference.height()/2, width(), newWidget->minimumHeight());
+    if(oldSize.height()< newSize.height())
+    {
+        move(x(), y() + (oldSize.height() - newSize.height())/2);
     }
 
     sizeGrip->raise();

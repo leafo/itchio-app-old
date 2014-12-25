@@ -25,6 +25,7 @@ SecondaryWindow::SecondaryWindow(QWidget* widget, AppController* controller, QWi
     topBar = findChild<QWidget*>("topBar");
 
     resize(widget->minimumSize());
+    setMinimumSize(widget->minimumSize().width(), widget->minimumSize().height() + topBar->height());
 
     widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
     widgetsLayout->addWidget(widget);

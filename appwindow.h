@@ -59,8 +59,6 @@ private:
     int dragClickX;
     int dragClickY;
 
-    QSize newWidgetSizeDiference;
-
     QSizeGrip* sizeGrip;
     QWidget* topBar;
     QGridLayout* appWindowLayout;
