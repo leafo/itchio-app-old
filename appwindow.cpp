@@ -20,8 +20,6 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
 
     ui->setupUi(this);
 
-    move(QApplication::desktop()->screen(QApplication::desktop()->screenNumber(this))->rect().center() - rect().center());
-
     appWindowLayout = findChild<QGridLayout*>("appWindowLayout");
     widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
     topBar = findChild<QWidget*>("topBar");
@@ -114,6 +112,8 @@ void AppWindow::setupLogin()
 
     onWidgetChange(loginWidget);
     sizeGrip->hide();
+
+    move(QApplication::desktop()->screen(QApplication::desktop()->screenNumber(this))->rect().center() - rect().center());
 }
 
 void AppWindow::setupLibrary()
@@ -131,20 +131,18 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
 {
     setWindowTitle(currentWidget + " - itch.io");
 
-    QSize oldSize = size();
+    QSize beforeSize = size();
 
     setMinimumSize(newWidget->minimumSize().width(), newWidget->minimumSize().height() + topBar->height());
 
-    QSize newSize = size();
+    QSize afterSize = size();
 
-    if(oldSize.width() < newSize.width())
-    {
-        move(x() + (oldSize.width() - newSize.width())/2, y());
+    if(beforeSize.width() < afterSize.width()) {
+        move(x() + (beforeSize.width() - afterSize.width())/2, y());
     }
 
-    if(oldSize.height()< newSize.height())
-    {
-        move(x(), y() + (oldSize.height() - newSize.height())/2);
+    if(beforeSize.height()< afterSize.height()) {
+        move(x(), y() + (beforeSize.height() - afterSize.height())/2);
     }
 
     sizeGrip->raise();

@@ -36,6 +36,8 @@ public:
 
     QString currentWidget;
 
+    QPoint oldPosition;
+
 private:
     void closeEvent(QCloseEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -55,7 +57,6 @@ private:
     QObject* firstClicked;
 
     QSize oldSize;
-    QPoint oldPosition;
     int dragClickX;
     int dragClickY;
 
