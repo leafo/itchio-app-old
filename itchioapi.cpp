@@ -122,11 +122,7 @@ void ItchioApi::getLoginRequest()
     if (!errors.isNull()) {
         QString error = errors.toArray()[0].toString();
 
-        if(error == "invalid key") {
-            onLoginByKeyFailure();
-        } else {
-            onLoginFailure(error);
-        }
+        onLoginFailure(error);
 
         return;
     }

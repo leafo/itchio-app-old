@@ -29,7 +29,6 @@ private slots:
     void onLoginTentative();
     void onLoginFailure(QString error);
     void onLogin();
-    void onLoginByKeyFailure();
 
     void on_loginButton_clicked();
     void on_loginUsernameInput_returnPressed();
