@@ -34,6 +34,10 @@ public:
     void setupLogin();
     void setupLibrary();
 
+    QString currentWidget;
+
+    QPoint oldPosition;
+
 private:
     void closeEvent(QCloseEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -50,13 +54,11 @@ private:
     Ui::AppWindow* ui;
     AppController* controller;
 
-    QSize oldSize;
-    QPoint oldPosition;
-    int dragClickX;
-    int dragClickY;
     QObject* firstClicked;
 
-    QSize newWidgetSizeDiference;
+    QSize oldSize;
+    int dragClickX;
+    int dragClickY;
 
     QSizeGrip* sizeGrip;
     QWidget* topBar;

@@ -7,20 +7,29 @@
 
 SecondaryWindow::SecondaryWindow(QWidget* widget, AppController* controller, QWidget *parent) :
     QDialog(parent),
+    name(""),
+    firstClicked(NULL),
     ui(new Ui::SecondaryWindow),
-    controller(controller),
-    firstClicked(NULL)
+    controller(controller)
+
 {
     setWindowFlags(Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
     setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
     ui->setupUi(this);
 
-    setWindowTitle(widget->windowTitle());
+    setWindowTitle(widget->windowTitle() + " - itch.io");
+
+    name = widget->objectName();
 
     topBar = findChild<QWidget*>("topBar");
 
     resize(widget->minimumSize());
+    setMinimumSize(widget->minimumSize().width(), widget->minimumSize().height() + topBar->height());
+
+    widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
+    widgetsLayout->addWidget(widget);
+    widget->show();
 }
 
 SecondaryWindow::~SecondaryWindow()

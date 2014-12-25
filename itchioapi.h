@@ -39,7 +39,6 @@ private:
 signals:
     void onLogin();
     void onLoginFailure(QString reason);
-    void onLoginByKeyFailure();
     void onMyGames(QList<Game> games);
     void onMyOwnedKeys(QList<DownloadKey> games);
     void onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads);

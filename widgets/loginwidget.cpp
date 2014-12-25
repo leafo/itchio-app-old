@@ -12,7 +12,6 @@ LoginWidget::LoginWidget(QWidget *parent, AppController *controller) :
 
     connect(controller->api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
     connect(controller->api, SIGNAL(onLogin()), this, SLOT(onLogin()));
-    connect(controller->api, SIGNAL(onLoginByKeyFailure()), this, SLOT(onLoginByKeyFailure()));
 }
 
 LoginWidget::~LoginWidget()
@@ -50,11 +49,6 @@ void LoginWidget::onLoginFailure(QString error)
 void LoginWidget::onLogin()
 {
     controller->onLogin();
-}
-
-void LoginWidget::onLoginByKeyFailure()
-{
-
 }
 
 void LoginWidget::on_loginButton_clicked()

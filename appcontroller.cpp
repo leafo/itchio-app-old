@@ -6,7 +6,7 @@
 #include "widgets/librarywidget.h"
 #include "widgets/secondary/settingswidget.h"
 
-//TODO: Minimizing to tray and restoring the window multiple times, after moving it for the first time and while not maximized, cause the window to move if taskbars are present. Cause not known.
+//TODO: Create custom maximizing pipeline to better handle taskbars.
 
 AppController::AppController(QObject *parent) :
     QObject(parent)
@@ -14,7 +14,7 @@ AppController::AppController(QObject *parent) :
     setupSettings();
     api = new ItchioApi(this, settings->loadSetting(API_URL));
 
-    if(settings->loadSetting(API_KEY) != "") {
+    if(settings->loadSetting(KEEP_LOGGED_IN) == "1" && settings->loadSetting(API_KEY) != "") {
         api->loginWithApiKey(settings->loadSetting(API_KEY));
     }
 
@@ -30,6 +30,11 @@ void AppController::setupSettings()
 
 void AppController::hide()
 {
+    qDebug() << "hide" << appWindow->pos();
+    if(!appWindow->oldPosition.isNull()) {
+        appWindow->move(appWindow->oldPosition);
+    }
+
     appWindow->showMinimized();
 
     appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
@@ -37,6 +42,9 @@ void AppController::hide()
 
 void AppController::show()
 {
+    qDebug() << "show" << appWindow->pos();
+    appWindow->oldPosition = appWindow->pos();
+
     appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
 
     appWindow->show();
@@ -90,12 +98,17 @@ void AppController::showAppWindow()
     appWindow = new AppWindow(this);
 
     appWindow->show();
+
+    //secondaryWindows.append(new SecondaryWindow(new SettingsWidget(this), this));
+    //secondaryWindows.value(0)->show();
 }
 
 void AppController::onLogin()
 {
-    settings->saveSetting(API_KEY, api->userKey);
-    settings->saveSetting(USERNAME, api->userName);
+    if(settings->loadSetting((KEEP_LOGGED_IN)) == "1") {
+        settings->saveSetting(API_KEY, api->userKey);
+        settings->saveSetting(USERNAME, api->userName);
+    }
 
     appWindow->loginWidget->hide();
     appWindow->loginWidget->deleteLater();

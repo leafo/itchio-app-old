@@ -6,10 +6,12 @@
 #include <QSize>
 #include <QWidget>
 #include <QCloseEvent>
+#include <QGridLayout>
 
 #include "appcontroller.h"
 
-namespace Ui {
+namespace Ui
+{
 class SecondaryWindow;
 }
 
@@ -21,6 +23,8 @@ public:
     explicit SecondaryWindow(QWidget* widget, AppController* controller, QWidget* parent = 0);
     ~SecondaryWindow();
 
+    QString name;
+
 private:
     void closeEvent(QCloseEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -28,6 +32,8 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
 
     void closeWindow();
+
+    QObject* firstClicked;
 
     Ui::SecondaryWindow* ui;
     AppController* controller;
@@ -37,9 +43,9 @@ private:
 
     int dragClickX;
     int dragClickY;
-    QObject* firstClicked;
 
     QWidget* topBar;
+    QGridLayout* widgetsLayout;
 
 signals:
 

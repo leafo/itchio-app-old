@@ -4,6 +4,11 @@ AppWindow, SecondaryWindow
     background: #222;
 }
 
+SettingsWidget QCheckBox
+{
+	color: #fff;
+}
+
 QMainWindow #topBar
 {
     background-color: #333;

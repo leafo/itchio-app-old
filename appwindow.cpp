@@ -4,9 +4,13 @@
 #include "widgets/librarywidget.h"
 
 #include <QtDebug>
+#include <QDesktopWidget>
+
+//TODO: QDesktopWidget::​screenNumber might not be working properly. Returns 0 in all screens.
 
 AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     QMainWindow(parent),
+    currentWidget(""),
     ui(new Ui::AppWindow),
     controller(controller),
     firstClicked(NULL)
@@ -57,7 +61,7 @@ void AppWindow::mouseMoveEvent(QMouseEvent *event)
 
 void AppWindow::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if(childAt(event->x(), event->y()) == topBar) {
+    if(childAt(event->x(), event->y()) == topBar && currentWidget != "login") {
         if(!isMaximized()) {
             maximize();
         } else {
@@ -96,37 +100,49 @@ void AppWindow::setupSizeGrip()
 {
     sizeGrip = new QSizeGrip(this);
     appWindowLayout->addWidget(sizeGrip, 0, 0, 0, 0, Qt::AlignBottom | Qt::AlignRight);
-    sizeGrip->show();
 }
 
 void AppWindow::setupLogin()
 {
+    currentWidget = "Login";
+
     loginWidget = new LoginWidget(this, controller);
     widgetsLayout->addWidget(loginWidget);
     loginWidget->show();
 
     onWidgetChange(loginWidget);
+    sizeGrip->hide();
+
+    move(QApplication::desktop()->screen(QApplication::desktop()->screenNumber(this))->rect().center() - rect().center());
 }
 
 void AppWindow::setupLibrary()
 {
+    currentWidget = "Library";
     libraryWidget = new LibraryWidget(this, controller);
     widgetsLayout->addWidget(libraryWidget);
     libraryWidget->show();
+    sizeGrip->show();
 
     onWidgetChange(libraryWidget);
 }
 
 void AppWindow::onWidgetChange(QWidget* newWidget)
 {
-    newWidgetSizeDiference = newWidget->minimumSize() - size();
+    setWindowTitle(currentWidget + " - itch.io");
 
-    if(width() < newWidget->minimumWidth()) {
-        setGeometry(x() - newWidgetSizeDiference.width()/2, y(), width(), newWidget->minimumHeight());
+    QSize beforeSize = size();
+
+    setMinimumSize(newWidget->minimumSize().width(), newWidget->minimumSize().height() + topBar->height());
+
+    QSize afterSize = size();
+
+    if(beforeSize.width() < afterSize.width()) {
+        move(x() + (beforeSize.width() - afterSize.width())/2, y());
     }
 
-    if(height() < newWidget->minimumHeight()) {
-        setGeometry(x(), y() - newWidgetSizeDiference.height()/2, width(), newWidget->minimumHeight());
+    if(beforeSize.height()< afterSize.height()) {
+        move(x(), y() + (beforeSize.height() - afterSize.height())/2);
     }
 
     sizeGrip->raise();

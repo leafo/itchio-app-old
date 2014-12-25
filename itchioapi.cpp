@@ -37,7 +37,8 @@ void ItchioApi::loginWithPassword(QString username, QString password)
     connect(reply, SIGNAL(finished()), this, SLOT(getLoginRequest()));
 }
 
-void ItchioApi::loginWithApiKey(QString apiKey) {
+void ItchioApi::loginWithApiKey(QString apiKey)
+{
     userKey = apiKey;
     request("me", SLOT(getLoginRequest()));
 }
@@ -122,11 +123,7 @@ void ItchioApi::getLoginRequest()
     if (!errors.isNull()) {
         QString error = errors.toArray()[0].toString();
 
-        if(error == "invalid key") {
-            onLoginByKeyFailure();
-        } else {
-            onLoginFailure(error);
-        }
+        onLoginFailure(error);
 
         return;
     }
