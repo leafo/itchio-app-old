@@ -91,7 +91,7 @@ void AppController::showTrayIcon()
 
 
     connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-             this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
+            this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
 
     trayIcon->setIcon(QIcon(":/images/images/itchio-icon-16.png"));
     trayIcon->setContextMenu (trayIconMenu);
