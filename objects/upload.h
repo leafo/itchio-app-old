@@ -21,7 +21,7 @@ public:
     bool pOsx;
     bool pAndroid;
 
-    static Upload fromJson(QJsonObject& object);
+    static Upload fromJson(const QJsonObject& object);
 };
 
 #endif // UPLOAD_H

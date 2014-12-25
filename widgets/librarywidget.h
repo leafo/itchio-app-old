@@ -24,10 +24,10 @@ public slots:
     void onMyOwnedKeys(QList<DownloadKey> downloadKeys);
 
 private:
-    Ui::LibraryWidget *ui;
-    AppController* controller;
+    Ui::LibraryWidget* const ui;
+    AppController* const controller;
 
-    void addGamesTab(const QString& title, QList<GameRow *> gameRows);
+    void addGamesTab(const QString& title, const QList<GameRow *>& gameRows);
 };
 
 #endif // LIBRARYWIDGET_H

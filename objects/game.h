@@ -15,10 +15,10 @@ public:
     QString coverImageUrl;
     User user;
 
-    static Game fromJson(QJsonObject& object);
+    static Game fromJson(const QJsonObject& object);
 
-    static int COVER_WIDTH;
-    static int COVER_HEIGHT;
+    static const int COVER_WIDTH = 315;
+    static const int COVER_HEIGHT = 250;
 };
 
 #endif // GAME_H

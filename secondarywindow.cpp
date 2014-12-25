@@ -5,13 +5,13 @@
 
 #include <QtDebug>
 
-SecondaryWindow::SecondaryWindow(QWidget* widget, AppController* controller, QWidget *parent) :
+SecondaryWindow::SecondaryWindow(QWidget* const widget, AppController* const controller, QWidget* const parent) :
     QDialog(parent),
     name(""),
     firstClicked(NULL),
     ui(new Ui::SecondaryWindow),
-    controller(controller)
-
+    controller(controller),
+    widget(widget)
 {
     setWindowFlags(Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
     setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));

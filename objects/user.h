@@ -14,9 +14,9 @@ public:
     QString url;
     QString avatarUrl;
 
-    QString nameForDisplay();
+    QString nameForDisplay() const;
 
-    static User fromJson(QJsonObject& object);
+    static User fromJson(const QJsonObject& object);
 };
 
 #endif // USER_H

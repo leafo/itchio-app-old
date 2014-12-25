@@ -16,9 +16,7 @@
 
 #include "itchioapi.h"
 
-int GameRow::COVER_HEIGHT = 80;
-
-GameRow::GameRow(QWidget *parent, Game game, DownloadKey key, AppController* controller) :
+GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller) :
     QWidget(parent),
     game(game),
     downloadKey(key),
@@ -104,7 +102,7 @@ void GameRow::onTriggerMenu()
     controller->api->downloadKeyUploads(downloadKey);
 }
 
-void GameRow::onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads)
+void GameRow::onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& uploads)
 {
     // need to pass correct download key first
     // if (key.id != downloadKey.id) {
@@ -113,7 +111,7 @@ void GameRow::onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads)
 
     downloadMenu->clear();
 
-    if (uploads.count() == 0) {
+    if (uploads.empty()) {
         QAction* loaderAction = new QAction("No files", downloadMenu);
         loaderAction->setDisabled(true);
         downloadMenu->addAction(loaderAction);

@@ -4,13 +4,12 @@ DownloadKey::DownloadKey()
 {
 }
 
-DownloadKey DownloadKey::fromJson(QJsonObject &object)
+DownloadKey DownloadKey::fromJson(const QJsonObject &object)
 {
     DownloadKey key;
 
     key.id = object["id"].toInt();
-    QJsonObject gameObject =  object["game"].toObject();
-    key.game = Game::fromJson(gameObject);
+    key.game = Game::fromJson(object["game"].toObject());
 
     return key;
 }

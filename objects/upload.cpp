@@ -2,12 +2,12 @@
 
 Upload::Upload()
 {
-
 }
 
-Upload Upload::fromJson(QJsonObject &object)
+Upload Upload::fromJson(const QJsonObject &object)
 {
     Upload upload;
+
     upload.id = object["id"].toInt();
     upload.gameId = object["game_id"].toInt();
     upload.size = object["size"].toInt();

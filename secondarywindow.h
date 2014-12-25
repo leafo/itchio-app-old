@@ -20,7 +20,7 @@ class SecondaryWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit SecondaryWindow(QWidget* widget, AppController* controller, QWidget* parent = 0);
+    explicit SecondaryWindow(QWidget* const widget, AppController* const controller, QWidget* const parent = 0);
     ~SecondaryWindow();
 
     QString name;
@@ -35,9 +35,9 @@ private:
 
     QObject* firstClicked;
 
-    Ui::SecondaryWindow* ui;
-    AppController* controller;
-    QWidget* widget;
+    Ui::SecondaryWindow* const ui;
+    AppController* const controller;
+    QWidget* const widget;
 
     QSize newWidgetSizeDiference;
 

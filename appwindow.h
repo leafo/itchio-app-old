@@ -24,7 +24,7 @@ class AppWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit AppWindow(AppController* controller, QWidget* parent = 0);
+    explicit AppWindow(AppController* const controller, QWidget* const parent = 0);
     ~AppWindow();
 
     LoginWidget* loginWidget;
@@ -51,8 +51,8 @@ private:
     void maximize();
     void restore();
 
-    Ui::AppWindow* ui;
-    AppController* controller;
+    Ui::AppWindow* const ui;
+    AppController* const controller;
 
     QObject* firstClicked;
 

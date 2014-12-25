@@ -24,7 +24,7 @@ class AppController : public QObject
     Q_OBJECT
 
 public:
-    explicit AppController(QObject *parent = 0);
+    explicit AppController(QObject* const parent = 0);
 
     ItchioApi* api;
 

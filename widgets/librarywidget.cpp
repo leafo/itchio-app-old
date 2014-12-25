@@ -5,7 +5,7 @@
 
 #include <QtDebug>
 
-LibraryWidget::LibraryWidget(QWidget *parent, AppController *controller) :
+LibraryWidget::LibraryWidget(QWidget* const parent, AppController* const controller) :
     QWidget(parent),
     ui(new Ui::LibraryWidget),
     controller(controller)
@@ -26,7 +26,7 @@ void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys)
     addGamesTab("My Purchases", gameRows);
 }
 
-void LibraryWidget::addGamesTab(const QString& title, QList<GameRow*> gameRows)
+void LibraryWidget::addGamesTab(const QString& title, const QList<GameRow*>& gameRows)
 {
     QScrollArea* scroller = new QScrollArea();
     scroller->setObjectName("gamesScroller");

@@ -19,7 +19,7 @@ LoginWidget::~LoginWidget()
     delete ui;
 }
 
-void LoginWidget::setStatus(QString status, bool disable)
+void LoginWidget::setStatus(const QString& status, bool disable)
 {
     ui->loginStatusLabel->setText(status);
     ui->loginUsernameInput->setDisabled(disable);

@@ -20,7 +20,7 @@ QString AppSettings::loadSetting(Settings setting)
     return value(settingName(setting), settingDefault(setting)).toString();
 }
 
-void AppSettings::saveSetting(Settings setting, QVariant data)
+void AppSettings::saveSetting(Settings setting, const QVariant& data)
 {
     setValue(settingName(setting), data);
 }

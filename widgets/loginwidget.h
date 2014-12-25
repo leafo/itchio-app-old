@@ -16,14 +16,14 @@ class LoginWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit LoginWidget(QWidget* parent, AppController* controller);
+    explicit LoginWidget(QWidget* const parent, AppController* const controller);
     ~LoginWidget();
 
 private:
-    Ui::LoginWidget* ui;
-    AppController* controller;
+    Ui::LoginWidget* const ui;
+    AppController* const controller;
 
-    void setStatus(QString status, bool disable);
+    void setStatus(const QString& status, bool disable);
 
 private slots:
     void onLoginTentative();
