@@ -1,7 +1,7 @@
+#include <QtDebug>
+
 #include "loginwidget.h"
 #include "ui_loginwidget.h"
-
-#include <QtDebug>
 
 LoginWidget::LoginWidget(QWidget *parent, AppController *controller) :
     QWidget(parent),

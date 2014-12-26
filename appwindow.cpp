@@ -1,10 +1,11 @@
+#include <QDesktopWidget>
+
+#include <QtDebug>
+
 #include "appwindow.h"
 #include "ui_appwindow.h"
 #include "widgets/loginwidget.h"
 #include "widgets/librarywidget.h"
-
-#include <QtDebug>
-#include <QDesktopWidget>
 
 //TODO: QDesktopWidget::​screenNumber might not be working properly. Returns 0 in all screens.
 

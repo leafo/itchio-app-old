@@ -1,8 +1,11 @@
-#include "itchioapi.h"
+#include <QNetworkReply>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QUrlQuery>
+#include <QUrl>
+
+#include "itchioapi.h"
 
 const char* ItchioApi::USER_AGENT =  "itch.io app 0.0";
 const char* ItchioApi::DEFAULT_API_URL = "https://itch.io/api/1";

@@ -39,8 +39,6 @@ private:
     AppController* const controller;
     QWidget* const widget;
 
-    QSize newWidgetSizeDiference;
-
     int dragClickX;
     int dragClickY;
 

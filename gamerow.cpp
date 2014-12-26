@@ -1,19 +1,17 @@
-#include "gamerow.h"
-
-#include <QDebug>
 #include <QPushButton>
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QUrlQuery>
 #include <QMenu>
 #include <QAction>
-
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
-
 #include <QPixmap>
 
+#include <QDebug>
+
+#include "gamerow.h"
 #include "itchioapi.h"
 
 GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller) :

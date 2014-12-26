@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QSettings>
-#include <QVariant>
 
 #include "settings.h"
 

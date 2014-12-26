@@ -1,19 +1,13 @@
 #ifndef APPCONTROLLER_H
 #define APPCONTROLLER_H
 
-#include <QApplication>
-#include <QWidget>
 #include <QObject>
 #include <QSystemTrayIcon>
 #include <QMenu>
-#include <QIcon>
 #include <QAction>
-#include <QSettings>
-#include <QVector>
 
 #include "itchioapi.h"
 #include "traynotifications.h"
-#include "settings.h"
 #include "appsettings.h"
 
 class AppWindow;
@@ -32,7 +26,7 @@ public:
 
     void onLogin();
 
-    void showTrayIcon();
+    void setupTrayIcon();
     void showTrayIconNotification(TrayNotifications notification, int duration);
     void showAppWindow();
 
@@ -49,6 +43,7 @@ private:
     QMenu* trayIconMenu;
 
     void setupSettings();
+    void setupTrayIconMenu(bool beforeLogin = false);
 
 signals:
 

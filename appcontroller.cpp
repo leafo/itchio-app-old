@@ -1,5 +1,11 @@
+#include <QApplication>
+#include <QSettings>
+#include <QIcon>
+
 #include <QDebug>
+
 #include "appcontroller.h"
+#include "settings.h"
 #include "appwindow.h"
 #include "secondarywindow.h"
 #include "widgets/loginwidget.h"
@@ -31,7 +37,6 @@ void AppController::setupSettings()
 
 void AppController::hide()
 {
-    qDebug() << "hide" << appWindow->pos();
     if(!appWindow->oldPosition.isNull()) {
         appWindow->move(appWindow->oldPosition);
     }
@@ -43,7 +48,6 @@ void AppController::hide()
 
 void AppController::show()
 {
-    qDebug() << "show" << appWindow->pos();
     appWindow->oldPosition = appWindow->pos();
 
     appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
@@ -58,9 +62,7 @@ void AppController::quit()
 
 void AppController::showSettings()
 {
-    if (settingsWindow == 0) {
-        settingsWindow = new SecondaryWindow(new SettingsWidget(this), this);
-    }
+    settingsWindow = new SecondaryWindow(new SettingsWidget(this), this);
 
     settingsWindow->show();
     settingsWindow->raise();
@@ -74,28 +76,44 @@ void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason
     }
 }
 
-void AppController::showTrayIcon()
+void AppController::setupTrayIcon()
 {
     trayIcon = new QSystemTrayIcon(this);
-    trayIconMenu = new QMenu();
 
-    actionSettings = new QAction("Settings", this);
-    trayIconMenu->addAction(actionSettings);
-    connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
-
-    trayIconMenu->addSeparator();
-
-    actionQuit = new QAction("Quit", this);
-    trayIconMenu->addAction(actionQuit);
-    connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
-
-
-    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-            this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
+    setupTrayIconMenu(true);
 
     trayIcon->setIcon(QIcon(":/images/images/itchio-icon-16.png"));
     trayIcon->setContextMenu (trayIconMenu);
     trayIcon->show();
+}
+
+void AppController::setupTrayIconMenu(bool beforeLogin)
+{
+    if(beforeLogin) {
+        trayIconMenu = new QMenu();
+
+        actionQuit = new QAction("Quit", this);
+        trayIconMenu->addAction(actionQuit);
+        connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
+
+        connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+                this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
+    } else {
+        trayIconMenu->clear();
+
+        actionSettings = new QAction("Settings", this);
+        trayIconMenu->addAction(actionSettings);
+        connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
+
+        trayIconMenu->addSeparator();
+
+        actionQuit = new QAction("Quit", this);
+        trayIconMenu->addAction(actionQuit);
+        connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
+
+        connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+                this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
+    }
 }
 
 void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
@@ -122,6 +140,8 @@ void AppController::onLogin()
         settings->saveSetting(API_KEY, api->userKey);
         settings->saveSetting(USERNAME, api->userName);
     }
+
+    setupTrayIconMenu();
 
     appWindow->loginWidget->hide();
     appWindow->loginWidget->deleteLater();
