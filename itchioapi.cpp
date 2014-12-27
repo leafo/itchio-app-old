@@ -4,16 +4,17 @@
 #include <QJsonArray>
 #include <QUrlQuery>
 
-const char* ItchioApi::USER_AGENT =  "itch.io app 0.0";
-const char* ItchioApi::DEFAULT_API_URL = "https://itch.io/api/1";
+using itchio::Api;
 
-ItchioApi::ItchioApi(QObject* const parent, const QString& apiUrl) :
-    QObject(parent),
+const char* Api::USER_AGENT =  "itch.io app 0.0";
+const char* Api::DEFAULT_API_URL = "https://itch.io/api/1";
+
+Api::Api(const QString& apiUrl) :
     base(apiUrl),
     networkManager(new QNetworkAccessManager(this))
 {}
 
-void ItchioApi::loginWithPassword(const QString& username, const QString& password)
+void Api::loginWithPassword(const QString& username, const QString& password)
 {
     userName = username;
 
@@ -36,28 +37,28 @@ void ItchioApi::loginWithPassword(const QString& username, const QString& passwo
     connect(reply, SIGNAL(finished()), this, SLOT(getLoginRequest()));
 }
 
-void ItchioApi::loginWithApiKey(const QString& apiKey)
+void Api::loginWithApiKey(const QString& apiKey)
 {
     userKey = apiKey;
     request("me", SLOT(getLoginRequest()));
 }
 
-void ItchioApi::myGames()
+void Api::myGames()
 {
     request("my-games", SLOT(getMyGamesRequest()));
 }
 
-void ItchioApi::myOwnedKeys()
+void Api::myOwnedKeys()
 {
     request("my-owned-keys", SLOT(getMyOwnedKeys()));
 }
 
-void ItchioApi::downloadKeyUploads(const DownloadKey& key)
+void Api::downloadKeyUploads(const DownloadKey& key)
 {
     request(QString("download-key/%1/uploads").arg(key.id), SLOT(getDownloadKeyUploads()));
 }
 
-void ItchioApi::request(const QString& path, const char* slot)
+void Api::request(const QString& path, const char* slot)
 {
     QString url =  base + "/" + userKey + "/" + path;
     qDebug() << "Requesting URL" << url;
@@ -70,7 +71,7 @@ void ItchioApi::request(const QString& path, const char* slot)
     connect(reply, SIGNAL(finished()), this, slot);
 }
 
-void ItchioApi::getMyGamesRequest()
+void Api::getMyGamesRequest()
 {
     QNetworkReply* const reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
@@ -87,7 +88,7 @@ void ItchioApi::getMyGamesRequest()
     onMyGames(gameList);
 }
 
-void ItchioApi::getMyOwnedKeys()
+void Api::getMyOwnedKeys()
 {
     QNetworkReply* const reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
@@ -104,7 +105,7 @@ void ItchioApi::getMyOwnedKeys()
     onMyOwnedKeys(keyList);
 }
 
-void ItchioApi::getLoginRequest()
+void Api::getLoginRequest()
 {
     QNetworkReply* const reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
@@ -155,7 +156,7 @@ void ItchioApi::getLoginRequest()
     }
 }
 
-void ItchioApi::getDownloadKeyUploads()
+void Api::getDownloadKeyUploads()
 {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();

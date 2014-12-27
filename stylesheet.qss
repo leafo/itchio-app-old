@@ -1,12 +1,11 @@
-
-AppWindow, SecondaryWindow
+itchio--AppWindow, itchio--SecondaryWindow
 {
     background: #222;
 }
 
-SettingsWidget QCheckBox
+itchio--SettingsWidget QCheckBox
 {
-	color: #fff;
+    color: #fff;
 }
 
 QMainWindow #topBar
@@ -58,17 +57,17 @@ QLabel
         color: white;
 }
 
-LibraryWidget #gamesScroller
+itchio--LibraryWidget #gamesScroller
 {
     border: 2px solid #555;
 }
 
-LibraryWidget #scrollWrapper
+itchio--LibraryWidget #scrollWrapper
 {
     background-color: #333;
 }
 
-LibraryWidget #imageHolder
+itchio--LibraryWidget #imageHolder
 {
     border: 1px solid #222;
     border-radius: 2px;

@@ -9,23 +9,28 @@
 #include <QSize>
 #include <QSizeGrip>
 
-#include "appcontroller.h"
-
-class LoginWidget;
-class LibraryWidget;
-
 namespace Ui
 {
 class AppWindow;
 }
+
+namespace itchio {
+
+class AppController;
+class LoginWidget;
+class LibraryWidget;
 
 class AppWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit AppWindow(AppController* const controller, QWidget* const parent = 0);
+    explicit AppWindow(AppController& controller);
     ~AppWindow();
+
+    inline AppController& controller(){ return controller_; }
+    inline const AppController& const_controller() const { return controller_; }
+
 
     LoginWidget* loginWidget;
     LibraryWidget* libraryWidget;
@@ -52,7 +57,7 @@ private:
     void restore();
 
     Ui::AppWindow* const ui;
-    AppController* const controller;
+    AppController& controller_;
 
     QObject* firstClicked;
 
@@ -74,5 +79,7 @@ private slots:
     void on_topBarCloseButton_clicked();
 
 };
+
+} // namespace itchio
 
 #endif // APPWINDOW_H

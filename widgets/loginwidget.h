@@ -1,38 +1,33 @@
 #ifndef LOGINWIDGET_H
 #define LOGINWIDGET_H
 
-#include <QWidget>
+#include "abstractview.h"
+#include "ui_loginwidget.h"
 
-#include "appcontroller.h"
-#include "appsettings.h"
+namespace itchio {
 
-namespace Ui
-{
-class LoginWidget;
-}
+class Api;
 
-class LoginWidget : public QWidget
+//TODO Remove these when a proper LoginController has been implemented.
+class AppController;
+using LoginController = AppController;
+
+class LoginWidget : public AbstractView<Ui::LoginWidget, LoginController, Api>
 {
     Q_OBJECT
 
 public:
-    explicit LoginWidget(QWidget* const parent, AppController* const controller);
-    ~LoginWidget();
+    LoginWidget(LoginController& controller, QWidget* const parent);
 
 private:
-    Ui::LoginWidget* const ui;
-    AppController* const controller;
-
     void setStatus(const QString& status, bool disable);
 
 private slots:
     void onLoginTentative();
-    void onLoginFailure(QString error);
+    void onLoginFailure(const QString& error);
     void onLogin();
-
-    void on_loginButton_clicked();
-    void on_loginUsernameInput_returnPressed();
-    void on_loginPasswordInput_returnPressed();
 };
+
+} // namespace itchio
 
 #endif // LOGINWIDGET_H

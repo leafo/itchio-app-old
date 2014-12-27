@@ -6,70 +6,59 @@
 #include "widgets/librarywidget.h"
 #include "widgets/secondary/settingswidget.h"
 
+using itchio::AppController;
+
 //TODO: Create custom maximizing pipeline to better handle taskbars.
 
-AppController::AppController(QObject *parent) :
-    QObject(parent),
-    settingsWindow(NULL)
+AppController::AppController(int& argc, char** argv) :
+    QApplication(argc, argv),
+    settings_("itchio.ini"),
+    api_(settings_.apiUrl()),
+    actionQuit(nullptr),
+    actionSettings(nullptr),
+    appWindow_(*this),
+    settingsWindow_(appWindow_),
+    trayIcon(nullptr),
+    trayIconMenu(nullptr)
 {
-    setupSettings();
-    api = new ItchioApi(this, settings->loadSetting(API_URL));
-
-    if(settings->loadSetting(KEEP_LOGGED_IN) == "1" && settings->loadSetting(API_KEY) != "") {
-        api->loginWithApiKey(settings->loadSetting(API_KEY));
+    if (settings_.autoLogin() && settings_.hasValidApiKey()) {
+        api_.loginWithApiKey(settings_.apiKey());
     }
-
     showTrayIcon();
     showAppWindow();
 }
 
-void AppController::setupSettings()
-{
-    settingsFile = "settings.scratch";
-    settings = new AppSettings(settingsFile, QSettings::IniFormat);
-}
-
 void AppController::hide()
 {
-    qDebug() << "hide" << appWindow->pos();
-    if(!appWindow->oldPosition.isNull()) {
-        appWindow->move(appWindow->oldPosition);
+    qDebug() << "hide" << appWindow_.pos();
+    if (!appWindow_.oldPosition.isNull()) {
+        appWindow_.move(appWindow_.oldPosition);
     }
 
-    appWindow->showMinimized();
+    appWindow_.showMinimized();
 
-    appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
+    appWindow_.setWindowFlags(appWindow_.windowFlags() ^ Qt::Tool);
 }
 
 void AppController::show()
 {
-    qDebug() << "show" << appWindow->pos();
-    appWindow->oldPosition = appWindow->pos();
+    qDebug() << "show" << appWindow_.pos();
+    appWindow_.oldPosition = appWindow_.pos();
 
-    appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
-    appWindow->show();
-    appWindow->setWindowState((appWindow->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
-}
-
-void AppController::quit()
-{
-    QCoreApplication::exit();
+    appWindow_.setWindowFlags(appWindow_.windowFlags() ^ Qt::Tool);
+    appWindow_.show();
+    appWindow_.setWindowState((appWindow_.windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
 }
 
 void AppController::showSettings()
 {
-    if (settingsWindow == 0) {
-        settingsWindow = new SecondaryWindow(new SettingsWidget(this), this);
-    }
-
-    settingsWindow->show();
-    settingsWindow->raise();
+    settingsWindow_.show();
+    settingsWindow_.raise();
 }
 
 void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
 {
-    if(reason == QSystemTrayIcon::DoubleClick
-            && !appWindow->isVisible()) {
+    if (reason == QSystemTrayIcon::DoubleClick && !appWindow_.isVisible()) {
         show();
     }
 }
@@ -100,7 +89,7 @@ void AppController::showTrayIcon()
 
 void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
 {
-    if(trayIcon->supportsMessages()) {
+    if (trayIcon->supportsMessages()) {
         switch(notification) {
         case NOTIFICATION_TEST:
             trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
@@ -111,19 +100,17 @@ void AppController::showTrayIconNotification(TrayNotifications notification, int
 
 void AppController::showAppWindow()
 {
-    appWindow = new AppWindow(this);
-
-    appWindow->show();
+    appWindow_.show();
 }
 
 void AppController::onLogin()
 {
-    if(settings->loadSetting((KEEP_LOGGED_IN)) == "1") {
-        settings->saveSetting(API_KEY, api->userKey);
-        settings->saveSetting(USERNAME, api->userName);
+    if (settings_.autoLogin()) {
+        settings_.setApiKey(api_.userKey);
+        settings_.setUsername(api_.userName);
     }
 
-    appWindow->loginWidget->hide();
-    appWindow->loginWidget->deleteLater();
-    appWindow->setupLibrary();
+    appWindow_.loginWidget->hide();
+    appWindow_.loginWidget->deleteLater();
+    appWindow_.setupLibrary();
 }

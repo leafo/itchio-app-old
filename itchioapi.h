@@ -11,12 +11,15 @@
 #include "objects/downloadkey.h"
 #include "objects/upload.h"
 
-class ItchioApi : public QObject
+namespace itchio {
+
+class Api : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit ItchioApi(QObject* const parent, const QString& apiUrl);
+    explicit Api(const QString& apiUrl);
+
     void request(const QString& path, const char* slot);
     void loginWithPassword(const QString& username, const QString& password);
     void loginWithApiKey(const QString& apiKey);
@@ -48,7 +51,8 @@ public slots:
     void getMyOwnedKeys();
     void getLoginRequest();
     void getDownloadKeyUploads();
-
 };
+
+} // namespace itchio
 
 #endif // ITCHIOAPI_H

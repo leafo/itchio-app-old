@@ -1,18 +1,10 @@
 #include "user.h"
-
 #include <QJsonObject>
+
+using itchio::User;
 
 User::User()
 {
-}
-
-QString User::nameForDisplay() const
-{
-    if (displayName == "") {
-        return username;
-    } else {
-        return displayName;
-    }
 }
 
 User User::fromJson(const QJsonObject &object)

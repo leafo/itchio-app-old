@@ -2,17 +2,19 @@
 #include "ui_appwindow.h"
 #include "widgets/loginwidget.h"
 #include "widgets/librarywidget.h"
+#include "appcontroller.h"
 
 #include <QtDebug>
 #include <QDesktopWidget>
 
+using itchio::AppWindow;
+
 //TODO: QDesktopWidget::​screenNumber might not be working properly. Returns 0 in all screens.
 
-AppWindow::AppWindow(AppController* controller, QWidget* parent) :
-    QMainWindow(parent),
+AppWindow::AppWindow(AppController& controller) :
     currentWidget(""),
     ui(new Ui::AppWindow),
-    controller(controller),
+    controller_(controller),
     firstClicked(NULL)
 {
     setWindowFlags( Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
@@ -79,7 +81,7 @@ void AppWindow::closeEvent(QCloseEvent *event)
 
 void AppWindow::close()
 {
-    controller->hide();
+    controller_.hide();
 }
 
 void AppWindow::maximize()
@@ -106,7 +108,7 @@ void AppWindow::setupLogin()
 {
     currentWidget = "Login";
 
-    loginWidget = new LoginWidget(this, controller);
+    loginWidget = new LoginWidget(controller_, this);
     widgetsLayout->addWidget(loginWidget);
     loginWidget->show();
 
@@ -119,7 +121,7 @@ void AppWindow::setupLogin()
 void AppWindow::setupLibrary()
 {
     currentWidget = "Library";
-    libraryWidget = new LibraryWidget(this, controller);
+    libraryWidget = new LibraryWidget(controller_, this);
     widgetsLayout->addWidget(libraryWidget);
     libraryWidget->show();
     sizeGrip->show();

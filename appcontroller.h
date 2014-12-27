@@ -14,21 +14,23 @@
 #include "itchioapi.h"
 #include "traynotifications.h"
 #include "settings.h"
-#include "appsettings.h"
+#include "appwindow.h"
+#include "secondarywindow.h"
 
-class AppWindow;
-class SecondaryWindow;
+namespace itchio {
 
-class AppController : public QObject
+class AppController : public QApplication
 {
     Q_OBJECT
 
 public:
-    explicit AppController(QObject* const parent = 0);
+    AppController(int& argc, char** argv);
 
-    ItchioApi* api;
+    inline Settings& settings(){ return settings_; }
+    inline const Settings& const_settings() const { return settings_; }
 
-    AppSettings* settings;
+    inline Api& api(){ return api_; }
+    inline const Api& const_api() const { return api_; }
 
     void onLogin();
 
@@ -37,13 +39,14 @@ public:
     void showAppWindow();
 
 private:
-    QString settingsFile;
+    Settings settings_;
+    Api api_;
 
     QAction* actionQuit;
     QAction* actionSettings;
 
-    AppWindow* appWindow;
-    SecondaryWindow* settingsWindow;
+    AppWindow appWindow_;
+    SecondaryWindow settingsWindow_;
 
     QSystemTrayIcon* trayIcon;
     QMenu* trayIconMenu;
@@ -55,13 +58,13 @@ signals:
 public slots:
     void show();
     void hide();
-    void quit();
     void showSettings();
 
     void trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason);
 
 private slots:
-
 };
+
+} // namespace itchio
 
 #endif // APPCONTROLLER_H
