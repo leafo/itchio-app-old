@@ -1,4 +1,7 @@
 #include "downloadkey.h"
+#include <QJsonObject>
+
+using itchio::DownloadKey;
 
 DownloadKey::DownloadKey()
 {

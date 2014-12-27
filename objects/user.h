@@ -1,7 +1,11 @@
 #ifndef USER_H
 #define USER_H
 
-#include <QObject>
+#include <QString>
+
+class QJsonObject;
+
+namespace itchio {
 
 class User
 {
@@ -14,9 +18,14 @@ public:
     QString url;
     QString avatarUrl;
 
-    QString nameForDisplay() const;
+    inline QString nameForDisplay() const
+    {
+        return displayName != "" ? displayName : username;
+    }
 
     static User fromJson(const QJsonObject& object);
 };
+
+} // namespace itchio
 
 #endif // USER_H

@@ -14,6 +14,8 @@ namespace Ui
 class GameRow;
 }
 
+namespace itchio {
+
 class GameRow : public QWidget
 {
     Q_OBJECT
@@ -42,5 +44,7 @@ private:
 
     void refreshThumbnail();
 };
+
+} // namespace itchio
 
 #endif // GAMEROW_H

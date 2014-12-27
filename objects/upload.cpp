@@ -1,10 +1,13 @@
 #include "upload.h"
+#include <QJsonObject>
+
+using itchio::Upload;
 
 Upload::Upload()
 {
 }
 
-Upload Upload::fromJson(const QJsonObject &object)
+Upload Upload::fromJson(const QJsonObject& object)
 {
     Upload upload;
 

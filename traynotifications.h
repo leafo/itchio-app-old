@@ -1,9 +1,13 @@
-#ifndef TRAYNOTIFICATIONS
-#define TRAYNOTIFICATIONS
+#ifndef TRAYNOTIFICATIONS_H
+#define TRAYNOTIFICATIONS_H
+
+namespace itchio {
 
 enum TrayNotifications {
     NOTIFICATION_TEST = 0
 };
 
-#endif // TRAYNOTIFICATIONS
+} // namespace itchio
+
+#endif // TRAYNOTIFICATIONS_H
 

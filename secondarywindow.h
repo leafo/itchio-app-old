@@ -8,19 +8,23 @@
 #include <QCloseEvent>
 #include <QGridLayout>
 
-#include "appcontroller.h"
-
 namespace Ui
 {
 class SecondaryWindow;
 }
+
+namespace itchio {
+
+class AppWindow;
+class AppController;
+class SettingsWidget;
 
 class SecondaryWindow : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit SecondaryWindow(QWidget* const widget, AppController* const controller, QWidget* const parent = 0);
+    explicit SecondaryWindow(AppWindow& mainWindow);
     ~SecondaryWindow();
 
     QString name;
@@ -35,9 +39,10 @@ private:
 
     QObject* firstClicked;
 
+    //FIXME Memory leak. Use smart pointer.
     Ui::SecondaryWindow* const ui;
-    AppController* const controller;
-    QWidget* const widget;
+    AppController& controller;
+    SettingsWidget* const settingsWidget;
 
     QSize newWidgetSizeDiference;
 
@@ -55,5 +60,7 @@ private slots:
     void on_topBarCloseButton_clicked();
 
 };
+
+} // namespace itchio
 
 #endif // SECONDARYWINDOW_H

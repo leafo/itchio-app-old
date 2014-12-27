@@ -1,26 +1,25 @@
 #include "librarywidget.h"
-#include "ui_librarywidget.h"
+#include "itchioapi.h"
+#include "gamerow.h"
 
 #include <QScrollArea>
 
 #include <QtDebug>
 
-LibraryWidget::LibraryWidget(QWidget* const parent, AppController* const controller) :
-    QWidget(parent),
-    ui(new Ui::LibraryWidget),
-    controller(controller)
-{
-    ui->setupUi(this);
+using itchio::LibraryWidget;
 
-    connect(controller->api, SIGNAL(onMyOwnedKeys(QList<DownloadKey>)), this, SLOT(onMyOwnedKeys(QList<DownloadKey>)));
-    controller->api->myOwnedKeys();
+LibraryWidget::LibraryWidget(LibraryController& controller, QWidget* const parent) :
+    AbstractView(controller, controller.api(), parent)
+{
+    connect(&model_, &Api::onMyOwnedKeys, this, &LibraryWidget::onMyOwnedKeys);
+    model_.myOwnedKeys(); //TODO Give this member function a better name, e.g. requestOwnedKeys() ?
 }
 
-void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys)
+void LibraryWidget::onMyOwnedKeys(const QList<DownloadKey>& downloadKeys)
 {
     QList<GameRow*> gameRows;
     foreach (DownloadKey key, downloadKeys) {
-        gameRows << new GameRow(this, key.game, key, controller);
+        gameRows << new GameRow(this, key.game, key, &controller_);
     }
 
     addGamesTab("My Purchases", gameRows);
@@ -28,6 +27,7 @@ void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys)
 
 void LibraryWidget::addGamesTab(const QString& title, const QList<GameRow*>& gameRows)
 {
+    //TODO Plug memory leak.
     QScrollArea* scroller = new QScrollArea();
     scroller->setObjectName("gamesScroller");
 
@@ -42,11 +42,5 @@ void LibraryWidget::addGamesTab(const QString& title, const QList<GameRow*>& gam
     wrapper->setLayout(layout);
     scroller->setWidget(wrapper);
 
-    ui->tabWidget->addTab(scroller, title);
-}
-
-
-LibraryWidget::~LibraryWidget()
-{
-    delete ui;
+    ui_->tabWidget->addTab(scroller, title);
 }

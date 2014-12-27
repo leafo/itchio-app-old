@@ -1,8 +1,11 @@
 #ifndef UPLOAD_H
 #define UPLOAD_H
 
-#include <QObject>
-#include <QJsonObject>
+#include <QString>
+
+class QJsonObject;
+
+namespace itchio {
 
 class Upload
 {
@@ -23,5 +26,7 @@ public:
 
     static Upload fromJson(const QJsonObject& object);
 };
+
+} // namespace itchio
 
 #endif // UPLOAD_H

@@ -16,6 +16,8 @@
 
 #include "itchioapi.h"
 
+using itchio::GameRow;
+
 GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller) :
     QWidget(parent),
     game(game),
@@ -28,7 +30,7 @@ GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key
     downloadMenu = new QMenu("Choose download");
     downloadButton->setMenu(downloadMenu);
     connect(downloadMenu, SIGNAL(aboutToShow()), SLOT(onTriggerMenu()));
-    connect(controller->api, SIGNAL(onDownloadKeyUploads(DownloadKey,QList<Upload>)),
+    connect(&controller->api(), SIGNAL(onDownloadKeyUploads(DownloadKey,QList<Upload>)),
             SLOT(onDownloadKeyUploads(DownloadKey,QList<Upload>)));
 
     imageHolder = new QLabel();
@@ -99,7 +101,7 @@ void GameRow::onTriggerMenu()
     QAction* loaderAction = new QAction("Loading...", downloadMenu);
     loaderAction->setDisabled(true);
     downloadMenu->addAction(loaderAction);
-    controller->api->downloadKeyUploads(downloadKey);
+    controller->api().downloadKeyUploads(downloadKey);
 }
 
 void GameRow::onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& uploads)
@@ -135,7 +137,7 @@ void GameRow::refreshThumbnail()
 
     QNetworkRequest request;
     request.setUrl(QUrl(game.coverImageUrl));
-    request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
+    request.setHeader(QNetworkRequest::UserAgentHeader, Api::USER_AGENT);
 
     QNetworkReply* reply = networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(onDownloadThumbnail()));

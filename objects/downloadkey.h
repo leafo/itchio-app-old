@@ -1,9 +1,9 @@
 #ifndef DOWNLOADKEY_H
 #define DOWNLOADKEY_H
 
-#include <QObject>
-#include <QJsonObject>
-#include <objects/game.h>
+#include "objects/game.h"
+
+namespace itchio {
 
 class DownloadKey
 {
@@ -15,5 +15,7 @@ public:
 
     static DownloadKey fromJson(const QJsonObject &object);
 };
+
+} // namespace itchio
 
 #endif // DOWNLOADKEY_H

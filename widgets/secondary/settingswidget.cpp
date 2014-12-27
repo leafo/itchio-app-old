@@ -1,50 +1,47 @@
 #include "settingswidget.h"
-#include "ui_settingswidget.h"
+#include "settings.h"
+#include "appcontroller.h" // TODO Replace with settingscontroller.h
 
+#include <QCheckBox>
 #include <QtDebug>
+
+using itchio::SettingsWidget;
 
 //TODO: Thread settings setting process to avoid interface delay.
 
-SettingsWidget::SettingsWidget(AppController *controller, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::SettingsWidget),
-    controller(controller)
+SettingsWidget::SettingsWidget(SettingsController& controller, QWidget* const parent) :
+    AbstractView(controller, controller.settings(), parent),
+    autoLoginCheckBox_(findChild<QCheckBox*>("keepLoggedInBox")),
+    autoUpdatesCheckBox_(findChild<QCheckBox*>("automaticallyCheckForUpdatesBox")),
+    trayNotificationsCheckBox_(findChild<QCheckBox*>("showTrayNotificationsBox"))
 {
-    ui->setupUi(this);
-
-    keepLoggedInBox = findChild<QCheckBox*>("keepLoggedInBox");
-    automaticallyCheckForUpdatesBox = findChild<QCheckBox*>("automaticallyCheckForUpdatesBox");
-    showTrayNotificationsBox = findChild<QCheckBox*>("showTrayNotificationsBox");
+    connect(autoLoginCheckBox_,         &QCheckBox::clicked, this, &SettingsWidget::onAutoLoginChecked);
+    connect(autoUpdatesCheckBox_,       &QCheckBox::clicked, this, &SettingsWidget::onAutoUpdatesChecked);
+    connect(trayNotificationsCheckBox_, &QCheckBox::clicked, this, &SettingsWidget::onTrayNotificationsChecked);
 
     refresh();
 }
 
-SettingsWidget::~SettingsWidget()
-{
-    delete ui;
-}
-
 void SettingsWidget::refresh()
 {
-    keepLoggedInBox->setChecked(controller->settings->loadSetting(KEEP_LOGGED_IN) == "1");
-    automaticallyCheckForUpdatesBox->setChecked(controller->settings->loadSetting(AUTO_UPDATE_CHECK) == "1");
-    showTrayNotificationsBox->setChecked(controller->settings->loadSetting(SHOW_TRAY_NOTIFICATION) == "1");
+    // The model_ is a reference to the current settings.
+    autoLoginCheckBox_->setChecked(model_.autoLogin());
+    autoUpdatesCheckBox_->setChecked(model_.autoUpdateChecks());
+    trayNotificationsCheckBox_->setChecked(model_.showTrayNotifications());
 }
 
-void SettingsWidget::on_keepLoggedInBox_clicked()
+void SettingsWidget::onAutoLoginChecked(const bool checked)
 {
-    controller->settings->saveSetting(KEEP_LOGGED_IN,
-                                      QString::number(keepLoggedInBox->isChecked()));
+    model_.enableAutoLogin(checked);
 }
 
-void SettingsWidget::on_automaticallyCheckForUpdatesBox_clicked()
+void SettingsWidget::onAutoUpdatesChecked(const bool checked)
 {
-    controller->settings->saveSetting(AUTO_UPDATE_CHECK,
-                                      QString::number(automaticallyCheckForUpdatesBox->isChecked()));
+    model_.enableAutoUpdateChecks(checked);
 }
 
-void SettingsWidget::on_showTrayNotificationsBox_clicked()
+void SettingsWidget::onTrayNotificationsChecked(const bool checked)
 {
-    controller->settings->saveSetting(SHOW_TRAY_NOTIFICATION,
-                                      QString::number(showTrayNotificationsBox->isChecked()));
+    model_.enableTrayNotifications(checked);
 }
+

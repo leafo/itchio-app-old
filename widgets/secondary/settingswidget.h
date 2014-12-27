@@ -1,41 +1,36 @@
 #ifndef SETTINGSWIDGET_H
 #define SETTINGSWIDGET_H
 
-#include <QWidget>
-#include <QCheckBox>
+#include "widgets/abstractview.h"
+#include "ui_settingswidget.h"
 
-#include "appcontroller.h"
-#include "appsettings.h"
+namespace itchio {
 
-namespace Ui
-{
-class SettingsWidget;
-}
+class Settings;
 
-class SettingsWidget : public QWidget
+//TODO Remove this when a proper SettingsController has been implemented.
+class AppController;
+using SettingsController = AppController;
+
+class SettingsWidget : public AbstractView<Ui::SettingsWidget, SettingsController, Settings>
 {
     Q_OBJECT
 
 public:
-    explicit SettingsWidget(AppController* const controller, QWidget* const parent = 0);
-    ~SettingsWidget();
+    SettingsWidget(SettingsController& controller, QWidget* const parent);
+
+private:
+    QCheckBox* const autoLoginCheckBox_;
+    QCheckBox* const autoUpdatesCheckBox_;
+    QCheckBox* const trayNotificationsCheckBox_;
 
 private slots:
     void refresh();
-
-    void on_keepLoggedInBox_clicked();
-
-    void on_automaticallyCheckForUpdatesBox_clicked();
-
-    void on_showTrayNotificationsBox_clicked();
-
-private:
-    Ui::SettingsWidget* const ui;
-    AppController* const controller;
-
-    QCheckBox* keepLoggedInBox;
-    QCheckBox* automaticallyCheckForUpdatesBox;
-    QCheckBox* showTrayNotificationsBox;
+    void onAutoLoginChecked(const bool checked);
+    void onAutoUpdatesChecked(const bool checked);
+    void onTrayNotificationsChecked(const bool checked);
 };
+
+} // namespace itchio
 
 #endif // SETTINGSWIDGET_H

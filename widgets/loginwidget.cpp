@@ -1,36 +1,35 @@
 #include "loginwidget.h"
-#include "ui_loginwidget.h"
+#include "itchioapi.h"
+#include "appcontroller.h" // TODO Replace with logincontroller.h
 
 #include <QtDebug>
 
-LoginWidget::LoginWidget(QWidget *parent, AppController *controller) :
-    QWidget(parent),
-    ui(new Ui::LoginWidget),
-    controller(controller)
-{
-    ui->setupUi(this);
+using itchio::LoginWidget;
 
-    connect(controller->api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
-    connect(controller->api, SIGNAL(onLogin()), this, SLOT(onLogin()));
-}
-
-LoginWidget::~LoginWidget()
+LoginWidget::LoginWidget(LoginController& controller, QWidget* const parent) :
+    AbstractView(controller, controller.api(), parent)
 {
-    delete ui;
+    // TODO Are these connections redundant?
+    connect(&model_, &Api::onLogin,        this, &LoginWidget::onLogin);
+    connect(&model_, &Api::onLoginFailure, this, &LoginWidget::onLoginFailure);
+
+    connect(ui_->loginButton,        &QPushButton::clicked,     this, &LoginWidget::onLoginTentative);
+    connect(ui_->loginUsernameInput, &QLineEdit::returnPressed, this, &LoginWidget::onLoginTentative);
+    connect(ui_->loginPasswordInput, &QLineEdit::returnPressed, this, &LoginWidget::onLoginTentative);
 }
 
 void LoginWidget::setStatus(const QString& status, bool disable)
 {
-    ui->loginStatusLabel->setText(status);
-    ui->loginUsernameInput->setDisabled(disable);
-    ui->loginPasswordInput->setDisabled(disable);
-    ui->loginButton->setDisabled(disable);
+    ui_->loginStatusLabel->setText(status);
+    ui_->loginUsernameInput->setDisabled(disable);
+    ui_->loginPasswordInput->setDisabled(disable);
+    ui_->loginButton->setDisabled(disable);
 }
 
 void LoginWidget::onLoginTentative()
 {
-    QString username = ui->loginUsernameInput->text();
-    QString password =  ui->loginPasswordInput->text();
+    const auto& username = ui_->loginUsernameInput->text();
+    const auto& password = ui_->loginPasswordInput->text();
 
     if (username == "" || password == "") {
         setStatus("Please enter username and password", false);
@@ -38,30 +37,15 @@ void LoginWidget::onLoginTentative()
     }
 
     setStatus("Logging in...", true);
-    controller->api->loginWithPassword(username, password);
+    model_.loginWithPassword(username, password);
 }
 
-void LoginWidget::onLoginFailure(QString error)
+void LoginWidget::onLoginFailure(const QString& error)
 {
     setStatus(error, false);
 }
 
 void LoginWidget::onLogin()
 {
-    controller->onLogin();
-}
-
-void LoginWidget::on_loginButton_clicked()
-{
-    onLoginTentative();
-}
-
-void LoginWidget::on_loginUsernameInput_returnPressed()
-{
-    onLoginTentative();
-}
-
-void LoginWidget::on_loginPasswordInput_returnPressed()
-{
-    onLoginTentative();
+    controller_.onLogin();
 }

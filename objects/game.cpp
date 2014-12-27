@@ -2,11 +2,13 @@
 #include <QDebug>
 #include <QJsonObject>
 
+using itchio::Game;
+
 Game::Game()
 {
 }
 
-Game Game::fromJson(const QJsonObject &object)
+Game Game::fromJson(const QJsonObject& object)
 {
     Game game;
 
