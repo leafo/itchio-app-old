@@ -25,7 +25,7 @@ AppController::AppController(QObject *parent) :
         api->loginWithApiKey(settings->loadSetting(API_KEY));
     }
 
-    showTrayIcon();
+    setupTrayIcon();
     showAppWindow();
 }
 
