@@ -32,7 +32,7 @@ AppController::AppController(QObject *parent) :
 void AppController::setupSettings()
 {
     settingsFile = "settings.scratch";
-    settings = new AppSettings(settingsFile, QSettings::IniFormat);
+    settings = new AppSettings(settingsFile, QSettings::IniFormat, qobject_cast<QWidget *>(this));
 }
 
 void AppController::hide()
@@ -91,13 +91,6 @@ void AppController::setupTrayIconMenu(bool beforeLogin)
 {
     if(beforeLogin) {
         trayIconMenu = new QMenu();
-
-        actionQuit = new QAction("Quit", this);
-        trayIconMenu->addAction(actionQuit);
-        connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
-
-        connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-                this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
     } else {
         trayIconMenu->clear();
 
@@ -106,14 +99,14 @@ void AppController::setupTrayIconMenu(bool beforeLogin)
         connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
 
         trayIconMenu->addSeparator();
-
-        actionQuit = new QAction("Quit", this);
-        trayIconMenu->addAction(actionQuit);
-        connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
-
-        connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
-                this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
     }
+
+    actionQuit = new QAction("Quit", this);
+    trayIconMenu->addAction(actionQuit);
+    connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
+
+    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+            this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
 }
 
 void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
