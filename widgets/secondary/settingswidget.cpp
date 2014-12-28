@@ -1,7 +1,7 @@
+#include <QtDebug>
+
 #include "settingswidget.h"
 #include "ui_settingswidget.h"
-
-#include <QtDebug>
 
 //TODO: Thread settings setting process to avoid interface delay.
 

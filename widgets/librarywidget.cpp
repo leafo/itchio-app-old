@@ -1,9 +1,9 @@
-#include "librarywidget.h"
-#include "ui_librarywidget.h"
-
 #include <QScrollArea>
 
 #include <QtDebug>
+
+#include "librarywidget.h"
+#include "ui_librarywidget.h"
 
 LibraryWidget::LibraryWidget(QWidget* const parent, AppController* const controller) :
     QWidget(parent),

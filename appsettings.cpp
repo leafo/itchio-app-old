@@ -1,10 +1,9 @@
-#include "appsettings.h"
-
 #include <QDebug>
 
-#include <itchioapi.h>
+#include "appsettings.h"
+#include "itchioapi.h"
 
-AppSettings::AppSettings(const QString & fileName, Format format, QWidget* parent) :
+AppSettings::AppSettings(const QString & fileName, Format format, QObject* parent) :
     QSettings(fileName, format, parent)
 {
 

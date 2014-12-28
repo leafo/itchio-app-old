@@ -2,10 +2,7 @@
 #define ITCHIOAPI_H
 
 #include <QObject>
-#include <QJsonObject>
 #include <QNetworkAccessManager>
-#include <QNetworkReply>
-#include <QUrl>
 
 #include "objects/game.h"
 #include "objects/downloadkey.h"

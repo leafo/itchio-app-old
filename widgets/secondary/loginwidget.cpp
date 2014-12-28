@@ -1,7 +1,7 @@
+#include <QtDebug>
+
 #include "loginwidget.h"
 #include "ui_loginwidget.h"
-
-#include <QtDebug>
 
 LoginWidget::LoginWidget(QWidget *parent, AppController *controller) :
     QWidget(parent),
@@ -11,7 +11,6 @@ LoginWidget::LoginWidget(QWidget *parent, AppController *controller) :
     ui->setupUi(this);
 
     connect(controller->api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
-    connect(controller->api, SIGNAL(onLogin()), this, SLOT(onLogin()));
 }
 
 LoginWidget::~LoginWidget()
@@ -44,11 +43,6 @@ void LoginWidget::onLoginTentative()
 void LoginWidget::onLoginFailure(QString error)
 {
     setStatus(error, false);
-}
-
-void LoginWidget::onLogin()
-{
-    controller->onLogin();
 }
 
 void LoginWidget::on_loginButton_clicked()

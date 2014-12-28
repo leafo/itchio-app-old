@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include <QSettings>
-#include <QVariant>
 
 #include "settings.h"
 
@@ -11,7 +10,7 @@ class AppSettings : public QSettings
 {
 
 public:
-    AppSettings(const QString& fileName, Format format, QWidget* const parent = 0);
+    AppSettings(const QString& fileName, Format format, QObject* const parent = 0);
     ~AppSettings();
 
     QString loadSetting(Settings setting);

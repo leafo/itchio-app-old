@@ -1,37 +1,51 @@
+#include <QApplication>
+#include <QSettings>
+#include <QIcon>
+
 #include <QDebug>
+
 #include "appcontroller.h"
+#include "settings.h"
 #include "appwindow.h"
 #include "secondarywindow.h"
-#include "widgets/loginwidget.h"
 #include "widgets/librarywidget.h"
+#include "widgets/secondary/loginwidget.h"
 #include "widgets/secondary/settingswidget.h"
 
 //TODO: Create custom maximizing pipeline to better handle taskbars.
 
 AppController::AppController(QObject *parent) :
     QObject(parent),
-    settingsWindow(NULL)
+    settingsWindow(NULL),
+    loginWithApiKey(false)
 {
     setupSettings();
     api = new ItchioApi(this, settings->loadSetting(API_URL));
 
-    if(settings->loadSetting(KEEP_LOGGED_IN) == "1" && settings->loadSetting(API_KEY) != "") {
-        api->loginWithApiKey(settings->loadSetting(API_KEY));
-    }
+    setupTrayIcon();
+    setupAppWindow();
 
-    showTrayIcon();
-    showAppWindow();
+    connect(api, SIGNAL(onLogin()), this, SLOT(onLogin()));
+
+    if(settings->loadSetting(KEEP_LOGGED_IN) == "1" && settings->loadSetting(API_KEY) != "") {
+        connect(api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
+
+        api->loginWithApiKey(settings->loadSetting(API_KEY));
+
+        loginWithApiKey = true;
+    } else {
+        setupLogin();
+    }
 }
 
 void AppController::setupSettings()
 {
     settingsFile = "settings.scratch";
-    settings = new AppSettings(settingsFile, QSettings::IniFormat);
+    settings = new AppSettings(settingsFile, QSettings::IniFormat, this);
 }
 
 void AppController::hide()
 {
-    qDebug() << "hide" << appWindow->pos();
     if(!appWindow->oldPosition.isNull()) {
         appWindow->move(appWindow->oldPosition);
     }
@@ -43,7 +57,6 @@ void AppController::hide()
 
 void AppController::show()
 {
-    qDebug() << "show" << appWindow->pos();
     appWindow->oldPosition = appWindow->pos();
 
     appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
@@ -58,9 +71,7 @@ void AppController::quit()
 
 void AppController::showSettings()
 {
-    if (settingsWindow == 0) {
-        settingsWindow = new SecondaryWindow(new SettingsWidget(this), this);
-    }
+    settingsWindow = new SecondaryWindow(new SettingsWidget(this), this);
 
     settingsWindow->show();
     settingsWindow->raise();
@@ -68,39 +79,43 @@ void AppController::showSettings()
 
 void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
 {
-    if(reason == QSystemTrayIcon::DoubleClick
-            && !appWindow->isVisible()) {
+    if(reason == QSystemTrayIcon::DoubleClick && !appWindow->isVisible()) {
         show();
     }
 }
 
-void AppController::showTrayIcon()
+void AppController::setupTrayIcon()
 {
     trayIcon = new QSystemTrayIcon(this);
+
+    trayIcon->setIcon(QIcon(":/images/images/itchio-icon-16.png"));
+    trayIcon->show();
+}
+
+void AppController::setupTrayIconMenu(bool beforeLogin)
+{
     trayIconMenu = new QMenu();
+    trayIcon->setContextMenu (trayIconMenu);
 
-    actionSettings = new QAction("Settings", this);
-    trayIconMenu->addAction(actionSettings);
-    connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
+    if(!beforeLogin) {
+        actionSettings = new QAction("Settings", this);
+        trayIconMenu->addAction(actionSettings);
+        connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
 
-    trayIconMenu->addSeparator();
+        trayIconMenu->addSeparator();
+    }
 
     actionQuit = new QAction("Quit", this);
     trayIconMenu->addAction(actionQuit);
     connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
 
-
     connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
-
-    trayIcon->setIcon(QIcon(":/images/images/itchio-icon-16.png"));
-    trayIcon->setContextMenu (trayIconMenu);
-    trayIcon->show();
 }
 
 void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
 {
-    if(trayIcon->supportsMessages()) {
+    if(settings->loadSetting(SHOW_TRAY_NOTIFICATION) == "1") {
         switch(notification) {
         case NOTIFICATION_TEST:
             trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
@@ -109,11 +124,20 @@ void AppController::showTrayIconNotification(TrayNotifications notification, int
     }
 }
 
-void AppController::showAppWindow()
+void AppController::setupLogin()
+{
+    settings->saveSetting(API_KEY, "");
+    api->userKey = "";
+
+    setupTrayIconMenu(true);
+
+    loginWindow = new SecondaryWindow(new LoginWidget(qobject_cast<QWidget *>(this), this), this);
+    loginWindow->show();
+}
+
+void AppController::setupAppWindow()
 {
     appWindow = new AppWindow(this);
-
-    appWindow->show();
 }
 
 void AppController::onLogin()
@@ -123,7 +147,19 @@ void AppController::onLogin()
         settings->saveSetting(USERNAME, api->userName);
     }
 
-    appWindow->loginWidget->hide();
-    appWindow->loginWidget->deleteLater();
+    setupTrayIconMenu();
+
+    if(!loginWithApiKey) {
+        loginWindow->deleteLater();
+        loginWindow->close();
+    }
+
     appWindow->setupLibrary();
+}
+
+void AppController::onLoginFailure(QString error)
+{
+    if(error == "invalid key") {
+        setupLogin();
+    }
 }
