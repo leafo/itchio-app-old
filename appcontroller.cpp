@@ -33,8 +33,7 @@ AppController::AppController(QObject *parent) :
         api->loginWithApiKey(settings->loadSetting(API_KEY));
 
         loginWithApiKey = true;
-    }
-    else{
+    } else {
         setupLogin();
     }
 }
@@ -98,7 +97,7 @@ void AppController::setupTrayIconMenu(bool beforeLogin)
     trayIconMenu = new QMenu();
     trayIcon->setContextMenu (trayIconMenu);
 
-    if(!beforeLogin){
+    if(!beforeLogin) {
         actionSettings = new QAction("Settings", this);
         trayIconMenu->addAction(actionSettings);
         connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
@@ -150,7 +149,7 @@ void AppController::onLogin()
 
     setupTrayIconMenu();
 
-    if(!loginWithApiKey){
+    if(!loginWithApiKey) {
         loginWindow->deleteLater();
         loginWindow->close();
     }
@@ -160,7 +159,7 @@ void AppController::onLogin()
 
 void AppController::onLoginFailure(QString error)
 {
-    if(error == "invalid key"){
+    if(error == "invalid key") {
         setupLogin();
     }
 }
