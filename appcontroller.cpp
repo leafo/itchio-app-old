@@ -41,7 +41,7 @@ AppController::AppController(QObject *parent) :
 void AppController::setupSettings()
 {
     settingsFile = "settings.scratch";
-    settings = new AppSettings(settingsFile, QSettings::IniFormat, qobject_cast<QWidget *>(this));
+    settings = new AppSettings(settingsFile, QSettings::IniFormat, this);
 }
 
 void AppController::hide()
