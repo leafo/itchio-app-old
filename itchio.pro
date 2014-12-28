@@ -18,8 +18,8 @@ SOURCES += main.cpp \
     appsettings.cpp \
     appwindow.cpp \
 	secondarywindow.cpp \
-    widgets/loginwidget.cpp \
     widgets/librarywidget.cpp \
+	widgets/secondary/loginwidget.cpp \
 	widgets/secondary/settingswidget.cpp \
     objects/game.cpp \
     gamerow.cpp \
@@ -35,8 +35,8 @@ HEADERS += itchioapi.h \
     appsettings.h \
     appwindow.h \
 	secondarywindow.h \
-    widgets/loginwidget.h \
-    widgets/librarywidget.h \
+	widgets/librarywidget.h \
+	widgets/secondary/loginwidget.h \
 	widgets/secondary/settingswidget.h \
     objects/game.h \
     gamerow.h \
@@ -46,9 +46,9 @@ HEADERS += itchioapi.h \
 
 
 FORMS += appwindow.ui \
-    widgets/loginwidget.ui \
+	secondarywindow.ui \
     widgets/librarywidget.ui \
-    secondarywindow.ui \
+	widgets/secondary/loginwidget.ui \
     widgets/secondary/settingswidget.ui
 
 RESOURCES += \

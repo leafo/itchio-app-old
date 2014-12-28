@@ -4,8 +4,8 @@
 
 #include "appwindow.h"
 #include "ui_appwindow.h"
-#include "widgets/loginwidget.h"
 #include "widgets/librarywidget.h"
+#include "widgets/secondary/loginwidget.h"
 
 //TODO: QDesktopWidget::​screenNumber might not be working properly. Returns 0 in all screens.
 
@@ -26,7 +26,8 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     topBar = findChild<QWidget*>("topBar");
 
     setupSizeGrip();
-    setupLogin();
+
+    move(QApplication::desktop()->screen(QApplication::desktop()->screenNumber(this))->rect().center() - rect().center());
 }
 
 AppWindow::~AppWindow()
@@ -103,25 +104,13 @@ void AppWindow::setupSizeGrip()
     appWindowLayout->addWidget(sizeGrip, 0, 0, 0, 0, Qt::AlignBottom | Qt::AlignRight);
 }
 
-void AppWindow::setupLogin()
-{
-    currentWidget = "Login";
-
-    loginWidget = new LoginWidget(this, controller);
-    widgetsLayout->addWidget(loginWidget);
-    loginWidget->show();
-
-    onWidgetChange(loginWidget);
-    sizeGrip->hide();
-
-    move(QApplication::desktop()->screen(QApplication::desktop()->screenNumber(this))->rect().center() - rect().center());
-}
-
 void AppWindow::setupLibrary()
 {
     currentWidget = "Library";
     libraryWidget = new LibraryWidget(this, controller);
     widgetsLayout->addWidget(libraryWidget);
+
+    show();
     libraryWidget->show();
     sizeGrip->show();
 

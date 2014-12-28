@@ -31,7 +31,6 @@ public:
     LibraryWidget* libraryWidget;
 
     void setupSizeGrip();
-    void setupLogin();
     void setupLibrary();
 
     QString currentWidget;
