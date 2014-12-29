@@ -1,22 +1,62 @@
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#ifndef APPSETTINGS_H
+#define APPSETTINGS_H
 
-#include <QWidget>
 #include <QSettings>
 
-#include "settings.h"
+//namespace itchio {
 
 class AppSettings : public QSettings
 {
-
 public:
-    AppSettings(const QString& fileName, Format format, QObject* const parent = 0);
-    ~AppSettings();
+    AppSettings(const QString& fileName, const Format fileFormat, QObject* const parent = nullptr);
 
-    QString loadSetting(Settings setting);
-    void saveSetting(Settings setting, const QVariant& data);
-    QString settingName(Settings setting);
-    QString settingDefault(Settings setting);
+    QString apiKey() const;
+    void setApiKey(const QString& key);
+    bool hasValidApiKey() const;
+
+    QString apiUrl() const;
+    void setApiUrl(const QString& url);
+
+    QString username() const;
+    void setUsername(const QString& username);
+
+    bool autoLogin() const;
+    void enableAutoLogin(const bool enable);
+
+    bool autoUpdateChecks() const;
+    void enableAutoUpdateChecks(const bool enable);
+
+    bool showTrayNotifications() const;
+    void enableTrayNotifications(const bool enable);
+
+private:
+    enum class Key
+    {
+        API_KEY,
+        API_URL,
+        USERNAME,
+        AUTO_LOGIN,
+        AUTO_UPDATE_CHECKS,
+        SHOW_TRAY_NOTIFICATIONS
+    };
+
+    static QString toString(const Key& key);
+
+    inline void setValue(const Key& key, const QVariant& value)
+    {
+        QSettings::setValue(AppSettings::toString(key), value);
+    }
+
+    inline QVariant value(const Key& key, const QVariant& defaultValue = QVariant()) const
+    {
+        return QSettings::value(AppSettings::toString(key), defaultValue);
+    }
+
+    constexpr static const bool DEFAULT_AUTO_LOGIN = true;
+    constexpr static const bool DEFAULT_SHOW_TRAY_NOTIFICATIONS = true;
+    constexpr static const bool DEFAULT_AUTO_UPDATE_CHECKS = true;
 };
 
-#endif // SETTINGS_H
+#endif // APPSETTINGS_H
+
+//} // namespace itchio
