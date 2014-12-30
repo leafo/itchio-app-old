@@ -7,14 +7,14 @@
 #include "widgets/librarywidget.h"
 #include "widgets/secondary/loginwidget.h"
 
-//TODO: QDesktopWidget::​screenNumber might not be working properly. Returns 0 in all screens.
-
 AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     QMainWindow(parent),
     currentWidget(""),
+    desktop(QApplication::desktop()),
     ui(new Ui::AppWindow),
     controller(controller),
-    firstClicked(NULL)
+    firstClicked(NULL),
+    isMaximized(false)
 {
     setWindowFlags( Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
     setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
@@ -27,7 +27,7 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
 
     setupSizeGrip();
 
-    move(QApplication::desktop()->screen(QApplication::desktop()->screenNumber(this))->rect().center() - rect().center());
+    move(QApplication::desktop()->screen(QApplication::desktop()->screenNumber(0))->rect().center() - rect().center());
 }
 
 AppWindow::~AppWindow()
@@ -45,6 +45,8 @@ void AppWindow::mousePressEvent(QMouseEvent *event)
             dragClickY = event->y();
         }
     }
+
+    event->accept();
 }
 
 void AppWindow::mouseReleaseEvent(QMouseEvent *event)
@@ -56,32 +58,44 @@ void AppWindow::mouseReleaseEvent(QMouseEvent *event)
 
 void AppWindow::mouseMoveEvent(QMouseEvent *event)
 {
-    if(firstClicked == topBar && !isMaximized()) {
+    if(firstClicked == topBar && !isMaximized) {
         move(event->globalX()-dragClickX, event->globalY()-dragClickY);
     }
+
+    event->accept();
 }
 
 void AppWindow::mouseDoubleClickEvent(QMouseEvent *event)
 {
     if(childAt(event->x(), event->y()) == topBar && currentWidget != "login") {
-        if(!isMaximized()) {
+        if(!isMaximized) {
             maximize();
         } else {
             restore();
         }
     }
+
+    event->accept();
+}
+
+void AppWindow::showWindow()
+{
+    setWindowFlags(windowFlags() ^ Qt::Tool);
+    show();
+    setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+}
+
+void AppWindow::hideWindow()
+{
+    setWindowFlags(windowFlags() ^ Qt::Tool);
+    hide();
 }
 
 void AppWindow::closeEvent(QCloseEvent *event)
 {
     event->ignore();
 
-    close();
-}
-
-void AppWindow::close()
-{
-    controller->hide();
+    hideWindow();
 }
 
 void AppWindow::maximize()
@@ -89,13 +103,14 @@ void AppWindow::maximize()
     oldSize = size();
     oldPosition = pos();
 
-    showMaximized();
+    setGeometry(desktop->availableGeometry(desktop->screenNumber(this)));
+    isMaximized = true;
 }
 
 void AppWindow::restore()
 {
-    showNormal();
     setGeometry(oldPosition.x(), oldPosition.y(), oldSize.width(), oldSize.height());
+    isMaximized = false;
 }
 
 void AppWindow::setupSizeGrip()
@@ -113,6 +128,7 @@ void AppWindow::setupLibrary()
     show();
     libraryWidget->show();
     sizeGrip->show();
+    setWindowState(windowState() & Qt::WindowActive);
 
     onWidgetChange(libraryWidget);
 }
@@ -134,6 +150,9 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
     if(beforeSize.height()< afterSize.height()) {
         move(x(), y() + (beforeSize.height() - afterSize.height())/2);
     }
+
+    oldSize = size();
+    oldPosition = pos();
 
     sizeGrip->raise();
 }

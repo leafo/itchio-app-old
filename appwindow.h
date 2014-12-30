@@ -8,6 +8,7 @@
 #include <QPoint>
 #include <QSize>
 #include <QSizeGrip>
+#include <QDesktopWidget>
 
 #include "appcontroller.h"
 
@@ -30,12 +31,13 @@ public:
     LoginWidget* loginWidget;
     LibraryWidget* libraryWidget;
 
+    QString currentWidget;
+
     void setupSizeGrip();
     void setupLibrary();
 
-    QString currentWidget;
-
-    QPoint oldPosition;
+    void showWindow();
+    void hideWindow();
 
 private:
     void closeEvent(QCloseEvent *event);
@@ -46,15 +48,19 @@ private:
 
     void setStatus(QString status, bool disable);
 
-    void close();
     void maximize();
     void restore();
+
+    QDesktopWidget* desktop;
 
     Ui::AppWindow* const ui;
     AppController* const controller;
 
     QObject* firstClicked;
 
+    bool isMaximized;
+
+    QPoint oldPosition;
     QSize oldSize;
     int dragClickX;
     int dragClickY;
