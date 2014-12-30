@@ -1,65 +1,96 @@
-#include <QDebug>
-
 #include "appsettings.h"
 #include "itchioapi.h"
 
-AppSettings::AppSettings(const QString & fileName, Format format, QObject* parent) :
-    QSettings(fileName, format, parent)
-{
+//using itchio::AppSettings;
 
+AppSettings::AppSettings(const QString& filename, const Format format, QObject* const parent) :
+    QSettings(filename, format, parent)
+{
 }
 
-AppSettings::~AppSettings()
+QString AppSettings::apiKey() const
 {
-
+    return value(Key::API_KEY).toString();
 }
 
-QString AppSettings::loadSetting(Settings setting)
+void AppSettings::setApiKey(const QString& key)
 {
-    return value(settingName(setting), settingDefault(setting)).toString();
+    setValue(Key::API_KEY, key);
 }
 
-void AppSettings::saveSetting(Settings setting, const QVariant& data)
+bool AppSettings::hasValidApiKey() const
 {
-    setValue(settingName(setting), data);
+    //TODO Perform a more thorough check.
+    return apiKey() != "";
 }
 
-QString AppSettings::settingName(Settings setting)
+QString AppSettings::apiUrl() const
 {
-    switch(setting) {
-    case API_KEY:
+    return value(Key::API_URL, ItchioApi::DEFAULT_API_URL).toString();
+}
+
+void AppSettings::setApiUrl(const QString& url)
+{
+    setValue(Key::API_URL, url);
+}
+
+QString AppSettings::username() const
+{
+    return value(Key::USERNAME).toString();
+}
+
+void AppSettings::setUsername(const QString& username)
+{
+    setValue(Key::USERNAME, username);
+}
+
+bool AppSettings::autoLogin() const
+{
+    return value(Key::AUTO_LOGIN, AppSettings::DEFAULT_AUTO_LOGIN).toBool();
+}
+
+void AppSettings::enableAutoLogin(const bool enable)
+{
+    setValue(Key::AUTO_LOGIN, enable);
+}
+
+bool AppSettings::autoUpdateChecks() const
+{
+    return value(Key::AUTO_UPDATE_CHECKS, AppSettings::DEFAULT_AUTO_UPDATE_CHECKS).toBool();
+}
+
+void AppSettings::enableAutoUpdateChecks(const bool enable)
+{
+    setValue(Key::AUTO_UPDATE_CHECKS, enable);
+}
+
+bool AppSettings::showTrayNotifications() const
+{
+    return value(Key::SHOW_TRAY_NOTIFICATIONS, AppSettings::DEFAULT_SHOW_TRAY_NOTIFICATIONS).toBool();
+}
+
+void AppSettings::enableTrayNotifications(const bool enable)
+{
+    setValue(Key::SHOW_TRAY_NOTIFICATIONS, enable);
+}
+
+QString AppSettings::toString(const Key& key)
+{
+    switch (key) {
+    case Key::API_KEY:
         return "api_key";
-    case USERNAME:
-        return "username";
-    case API_URL:
+    case Key::API_URL:
         return "api_url";
-    case KEEP_LOGGED_IN:
-        return "keep_logged_in";
-    case AUTO_UPDATE_CHECK:
-        return "auto_update_check";
-    case SHOW_TRAY_NOTIFICATION:
-        return "display_tray_notifications";
+    case Key::USERNAME:
+        return "username";
+    case Key::AUTO_LOGIN:
+        return "auto_login";
+    case Key::AUTO_UPDATE_CHECKS:
+        return "auto_update_checks";
+    case Key::SHOW_TRAY_NOTIFICATIONS:
+        return "show_tray_notifications";
+    default:
+        // This is a guard to make sure any keys added later on are handled in this switch-case.
+        qFatal("[AppSettings::toString] Undefined key!");
     }
-
-    return "";
-}
-
-QString AppSettings::settingDefault(Settings setting)
-{
-    switch(setting) {
-    case API_KEY:
-        return "";
-    case USERNAME:
-        return "";
-    case API_URL:
-        return ItchioApi::DEFAULT_API_URL;
-    case KEEP_LOGGED_IN:
-        return "1";
-    case AUTO_UPDATE_CHECK:
-        return "1";
-    case SHOW_TRAY_NOTIFICATION:
-        return "1";
-    }
-
-    return "";
 }
