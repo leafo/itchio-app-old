@@ -44,26 +44,6 @@ void AppController::setupSettings()
     settings = new AppSettings(settingsFile, QSettings::IniFormat, this);
 }
 
-void AppController::hide()
-{
-    if(!appWindow->oldPosition.isNull()) {
-        appWindow->move(appWindow->oldPosition);
-    }
-
-    appWindow->showMinimized();
-
-    appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
-}
-
-void AppController::show()
-{
-    appWindow->oldPosition = appWindow->pos();
-
-    appWindow->setWindowFlags(appWindow->windowFlags() ^ Qt::Tool);
-    appWindow->show();
-    appWindow->setWindowState((appWindow->windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
-}
-
 void AppController::quit()
 {
     QCoreApplication::exit();
@@ -80,7 +60,7 @@ void AppController::showSettings()
 void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
 {
     if(reason == QSystemTrayIcon::DoubleClick && !appWindow->isVisible()) {
-        show();
+        appWindow->showWindow();
     }
 }
 
