@@ -12,8 +12,6 @@
 #include "widgets/secondary/loginwidget.h"
 #include "widgets/secondary/settingswidget.h"
 
-//TODO: Create custom maximizing pipeline to better handle taskbars.
-
 AppController::AppController(QObject *parent) :
     QObject(parent),
     settingsWindow(NULL),

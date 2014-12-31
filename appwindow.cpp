@@ -67,7 +67,7 @@ void AppWindow::mouseMoveEvent(QMouseEvent *event)
 
 void AppWindow::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    if(childAt(event->x(), event->y()) == topBar && currentWidget != "login") {
+    if(childAt(event->x(), event->y()) == topBar) {
         if(!isMaximized) {
             maximize();
         } else {
