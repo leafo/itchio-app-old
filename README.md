@@ -5,7 +5,6 @@
 The itch.io app is a cross-platform client for the [itch.io][1] marketplace. It is built with the
 Qt 5 framework and is currently available for Windows, Linux and OS X.
 
-
 ## Building the client
 
 Firstly, clone the project
@@ -44,3 +43,8 @@ WIP Dev Log
 
 [1]: https://itch.io "itch.io indie games marketplace"
 [2]: http://qt-project.org/wiki/Category:Tools::QtCreator "Qt Creator info page"
+
+
+## License
+
+Licensed under MIT License, see `LICENSE` for details.
