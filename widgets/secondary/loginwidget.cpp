@@ -9,8 +9,6 @@ LoginWidget::LoginWidget(QWidget *parent, AppController *controller) :
     controller(controller)
 {
     ui->setupUi(this);
-
-    connect(controller->api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
 }
 
 LoginWidget::~LoginWidget()
@@ -37,7 +35,13 @@ void LoginWidget::onLoginTentative()
     }
 
     setStatus("Logging in...", true);
-    controller->api->loginWithPassword(username, password);
+    controller->api->loginWithPassword(username, password, [this] (bool success, QString err) {
+        if (success) {
+            controller->onLogin();
+        } else {
+            onLoginFailure(err);
+        }
+    });
 }
 
 void LoginWidget::onLoginFailure(QString error)

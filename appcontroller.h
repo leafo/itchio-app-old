@@ -27,6 +27,7 @@ public:
     void setupTrayIcon();
     void showTrayIconNotification(TrayNotifications notification, int duration);
     void setupAppWindow();
+    void onLogin();
 
 private:
     QString settingsFile;
@@ -45,6 +46,7 @@ private:
 
     void setupLogin();
     void setupSettings();
+    void onAutoLoginFailure(QString error);
 
 signals:
 
@@ -55,9 +57,6 @@ public slots:
     void trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason);
     void setupTrayIconMenu(bool beforeLogin = false);
 
-private slots:
-    void onLogin();
-    void onLoginFailure(QString error);
 };
 
 #endif // APPCONTROLLER_H

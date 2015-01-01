@@ -20,8 +20,8 @@ public:
     explicit ItchioApi(QObject* const parent, const QString& apiUrl);
 
     void request(const QString& path, std::function<void (QJsonDocument)> callback);
-    void loginWithPassword(const QString& username, const QString& password);
-    void loginWithApiKey(const QString& apiKey);
+    void loginWithPassword(const QString& username, const QString& password, std::function<void (bool, QString)> callback);
+    void loginWithApiKey(const QString& apiKey, std::function<void (bool, QString)> callback);
 
     void myGames(std::function<void (QList<Game>)> callback);
     void myOwnedKeys(std::function<void (QList<DownloadKey>)> callback);
@@ -38,13 +38,7 @@ public:
 private:
     const QString base;
     QNetworkAccessManager* const networkManager;
-
-signals:
-    void onLogin();
-    void onLoginFailure(QString reason);
-
-public slots:
-    void getLoginRequest(QJsonDocument res);
+    QString parseJsonError(const QJsonDocument& document);
 
 };
 
