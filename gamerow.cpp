@@ -55,8 +55,6 @@ GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key
 
     setLayout(rowLayout);
 
-    // connect(downloadButton, SIGNAL(clicked()), SLOT(onClickDownload()));
-
     refreshThumbnail();
 }
 
@@ -100,6 +98,14 @@ void GameRow::onTriggerMenu()
     controller->api->downloadKeyUploads(downloadKey);
 }
 
+void GameRow::onTriggerUpload()
+{
+    QAction* action = qobject_cast<QAction*>(sender());
+    int pos = action->data().toInt();
+    qDebug() << "triggered upload" << pos;
+    Upload toDownload = pendingUploads[pos];
+}
+
 void GameRow::onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& uploads)
 {
     // need to pass correct download key first
@@ -107,6 +113,7 @@ void GameRow::onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& 
     //     return;
     // }
 
+    pendingUploads = uploads;
     downloadMenu->clear();
 
     if (uploads.empty()) {
@@ -116,8 +123,11 @@ void GameRow::onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& 
         return;
     }
 
-    foreach (Upload upload, uploads) {
-        downloadMenu->addAction(new QAction(upload.filename, downloadMenu));
+    for (int i = 0; i < uploads.count(); i++) {
+        QAction* const uploadAction =  new QAction(uploads[i].filename, downloadMenu);
+        uploadAction->setData(i);
+        connect(uploadAction, SIGNAL(triggered()), this, SLOT(onTriggerUpload()));
+        downloadMenu->addAction(uploadAction);
     }
 }
 

@@ -28,6 +28,7 @@ private slots:
     void onClickDownload();
     void onDownloadThumbnail();
     void onTriggerMenu();
+    void onTriggerUpload();
     void onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& uploads);
 
 private:
@@ -39,6 +40,8 @@ private:
     QProgressBar* downloadProgress;
     QPushButton* downloadButton;
     QMenu* downloadMenu;
+
+    QList<Upload> pendingUploads;
 
     void refreshThumbnail();
 };
