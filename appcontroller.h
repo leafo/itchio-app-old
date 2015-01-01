@@ -49,8 +49,6 @@ private:
 signals:
 
 public slots:
-    void show();
-    void hide();
     void quit();
     void showSettings();
 
