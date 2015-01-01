@@ -60,6 +60,11 @@ void ItchioApi::downloadKeyUploads(const DownloadKey& key)
     request(QString("download-key/%1/uploads").arg(key.id), SLOT(getDownloadKeyUploads()));
 }
 
+void ItchioApi::downloadUpload(const DownloadKey &key, const Upload &upload)
+{
+    request(QString("download-key/%1/download/%2").arg(key.id, upload.id), SLOT(getDownload()));
+}
+
 void ItchioApi::request(const QString& path, const char* slot)
 {
     QString url =  base + "/" + userKey + "/" + path;
@@ -175,4 +180,9 @@ void ItchioApi::getDownloadKeyUploads()
     }
 
     onDownloadKeyUploads(DownloadKey(), uploadList);
+}
+
+void ItchioApi::getDownload()
+{
+    qDebug() << "got a response for download";
 }

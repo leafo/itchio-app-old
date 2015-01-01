@@ -21,6 +21,7 @@ public:
     void myGames();
     void myOwnedKeys();
     void downloadKeyUploads(const DownloadKey& key);
+    void downloadUpload(const DownloadKey& key, const Upload& upload);
 
     QString userKey;
     QString userName;
@@ -39,12 +40,14 @@ signals:
     void onMyGames(QList<Game> games);
     void onMyOwnedKeys(QList<DownloadKey> games);
     void onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads);
+    void onUploadDownload(Upload upload, QString url);
 
 public slots:
     void getMyGamesRequest();
     void getMyOwnedKeys();
     void getLoginRequest();
     void getDownloadKeyUploads();
+    void getDownload();
 
 };
 
