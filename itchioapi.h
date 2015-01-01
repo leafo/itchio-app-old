@@ -6,6 +6,7 @@
 
 #include <QObject>
 #include <QNetworkAccessManager>
+#include <QJsonDocument>
 
 #include "objects/game.h"
 #include "objects/downloadkey.h"
@@ -18,12 +19,12 @@ class ItchioApi : public QObject
 public:
     explicit ItchioApi(QObject* const parent, const QString& apiUrl);
 
-    void request(const QString& path, const char* slot);
+    void request(const QString& path, std::function<void (QJsonDocument)> callback);
     void loginWithPassword(const QString& username, const QString& password);
     void loginWithApiKey(const QString& apiKey);
 
-    void myGames();
-    void myOwnedKeys();
+    void myGames(std::function<void (QList<Game>)> callback);
+    void myOwnedKeys(std::function<void (QList<DownloadKey>)> callback);
     void downloadKeyUploads(const DownloadKey& key, std::function<void (QList<Upload>)> callback);
     void downloadUpload(const DownloadKey& key, const Upload& upload, std::function<void (QString)> callback);
 
@@ -37,19 +38,13 @@ public:
 private:
     const QString base;
     QNetworkAccessManager* const networkManager;
-    QNetworkReply* sendRequest(const QString& path);
-    QJsonDocument parseAndCloseReply(QNetworkReply* const reply);
 
 signals:
     void onLogin();
     void onLoginFailure(QString reason);
-    void onMyGames(QList<Game> games);
-    void onMyOwnedKeys(QList<DownloadKey> games);
 
 public slots:
-    void getMyGamesRequest();
-    void getMyOwnedKeys();
-    void getLoginRequest();
+    void getLoginRequest(QJsonDocument res);
 
 };
 
