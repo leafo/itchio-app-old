@@ -12,8 +12,9 @@ LibraryWidget::LibraryWidget(QWidget* const parent, AppController* const control
 {
     ui->setupUi(this);
 
-    connect(controller->api, SIGNAL(onMyOwnedKeys(QList<DownloadKey>)), this, SLOT(onMyOwnedKeys(QList<DownloadKey>)));
-    controller->api->myOwnedKeys();
+    controller->api->myOwnedKeys([this] (QList<DownloadKey> keys) {
+        onMyOwnedKeys(keys);
+    });
 }
 
 void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys)

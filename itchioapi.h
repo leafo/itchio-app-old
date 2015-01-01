@@ -1,8 +1,12 @@
 #ifndef ITCHIOAPI_H
 #define ITCHIOAPI_H
 
+#include <functional>
+
+
 #include <QObject>
 #include <QNetworkAccessManager>
+#include <QJsonDocument>
 
 #include "objects/game.h"
 #include "objects/downloadkey.h"
@@ -14,14 +18,15 @@ class ItchioApi : public QObject
 
 public:
     explicit ItchioApi(QObject* const parent, const QString& apiUrl);
-    void request(const QString& path, const char* slot);
-    void loginWithPassword(const QString& username, const QString& password);
-    void loginWithApiKey(const QString& apiKey);
 
-    void myGames();
-    void myOwnedKeys();
-    void downloadKeyUploads(const DownloadKey& key);
-    void downloadUpload(const DownloadKey& key, const Upload& upload);
+    void request(const QString& path, std::function<void (QJsonDocument)> callback);
+    void loginWithPassword(const QString& username, const QString& password, std::function<void (bool, QString)> callback);
+    void loginWithApiKey(const QString& apiKey, std::function<void (bool, QString)> callback);
+
+    void myGames(std::function<void (QList<Game>)> callback);
+    void myOwnedKeys(std::function<void (QList<DownloadKey>)> callback);
+    void downloadKeyUploads(const DownloadKey& key, std::function<void (QList<Upload>)> callback);
+    void downloadUpload(const DownloadKey& key, const Upload& upload, std::function<void (QString)> callback);
 
     QString userKey;
     QString userName;
@@ -33,21 +38,7 @@ public:
 private:
     const QString base;
     QNetworkAccessManager* const networkManager;
-
-signals:
-    void onLogin();
-    void onLoginFailure(QString reason);
-    void onMyGames(QList<Game> games);
-    void onMyOwnedKeys(QList<DownloadKey> games);
-    void onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads);
-    void onUploadDownload(Upload upload, QString url);
-
-public slots:
-    void getMyGamesRequest();
-    void getMyOwnedKeys();
-    void getLoginRequest();
-    void getDownloadKeyUploads();
-    void getDownload();
+    QString parseJsonError(const QJsonDocument& document);
 
 };
 

@@ -1,5 +1,4 @@
 #include <QNetworkReply>
-#include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QUrlQuery>
@@ -16,7 +15,7 @@ ItchioApi::ItchioApi(QObject* const parent, const QString& apiUrl) :
     networkManager(new QNetworkAccessManager(this))
 {}
 
-void ItchioApi::loginWithPassword(const QString& username, const QString& password)
+void ItchioApi::loginWithPassword(const QString& username, const QString& password, std::function<void (bool, QString)> callback)
 {
     userName = username;
 
@@ -36,36 +35,115 @@ void ItchioApi::loginWithPassword(const QString& username, const QString& passwo
     paramBytes.append(params.toString());
 
     QNetworkReply* const reply = networkManager->post(request, paramBytes);
-    connect(reply, SIGNAL(finished()), this, SLOT(getLoginRequest()));
+    connect(reply, &QNetworkReply::finished, [=] {
+        reply->deleteLater();
+
+        if (reply->error() != QNetworkReply::NoError) {
+            callback(false, reply->errorString());
+            return;
+        }
+
+        QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
+
+        QString error = parseJsonError(res);
+        if (error != "") {
+            callback(false, error);
+            return;
+        }
+
+        QJsonValue keyValue = res.object()["key"];
+        QJsonObject keyObject = keyValue.toObject();
+        userKey = keyObject["key"].toString();
+        userId = keyObject["user_id"].toInt();
+        qDebug() << "\nLogged in with" << userKey << userId;
+        callback(true, "");
+    });
 }
 
-void ItchioApi::loginWithApiKey(const QString& apiKey)
+void ItchioApi::loginWithApiKey(const QString& apiKey, std::function<void (bool, QString)> callback)
 {
     userKey = apiKey;
-    request("me", SLOT(getLoginRequest()));
+    request("me", [=] (QJsonDocument res) {
+        QString error = parseJsonError(res);
+        if (error != "") {
+            callback(false, error);
+            return;
+        }
+
+        QJsonValue userValue = res.object()["user"];
+        QJsonObject userObject = userValue.toObject();
+
+        userName = userObject["username"].toString();
+        userId = userObject["id"].toInt();
+        qDebug() << "\nLogged in with" << userKey << userId;
+        callback(true, "");
+    });
 }
 
-void ItchioApi::myGames()
+void ItchioApi::myGames(std::function<void (QList<Game>)> callback)
 {
-    request("my-games", SLOT(getMyGamesRequest()));
+    request("my-games", [=] (QJsonDocument res) {
+        QJsonValue games = res.object()["games"];
+        QList<Game> gameList;
+        foreach (const QJsonValue& gameValue, games.toArray()) {
+            QJsonObject gameObject = gameValue.toObject();
+            gameList << Game::fromJson(gameObject);
+        }
+
+        callback(gameList);
+    });
 }
 
-void ItchioApi::myOwnedKeys()
+void ItchioApi::myOwnedKeys(std::function<void (QList<DownloadKey> keys)> callback)
 {
-    request("my-owned-keys", SLOT(getMyOwnedKeys()));
+    request("my-owned-keys", [=] (QJsonDocument res) {
+        QJsonValue keys = res.object()["owned_keys"];
+
+        QList<DownloadKey> keyList;
+        foreach (const QJsonValue& keyValue, keys.toArray()) {
+            QJsonObject keyObject = keyValue.toObject();
+            keyList <<  DownloadKey::fromJson(keyObject);
+        }
+
+        callback(keyList);
+    });
 }
 
-void ItchioApi::downloadKeyUploads(const DownloadKey& key)
+void ItchioApi::downloadKeyUploads(const DownloadKey& key, std::function<void (QList<Upload>)> callback)
 {
-    request(QString("download-key/%1/uploads").arg(key.id), SLOT(getDownloadKeyUploads()));
+    request(QString("download-key/%1/uploads").arg(key.id), [=] (QJsonDocument res) {
+        QJsonValue uploadsValue = res.object()["uploads"];
+
+        QList<Upload> uploads;
+        foreach (const QJsonValue& uploadValue, uploadsValue.toArray()) {
+            QJsonObject uploadObject = uploadValue.toObject();
+            uploads << Upload::fromJson(uploadObject);
+        }
+
+        callback(uploads);
+    });
 }
 
-void ItchioApi::downloadUpload(const DownloadKey &key, const Upload &upload)
+void ItchioApi::downloadUpload(const DownloadKey &key, const Upload &upload, std::function<void (QString)> callback)
 {
-    request(QString("download-key/%1/download/%2").arg(key.id, upload.id), SLOT(getDownload()));
+    request(QString("download-key/%1/download/%2").arg(key.id).arg(upload.id), [=] (QJsonDocument res) {
+        QJsonValue urlValue = res.object()["url"];
+        QString url = urlValue.toString();
+        callback(url);
+    });
 }
 
-void ItchioApi::request(const QString& path, const char* slot)
+QString ItchioApi::parseJsonError(const QJsonDocument& document)
+{
+    QJsonValue errors = document.object()["errors"];
+    if (!errors.isNull()) {
+        return errors.toArray()[0].toString();
+    }
+
+    return "";
+}
+
+void ItchioApi::request(const QString& path, std::function<void (QJsonDocument)> callback)
 {
     QString url =  base + "/" + userKey + "/" + path;
     qDebug() << "Requesting URL" << url;
@@ -74,115 +152,16 @@ void ItchioApi::request(const QString& path, const char* slot)
     request.setUrl(QUrl(url));
     request.setHeader(QNetworkRequest::UserAgentHeader, USER_AGENT);
 
-    QNetworkReply* const reply = networkManager->get(request);
-    connect(reply, SIGNAL(finished()), this, slot);
-}
+    QNetworkReply* const reply =  networkManager->get(request);
 
-void ItchioApi::getMyGamesRequest()
-{
-    QNetworkReply* const reply = qobject_cast<QNetworkReply*>(sender());
-    reply->deleteLater();
-
-    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
-    QJsonValue games = res.object()["games"];
-    QList<Game> gameList;
-    foreach (const QJsonValue& gameValue, games.toArray()) {
-        QJsonObject gameObject = gameValue.toObject();
-        gameList << Game::fromJson(gameObject);
-    }
-
-    qDebug() << "sending" << gameList.length() << "games";
-    onMyGames(gameList);
-}
-
-void ItchioApi::getMyOwnedKeys()
-{
-    QNetworkReply* const reply = qobject_cast<QNetworkReply*>(sender());
-    reply->deleteLater();
-
-    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
-    QJsonValue keys = res.object()["owned_keys"];
-
-    QList<DownloadKey> keyList;
-    foreach (const QJsonValue& keyValue, keys.toArray()) {
-        QJsonObject keyObject = keyValue.toObject();
-        keyList <<  DownloadKey::fromJson(keyObject);
-    }
-
-    onMyOwnedKeys(keyList);
-}
-
-void ItchioApi::getLoginRequest()
-{
-    QNetworkReply* const reply = qobject_cast<QNetworkReply*>(sender());
-    reply->deleteLater();
-
-    if (reply->error() != QNetworkReply::NoError) {
-        onLoginFailure("Failed to connect to itch.io");
-        return;
-    }
-
-    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
-    //qDebug() << res;
-
-    QJsonValue errors = res.object()["errors"];
-
-    if (!errors.isNull()) {
-        QString error = errors.toArray()[0].toString();
-
-        onLoginFailure(error);
-
-        return;
-    }
-
-    QJsonValue keyValue;
-
-    if(userKey == "") {
-        keyValue = res.object()["key"];
-
-        if (!keyValue.isNull()) {
-            QJsonObject key = keyValue.toObject();
-            userKey = key["key"].toString();
-            userId = key["user_id"].toInt();
-            qDebug() << "\nLogged in with" << userKey << userId;
-
-            onLogin();
+    connect(reply, &QNetworkReply::finished, [=] {
+        reply->deleteLater();
+        if (reply->error() == QNetworkReply::NoError) {
+            callback(QJsonDocument::fromJson(reply->readAll()));
             return;
         }
-    } else {
-        keyValue = res.object()["user"];
 
-        if (!keyValue.isNull()) {
-            QJsonObject key = keyValue.toObject();
-            userName = key["username"].toString();
-            userId = key["id"].toInt();
-            qDebug() << "\nLogged in with" << userKey << userId;
-            onLogin();
-            return;
-        }
-    }
-}
-
-void ItchioApi::getDownloadKeyUploads()
-{
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
-    reply->deleteLater();
-
-    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
-
-
-    QJsonValue uploads = res.object()["uploads"];
-
-    QList<Upload> uploadList;
-    foreach (const QJsonValue& uploadValue, uploads.toArray()) {
-        QJsonObject uploadObject = uploadValue.toObject();
-        uploadList << Upload::fromJson(uploadObject);
-    }
-
-    onDownloadKeyUploads(DownloadKey(), uploadList);
-}
-
-void ItchioApi::getDownload()
-{
-    qDebug() << "got a response for download";
+        // TODO: send some sort of error signal
+        qFatal("Failed to get response from server");
+    });
 }

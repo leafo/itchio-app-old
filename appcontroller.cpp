@@ -22,12 +22,14 @@ AppController::AppController(QObject *parent) :
     setupTrayIcon();
     setupAppWindow();
 
-    connect(api, SIGNAL(onLogin()), this, SLOT(onLogin()));
-
     if(settings->autoLogin() && settings->hasValidApiKey()) {
-        connect(api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
-
-        api->loginWithApiKey(settings->apiKey());
+        api->loginWithApiKey(settings->apiKey(), [this] (bool success, QString err) {
+            if (success) {
+                onLogin();
+            } else {
+                onAutoLoginFailure(err);
+            }
+        });
 
         loginWithApiKey = true;
     } else {
@@ -134,9 +136,7 @@ void AppController::onLogin()
     appWindow->setupLibrary();
 }
 
-void AppController::onLoginFailure(QString error)
+void AppController::onAutoLoginFailure(QString error)
 {
-    if(error == "invalid key") {
-        setupLogin();
-    }
+    setupLogin();
 }

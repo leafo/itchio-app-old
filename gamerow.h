@@ -27,11 +27,13 @@ public:
 private slots:
     void onClickDownload();
     void onDownloadThumbnail();
-    void onTriggerMenu();
+    void onTriggerDownloadMenu();
     void onTriggerUpload();
-    void onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& uploads);
+    void onUploads(const QList<Upload>& uploads);
 
 private:
+    QNetworkAccessManager* networkManager;
+
     Game game;
     DownloadKey downloadKey;
     AppController* const controller;

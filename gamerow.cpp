@@ -13,6 +13,9 @@
 
 #include "gamerow.h"
 #include "itchioapi.h"
+#include <QStandardPaths>
+#include <QDir>
+#include <QFile>
 
 GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller) :
     QWidget(parent),
@@ -20,14 +23,14 @@ GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key
     downloadKey(key),
     controller(controller)
 {
+    networkManager = new QNetworkAccessManager(this);
+
     QHBoxLayout* rowLayout = new QHBoxLayout;
     downloadButton = new QPushButton("Download");
 
     downloadMenu = new QMenu("Choose download");
     downloadButton->setMenu(downloadMenu);
-    connect(downloadMenu, SIGNAL(aboutToShow()), SLOT(onTriggerMenu()));
-    connect(controller->api, SIGNAL(onDownloadKeyUploads(DownloadKey,QList<Upload>)),
-            SLOT(onDownloadKeyUploads(DownloadKey,QList<Upload>)));
+    connect(downloadMenu, &QMenu::aboutToShow, this, &GameRow::onTriggerDownloadMenu);
 
     imageHolder = new QLabel();
     double ratio = double(Game::COVER_WIDTH) / Game::COVER_HEIGHT;
@@ -89,30 +92,56 @@ void GameRow::onDownloadThumbnail()
     }
 }
 
-void GameRow::onTriggerMenu()
+void GameRow::onTriggerDownloadMenu()
 {
     downloadMenu->clear();
     QAction* loaderAction = new QAction("Loading...", downloadMenu);
     loaderAction->setDisabled(true);
     downloadMenu->addAction(loaderAction);
-    controller->api->downloadKeyUploads(downloadKey);
+    controller->api->downloadKeyUploads(downloadKey, [this] (QList<Upload> uploads) {
+        onUploads(uploads);
+    });
 }
 
 void GameRow::onTriggerUpload()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     int pos = action->data().toInt();
-    qDebug() << "triggered upload" << pos;
-    Upload toDownload = pendingUploads[pos];
+    Upload upload = pendingUploads[pos];
+    controller->api->downloadUpload(downloadKey, upload, [=] (QString url) {
+        QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        QDir().mkpath(path);
+
+        QString fname = QString::number(upload.id);
+        QString fullPath = path + "/" + fname;
+
+        qDebug() << "Download: " << url << "to" << fullPath;
+
+        QFile* file = new QFile(fullPath);
+        file->open(QIODevice::WriteOnly);
+
+        QNetworkRequest request;
+        request.setUrl(QUrl(url));
+        request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
+        QNetworkReply* reply = networkManager->get(request);
+
+        connect(reply, &QNetworkReply::readyRead, [=] {
+            qDebug() << "ready read" << reply->bytesAvailable();
+            file->write(reply->read(reply->bytesAvailable()));
+        });
+
+        connect(reply, &QNetworkReply::finished, [=] {
+            reply->deleteLater();
+            qDebug() << "finished" << fullPath;
+            file->close();
+            delete file;
+        });
+
+    });
 }
 
-void GameRow::onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& uploads)
+void GameRow::onUploads(const QList<Upload>& uploads)
 {
-    // need to pass correct download key first
-    // if (key.id != downloadKey.id) {
-    //     return;
-    // }
-
     pendingUploads = uploads;
     downloadMenu->clear();
 
@@ -126,7 +155,7 @@ void GameRow::onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& 
     for (int i = 0; i < uploads.count(); i++) {
         QAction* const uploadAction =  new QAction(uploads[i].filename, downloadMenu);
         uploadAction->setData(i);
-        connect(uploadAction, SIGNAL(triggered()), this, SLOT(onTriggerUpload()));
+        connect(uploadAction, &QAction::triggered, this, &GameRow::onTriggerUpload);
         downloadMenu->addAction(uploadAction);
     }
 }
@@ -137,8 +166,6 @@ void GameRow::refreshThumbnail()
         return;
     }
 
-    QNetworkAccessManager* networkManager = new QNetworkAccessManager(this);
-
     qDebug() << "Fetching cover" << game.coverImageUrl;
 
     QNetworkRequest request;
@@ -146,5 +173,5 @@ void GameRow::refreshThumbnail()
     request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
 
     QNetworkReply* reply = networkManager->get(request);
-    connect(reply, SIGNAL(finished()), this, SLOT(onDownloadThumbnail()));
+    connect(reply, &QNetworkReply::finished, this, &GameRow::onDownloadThumbnail);
 }
