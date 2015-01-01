@@ -5,7 +5,6 @@
 #include <QDebug>
 
 #include "appcontroller.h"
-#include "settings.h"
 #include "appwindow.h"
 #include "secondarywindow.h"
 #include "widgets/librarywidget.h"
@@ -20,17 +19,17 @@ AppController::AppController(QObject *parent) :
     loginWithApiKey(false)
 {
     setupSettings();
-    api = new ItchioApi(this, settings->loadSetting(API_URL));
+    api = new ItchioApi(this, settings->apiUrl());
 
     setupTrayIcon();
     setupAppWindow();
 
     connect(api, SIGNAL(onLogin()), this, SLOT(onLogin()));
 
-    if(settings->loadSetting(KEEP_LOGGED_IN) == "1" && settings->loadSetting(API_KEY) != "") {
+    if(settings->autoLogin() && settings->hasValidApiKey()) {
         connect(api, SIGNAL(onLoginFailure(QString)), this, SLOT(onLoginFailure(QString)));
 
-        api->loginWithApiKey(settings->loadSetting(API_KEY));
+        api->loginWithApiKey(settings->apiKey());
 
         loginWithApiKey = true;
     } else {
@@ -40,7 +39,7 @@ AppController::AppController(QObject *parent) :
 
 void AppController::setupSettings()
 {
-    settingsFile = "settings.scratch";
+    settingsFile = "itchio.ini";
     settings = new AppSettings(settingsFile, QSettings::IniFormat, this);
 }
 
@@ -115,7 +114,7 @@ void AppController::setupTrayIconMenu(bool beforeLogin)
 
 void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
 {
-    if(settings->loadSetting(SHOW_TRAY_NOTIFICATION) == "1") {
+    if(settings->showTrayNotifications()) {
         switch(notification) {
         case NOTIFICATION_TEST:
             trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
@@ -126,7 +125,7 @@ void AppController::showTrayIconNotification(TrayNotifications notification, int
 
 void AppController::setupLogin()
 {
-    settings->saveSetting(API_KEY, "");
+    settings->setApiKey("");
     api->userKey = "";
 
     setupTrayIconMenu(true);
@@ -142,9 +141,9 @@ void AppController::setupAppWindow()
 
 void AppController::onLogin()
 {
-    if(settings->loadSetting((KEEP_LOGGED_IN)) == "1") {
-        settings->saveSetting(API_KEY, api->userKey);
-        settings->saveSetting(USERNAME, api->userName);
+    if(settings->autoLogin()) {
+        settings->setApiKey(api->userKey);
+        settings->setUsername(api->userName);
     }
 
     setupTrayIconMenu();

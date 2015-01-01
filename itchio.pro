@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui network
+QT        += core gui network
 QT_CONFIG -= no-pkg-config
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -18,15 +18,15 @@ SOURCES += main.cpp \
     appcontroller.cpp \
     appsettings.cpp \
     appwindow.cpp \
-	secondarywindow.cpp \
+    secondarywindow.cpp \
     widgets/librarywidget.cpp \
-	widgets/secondary/loginwidget.cpp \
-	widgets/secondary/settingswidget.cpp \
+    widgets/secondary/loginwidget.cpp \
+    widgets/secondary/settingswidget.cpp \
     objects/game.cpp \
     gamerow.cpp \
     objects/user.cpp \
     objects/downloadkey.cpp \
-	objects/upload.cpp
+    objects/upload.cpp
 
 
 HEADERS += itchioapi.h \
@@ -35,26 +35,25 @@ HEADERS += itchioapi.h \
     appcontroller.h \
     appsettings.h \
     appwindow.h \
-	secondarywindow.h \
-	widgets/librarywidget.h \
-	widgets/secondary/loginwidget.h \
-	widgets/secondary/settingswidget.h \
+    secondarywindow.h \
+    widgets/librarywidget.h \
+    widgets/secondary/loginwidget.h \
+    widgets/secondary/settingswidget.h \
     objects/game.h \
     gamerow.h \
     objects/user.h \
     objects/downloadkey.h \
-	objects/upload.h
+    objects/upload.h
 
 
 FORMS += appwindow.ui \
-	secondarywindow.ui \
+    secondarywindow.ui \
     widgets/librarywidget.ui \
-	widgets/secondary/loginwidget.ui \
+    widgets/secondary/loginwidget.ui \
     widgets/secondary/settingswidget.ui
 
 RESOURCES += \
     resources.qrc \
 
-CONFIG += link_pkgconfig
 
-PKGCONFIG += openssl
+include(itchio.pri)
