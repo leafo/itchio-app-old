@@ -9,6 +9,8 @@
 #include <QSize>
 #include <QSizeGrip>
 #include <QDesktopWidget>
+#include <QList>
+#include <QPushButton>
 
 #include "appcontroller.h"
 
@@ -56,6 +58,8 @@ private:
     Ui::AppWindow* const ui;
     AppController* const controller;
 
+    QList<QWidget*> widgets;
+
     QObject* firstClicked;
 
     bool isMaximized;
@@ -70,6 +74,8 @@ private:
     QGridLayout* appWindowLayout;
     QGridLayout* widgetsLayout;
 
+    QList<QPushButton*> topBarWidgetButtons;
+
 signals:
 
 public slots:
@@ -77,7 +83,7 @@ public slots:
 private slots:
     void onWidgetChange(QWidget* newWidget);
     void on_topBarCloseButton_clicked();
-
+    void on_libraryButton_clicked();
 };
 
 #endif // APPWINDOW_H

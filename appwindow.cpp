@@ -1,4 +1,4 @@
-#include <QDesktopWidget>
+#include <QFile>
 
 #include <QtDebug>
 
@@ -6,6 +6,8 @@
 #include "ui_appwindow.h"
 #include "widgets/librarywidget.h"
 #include "widgets/secondary/loginwidget.h"
+
+// TODO: Research better ways to handle CSS change during runtime.
 
 AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     QMainWindow(parent),
@@ -24,6 +26,8 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     appWindowLayout = findChild<QGridLayout*>("appWindowLayout");
     widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
     topBar = findChild<QWidget*>("topBar");
+
+    topBarWidgetButtons = findChild<QWidget*>("widgetButtonsWidget")->findChildren<QPushButton*>();
 
     setupSizeGrip();
 
@@ -121,21 +125,26 @@ void AppWindow::setupSizeGrip()
 
 void AppWindow::setupLibrary()
 {
-    currentWidget = "Library";
     libraryWidget = new LibraryWidget(this, controller);
     widgetsLayout->addWidget(libraryWidget);
-
-    show();
-    libraryWidget->show();
-    sizeGrip->show();
-    setWindowState(windowState() & Qt::WindowActive);
+    widgets.append(libraryWidget);
+    libraryWidget->hide();
 
     onWidgetChange(libraryWidget);
 }
 
 void AppWindow::onWidgetChange(QWidget* newWidget)
 {
+    currentWidget = newWidget->windowTitle();
     setWindowTitle(currentWidget + " - itch.io");
+
+    for (int i = 0; i != topBarWidgetButtons.count(); i++) {
+        if(topBarWidgetButtons[i]->text() == currentWidget) {
+            topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
+        } else {
+            topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { color: #fff; } AppWindow #widgetButtonsWidget QPushButton:focus:!pressed, AppWindow #topBar QPushButton:hover:!pressed { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
+        }
+    }
 
     QSize beforeSize = size();
 
@@ -154,10 +163,26 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
     oldSize = size();
     oldPosition = pos();
 
+    for (int i = 0; i != widgets.count(); i++) {
+        widgets[i]->hide();
+        widgets[i]->lower();
+    }
+
+    show();
+    newWidget->show();
+    sizeGrip->show();
     sizeGrip->raise();
+    setWindowState(windowState() & Qt::WindowActive);
 }
 
 void AppWindow::on_topBarCloseButton_clicked()
 {
     close();
+}
+
+void AppWindow::on_libraryButton_clicked()
+{
+    if(currentWidget != libraryWidget->windowTitle()) {
+        onWidgetChange(libraryWidget);
+    }
 }

@@ -1,7 +1,110 @@
+/* --- Default Qt Elements --- */
+
+QPushButton
+{
+	border-radius: 1px;
+	border: 0;
+	text-align: center;
+	line-height: 30px;
+	height: 30px;
+	font-size: inherit;
+	padding: 0 10px;
+	background: #FA5C5C;
+	color: white;
+	outline: 0;
+}
+
+QPushButton:focus:!pressed, QPushButton:hover:!pressed
+{
+	background: #fa6666;
+
+}
+
+QPushButton:pressed
+{
+	background: #e44949;
+}
+
+QLineEdit
+{
+	border: 2px solid #dadada;
+	border-radius: 2px;
+	color: #333;
+	background: white;
+}
+
+QLabel
+{
+	color: white;
+}
+
+QScrollBar:vertical
+{
+	border: 0;
+	background: rgba(51,51,51,0);
+	width: 7px;
+	margin: 0
+}
+
+QScrollBar::handle:vertical
+{
+	background: rgba(170, 170, 170, 0.5);
+	min-height: 20px;
+}
+
+/* above */
+QScrollBar::add-line:vertical
+{
+	height: 0;
+	subcontrol-position: bottom;
+	subcontrol-origin: margin;
+}
+
+/* below */
+QScrollBar::sub-line:vertical
+{
+	height: 0;
+	subcontrol-position: top;
+	subcontrol-origin: margin;
+}
+
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+{
+	width: 0;
+	height: 0;
+}
+
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+{
+	background: none;
+}
+
+QTabWidget::pane
+{
+	background-color: #EA4C4C;
+}
+
+QTabBar::tab
+{
+	background: #FA5C5C;
+	color: white;
+}
+
+QTabBar::tab:!selected
+{
+	background: #DA3C3C;
+}
+
+QTabWidget::tab-bar
+{
+	left: 10px;
+}
+
+/* --- Custom Elements --- */
 
 AppWindow, SecondaryWindow
 {
-    background: #222;
+	background: #222;
 }
 
 SettingsWidget QCheckBox
@@ -11,138 +114,49 @@ SettingsWidget QCheckBox
 
 QMainWindow #topBar
 {
-    background-color: #333;
+	background-color: #333;
 }
 
-QPushButton
+AppWindow #widgetButtonsWidget QPushButton
 {
-        border-radius: 1px;
-        border: 0;
-        text-align: center;
-        line-height: 30px;
-        height: 30px;
-        font-size: inherit;
-        padding: 0 10px;
-        background: #FA5C5C;
-        color: white;
+	background: #333;
+	color: #fff;
 }
 
-QPushButton:focus:!pressed
+AppWindow #widgetButtonsWidget QPushButton:focus:!pressed,
+AppWindow #widgetButtonsWidget QPushButton:hover:!pressed
 {
-    background: #fa6666;
-    outline: 0;
+	color: #fa6666;
 }
 
-QPushButton:hover:!pressed
+AppWindow #widgetButtonsWidget QPushButton:pressed
 {
-    background: #fa6666;
-}
-
-QPushButton:pressed
-{
-    background: #e44949
-}
-
-
-
-QLineEdit
-{
-        border: 2px solid #dadada;
-        border-radius: 2px;
-        color: #333;
-        background: white;
-}
-
-QLabel
-{
-        color: white;
+	color: #e44949;
 }
 
 LibraryWidget #gamesScroller
 {
-    border: 2px solid #555;
+	border: 2px solid #555;
 }
 
 LibraryWidget #scrollWrapper
 {
-    background-color: #333;
+	background-color: #333;
 }
 
 LibraryWidget #imageHolder
 {
-    border: 1px solid #222;
-    border-radius: 2px;
-    background-color: rgba(1,0,0,0.1);
-}
-
-QScrollBar:vertical
-{
-    border: 0;
-    background: rgba(51,51,51,0);
-    width: 7px;
-    margin: 0
-}
-
-QScrollBar::handle:vertical
-{
-    background: rgba(170, 170, 170, 0.5);
-    min-height: 20px;
-}
-
-/* above */
-QScrollBar::add-line:vertical
-{
-    height: 0;
-    subcontrol-position: bottom;
-    subcontrol-origin: margin;
-}
-
-/* below */
-QScrollBar::sub-line:vertical
-{
-    height: 0;
-    subcontrol-position: top;
-    subcontrol-origin: margin;
-}
-
-QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
-{
-    width: 0;
-    height: 0;
-}
-
-QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
-{
-    background: none;
-}
-
-QTabWidget::pane
-{
-    background-color: #EA4C4C;
-}
-
-QTabBar::tab
-{
-    background: #FA5C5C;
-    color: white;
-}
-
-QTabBar::tab:!selected
-{
-    background: #DA3C3C;
-}
-
-QTabWidget::tab-bar
-{
-    left: 10px;
+	border: 1px solid #222;
+	border-radius: 2px;
+	background-color: rgba(1,0,0,0.1);
 }
 
 #tab
 {
-    background-color: #333;
+	background-color: #333;
 }
 
 #tab_2
 {
-    background-color: #333;
+	background-color: #333;
 }
