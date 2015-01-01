@@ -27,7 +27,7 @@ public:
 private slots:
     void onClickDownload();
     void onDownloadThumbnail();
-    void onTriggerMenu();
+    void onTriggerDownloadMenu();
     void onTriggerUpload();
     void onUploads(const QList<Upload>& uploads);
 

@@ -25,7 +25,7 @@ GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key
 
     downloadMenu = new QMenu("Choose download");
     downloadButton->setMenu(downloadMenu);
-    connect(downloadMenu, SIGNAL(aboutToShow()), SLOT(onTriggerMenu()));
+    connect(downloadMenu, &QMenu::aboutToShow, this, &GameRow::onTriggerDownloadMenu);
 
     imageHolder = new QLabel();
     double ratio = double(Game::COVER_WIDTH) / Game::COVER_HEIGHT;
@@ -87,7 +87,7 @@ void GameRow::onDownloadThumbnail()
     }
 }
 
-void GameRow::onTriggerMenu()
+void GameRow::onTriggerDownloadMenu()
 {
     downloadMenu->clear();
     QAction* loaderAction = new QAction("Loading...", downloadMenu);
@@ -123,7 +123,7 @@ void GameRow::onUploads(const QList<Upload>& uploads)
     for (int i = 0; i < uploads.count(); i++) {
         QAction* const uploadAction =  new QAction(uploads[i].filename, downloadMenu);
         uploadAction->setData(i);
-        connect(uploadAction, SIGNAL(triggered()), this, SLOT(onTriggerUpload()));
+        connect(uploadAction, &QAction::triggered, this, &GameRow::onTriggerUpload);
         downloadMenu->addAction(uploadAction);
     }
 }
@@ -143,5 +143,5 @@ void GameRow::refreshThumbnail()
     request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
 
     QNetworkReply* reply = networkManager->get(request);
-    connect(reply, SIGNAL(finished()), this, SLOT(onDownloadThumbnail()));
+    connect(reply, &QNetworkReply::finished, this, &GameRow::onDownloadThumbnail);
 }
