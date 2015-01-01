@@ -14,6 +14,7 @@ class ItchioApi : public QObject
 
 public:
     explicit ItchioApi(QObject* const parent, const QString& apiUrl);
+
     void request(const QString& path, const char* slot);
     void loginWithPassword(const QString& username, const QString& password);
     void loginWithApiKey(const QString& apiKey);
@@ -33,6 +34,8 @@ public:
 private:
     const QString base;
     QNetworkAccessManager* const networkManager;
+    QNetworkReply* sendRequest(const QString& path);
+    QJsonDocument parseAndCloseReply(QNetworkReply* const reply);
 
 signals:
     void onLogin();
@@ -46,7 +49,6 @@ public slots:
     void getMyGamesRequest();
     void getMyOwnedKeys();
     void getLoginRequest();
-    void getDownloadKeyUploads();
     void getDownload();
 
 };

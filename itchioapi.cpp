@@ -57,16 +57,28 @@ void ItchioApi::myOwnedKeys()
 
 void ItchioApi::downloadKeyUploads(const DownloadKey& key)
 {
-    request(QString("download-key/%1/uploads").arg(key.id), SLOT(getDownloadKeyUploads()));
+    QNetworkReply* reply = sendRequest(QString("download-key/%1/uploads").arg(key.id));
+    connect(reply, &QNetworkReply::finished, [=] {
+        QJsonDocument res = parseAndCloseReply(reply);
+
+        QJsonValue uploads = res.object()["uploads"];
+
+        QList<Upload> uploadList;
+        foreach (const QJsonValue& uploadValue, uploads.toArray()) {
+            QJsonObject uploadObject = uploadValue.toObject();
+            uploadList << Upload::fromJson(uploadObject);
+        }
+
+        onDownloadKeyUploads(key, uploadList);
+    });
 }
 
 void ItchioApi::downloadUpload(const DownloadKey &key, const Upload &upload)
 {
-    request(QString("download-key/%1/download/%2").arg(key.id, upload.id), SLOT(getDownload()));
+    request(QString("download-key/%1/download/%2").arg(key.id).arg(upload.id), SLOT(getDownload()));
 }
 
-void ItchioApi::request(const QString& path, const char* slot)
-{
+QNetworkReply* ItchioApi::sendRequest(const QString& path) {
     QString url =  base + "/" + userKey + "/" + path;
     qDebug() << "Requesting URL" << url;
 
@@ -74,7 +86,23 @@ void ItchioApi::request(const QString& path, const char* slot)
     request.setUrl(QUrl(url));
     request.setHeader(QNetworkRequest::UserAgentHeader, USER_AGENT);
 
-    QNetworkReply* const reply = networkManager->get(request);
+    return networkManager->get(request);
+}
+
+QJsonDocument ItchioApi::parseAndCloseReply(QNetworkReply * const reply)
+{
+    reply->deleteLater();
+    if (reply->error() == QNetworkReply::NoError) {
+        return QJsonDocument::fromJson(reply->readAll());
+    }
+
+    // TODO: send some sort of error signal?
+    qFatal("Failed to get response from server");
+}
+
+void ItchioApi::request(const QString& path, const char* slot)
+{
+    QNetworkReply* const reply = sendRequest(path);
     connect(reply, SIGNAL(finished()), this, slot);
 }
 
@@ -163,26 +191,16 @@ void ItchioApi::getLoginRequest()
     }
 }
 
-void ItchioApi::getDownloadKeyUploads()
+void ItchioApi::getDownload()
 {
-    QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
+    QNetworkReply* const reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
 
     QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
+    QJsonValue urlValue = res.object()["url"];
+    QString url = urlValue.toString();
 
 
-    QJsonValue uploads = res.object()["uploads"];
-
-    QList<Upload> uploadList;
-    foreach (const QJsonValue& uploadValue, uploads.toArray()) {
-        QJsonObject uploadObject = uploadValue.toObject();
-        uploadList << Upload::fromJson(uploadObject);
-    }
-
-    onDownloadKeyUploads(DownloadKey(), uploadList);
-}
-
-void ItchioApi::getDownload()
-{
-    qDebug() << "got a response for download";
+    // TODO: figure out how to get upload from original request
+    onUploadDownload(Upload(), url);
 }
