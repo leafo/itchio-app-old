@@ -32,6 +32,8 @@ private slots:
     void onUploads(const QList<Upload>& uploads);
 
 private:
+    QNetworkAccessManager* networkManager;
+
     Game game;
     DownloadKey downloadKey;
     AppController* const controller;

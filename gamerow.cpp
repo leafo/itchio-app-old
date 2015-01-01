@@ -13,6 +13,9 @@
 
 #include "gamerow.h"
 #include "itchioapi.h"
+#include <QStandardPaths>
+#include <QDir>
+#include <QFile>
 
 GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller) :
     QWidget(parent),
@@ -20,6 +23,8 @@ GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key
     downloadKey(key),
     controller(controller)
 {
+    networkManager = new QNetworkAccessManager(this);
+
     QHBoxLayout* rowLayout = new QHBoxLayout;
     downloadButton = new QPushButton("Download");
 
@@ -102,9 +107,36 @@ void GameRow::onTriggerUpload()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     int pos = action->data().toInt();
-    Upload toDownload = pendingUploads[pos];
-    controller->api->downloadUpload(downloadKey, toDownload, [this] (QString url) {
-        qDebug() << "download:" << url;
+    Upload upload = pendingUploads[pos];
+    controller->api->downloadUpload(downloadKey, upload, [=] (QString url) {
+        QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        QDir().mkpath(path);
+
+        QString fname = QString::number(upload.id);
+        QString fullPath = path + "/" + fname;
+
+        qDebug() << "Download: " << url << "to" << fullPath;
+
+        QFile* file = new QFile(fullPath);
+        file->open(QIODevice::WriteOnly);
+
+        QNetworkRequest request;
+        request.setUrl(QUrl(url));
+        request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
+        QNetworkReply* reply = networkManager->get(request);
+
+        connect(reply, &QNetworkReply::readyRead, [=] {
+            qDebug() << "ready read" << reply->bytesAvailable();
+            file->write(reply->read(reply->bytesAvailable()));
+        });
+
+        connect(reply, &QNetworkReply::finished, [=] {
+            reply->deleteLater();
+            qDebug() << "finished" << fullPath;
+            file->close();
+            delete file;
+        });
+
     });
 }
 
@@ -133,8 +165,6 @@ void GameRow::refreshThumbnail()
     if (game.coverImageUrl == "") {
         return;
     }
-
-    QNetworkAccessManager* networkManager = new QNetworkAccessManager(this);
 
     qDebug() << "Fetching cover" << game.coverImageUrl;
 
