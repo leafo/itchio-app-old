@@ -9,6 +9,8 @@
 #include <QSize>
 #include <QSizeGrip>
 #include <QDesktopWidget>
+#include <QList>
+#include <QPushButton>
 
 #include "appcontroller.h"
 
@@ -69,6 +71,8 @@ private:
     QWidget* topBar;
     QGridLayout* appWindowLayout;
     QGridLayout* widgetsLayout;
+
+    QList<QPushButton*> topBarWidgetButtons;
 
 signals:
 

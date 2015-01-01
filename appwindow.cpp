@@ -1,4 +1,4 @@
-#include <QDesktopWidget>
+#include <QFile>
 
 #include <QtDebug>
 
@@ -24,6 +24,7 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     appWindowLayout = findChild<QGridLayout*>("appWindowLayout");
     widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
     topBar = findChild<QWidget*>("topBar");
+    topBarWidgetButtons = topBar->findChildren<QPushButton*>();
 
     setupSizeGrip();
 
@@ -121,21 +122,24 @@ void AppWindow::setupSizeGrip()
 
 void AppWindow::setupLibrary()
 {
-    currentWidget = "Library";
     libraryWidget = new LibraryWidget(this, controller);
     widgetsLayout->addWidget(libraryWidget);
-
-    show();
-    libraryWidget->show();
-    sizeGrip->show();
-    setWindowState(windowState() & Qt::WindowActive);
 
     onWidgetChange(libraryWidget);
 }
 
 void AppWindow::onWidgetChange(QWidget* newWidget)
 {
+    currentWidget = newWidget->windowTitle();
     setWindowTitle(currentWidget + " - itch.io");
+
+    for (int i = 0; i != topBarWidgetButtons.count(); i++) {
+        if(topBarWidgetButtons[i]->text() == currentWidget) {
+            topBarWidgetButtons[i]->setStyleSheet("AppWindow #topBar QPushButton { background: #333; color: #fa6666; } AppWindow #topBar QPushButton:pressed { color: #e44949; }");
+        } else {
+            topBarWidgetButtons[i]->setStyleSheet("AppWindow #topBar QPushButton { background: #333; color: #fff; } AppWindow #topBar QPushButton:focus:!pressed, AppWindow #topBar QPushButton:hover:!pressed { color: #fa6666; } AppWindow #topBar QPushButton:pressed { color: #e44949; }");
+        }
+    }
 
     QSize beforeSize = size();
 
@@ -154,7 +158,11 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
     oldSize = size();
     oldPosition = pos();
 
+    show();
+    newWidget->show();
+    sizeGrip->show();
     sizeGrip->raise();
+    setWindowState(windowState() & Qt::WindowActive);
 }
 
 void AppWindow::on_topBarCloseButton_clicked()

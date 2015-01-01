@@ -2,6 +2,8 @@
     <qresource prefix="/images">
         <file>images/itchio-icon-200.png</file>
         <file>images/itchio-icon-16.png</file>
+        <file>images/itchio-icon-30.png</file>
+        <file>images/itchio-icon-100.png</file>
     </qresource>
     <qresource prefix="/">
         <file>stylesheet.qss</file>
