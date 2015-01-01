@@ -30,8 +30,7 @@ public:
     void enableTrayNotifications(const bool enable);
 
 private:
-    enum class Key
-    {
+    enum class Key {
         API_KEY,
         API_URL,
         USERNAME,

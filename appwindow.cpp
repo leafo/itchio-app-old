@@ -7,6 +7,8 @@
 #include "widgets/librarywidget.h"
 #include "widgets/secondary/loginwidget.h"
 
+// TODO: Research better ways to handle CSS change during runtime.
+
 AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     QMainWindow(parent),
     currentWidget(""),
@@ -24,7 +26,8 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent) :
     appWindowLayout = findChild<QGridLayout*>("appWindowLayout");
     widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
     topBar = findChild<QWidget*>("topBar");
-    topBarWidgetButtons = topBar->findChildren<QPushButton*>();
+
+    topBarWidgetButtons = findChild<QWidget*>("widgetButtonsWidget")->findChildren<QPushButton*>();
 
     setupSizeGrip();
 
@@ -124,6 +127,8 @@ void AppWindow::setupLibrary()
 {
     libraryWidget = new LibraryWidget(this, controller);
     widgetsLayout->addWidget(libraryWidget);
+    widgets.append(libraryWidget);
+    libraryWidget->hide();
 
     onWidgetChange(libraryWidget);
 }
@@ -135,9 +140,9 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
 
     for (int i = 0; i != topBarWidgetButtons.count(); i++) {
         if(topBarWidgetButtons[i]->text() == currentWidget) {
-            topBarWidgetButtons[i]->setStyleSheet("AppWindow #topBar QPushButton { background: #333; color: #fa6666; } AppWindow #topBar QPushButton:pressed { color: #e44949; }");
+            topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { background: #333; color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
         } else {
-            topBarWidgetButtons[i]->setStyleSheet("AppWindow #topBar QPushButton { background: #333; color: #fff; } AppWindow #topBar QPushButton:focus:!pressed, AppWindow #topBar QPushButton:hover:!pressed { color: #fa6666; } AppWindow #topBar QPushButton:pressed { color: #e44949; }");
+            topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { background: #333; color: #fff; } AppWindow #widgetButtonsWidget QPushButton:focus:!pressed, AppWindow #topBar QPushButton:hover:!pressed { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
         }
     }
 
@@ -158,6 +163,11 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
     oldSize = size();
     oldPosition = pos();
 
+    for (int i = 0; i != widgets.count(); i++) {
+        widgets[i]->hide();
+        widgets[i]->lower();
+    }
+
     show();
     newWidget->show();
     sizeGrip->show();
@@ -168,4 +178,11 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
 void AppWindow::on_topBarCloseButton_clicked()
 {
     close();
+}
+
+void AppWindow::on_libraryButton_clicked()
+{
+    if(currentWidget != libraryWidget->windowTitle()) {
+        onWidgetChange(libraryWidget);
+    }
 }

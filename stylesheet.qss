@@ -117,19 +117,19 @@ QMainWindow #topBar
 	background-color: #333;
 }
 
-AppWindow #topBar QPushButton
+AppWindow #widgetButtonsWidget QPushButton
 {
 	background: #333;
 	color: #fff;
 }
 
-AppWindow #topBar QPushButton:focus:!pressed,
-AppWindow #topBar QPushButton:hover:!pressed
+AppWindow #widgetButtonsWidget QPushButton:focus:!pressed,
+AppWindow #widgetButtonsWidget QPushButton:hover:!pressed
 {
 	color: #fa6666;
 }
 
-AppWindow #topBar QPushButton:pressed
+AppWindow #widgetButtonsWidget QPushButton:pressed
 {
 	color: #e44949;
 }

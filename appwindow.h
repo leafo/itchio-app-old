@@ -58,6 +58,8 @@ private:
     Ui::AppWindow* const ui;
     AppController* const controller;
 
+    QList<QWidget*> widgets;
+
     QObject* firstClicked;
 
     bool isMaximized;
@@ -81,7 +83,7 @@ public slots:
 private slots:
     void onWidgetChange(QWidget* newWidget);
     void on_topBarCloseButton_clicked();
-
+    void on_libraryButton_clicked();
 };
 
 #endif // APPWINDOW_H
