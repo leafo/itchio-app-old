@@ -55,27 +55,33 @@ void ItchioApi::myOwnedKeys()
     request("my-owned-keys", SLOT(getMyOwnedKeys()));
 }
 
-void ItchioApi::downloadKeyUploads(const DownloadKey& key)
+void ItchioApi::downloadKeyUploads(const DownloadKey& key, std::function<void (QList<Upload>)> callback)
 {
     QNetworkReply* reply = sendRequest(QString("download-key/%1/uploads").arg(key.id));
     connect(reply, &QNetworkReply::finished, [=] {
         QJsonDocument res = parseAndCloseReply(reply);
 
-        QJsonValue uploads = res.object()["uploads"];
+        QJsonValue uploadsValue = res.object()["uploads"];
 
-        QList<Upload> uploadList;
-        foreach (const QJsonValue& uploadValue, uploads.toArray()) {
+        QList<Upload> uploads;
+        foreach (const QJsonValue& uploadValue, uploadsValue.toArray()) {
             QJsonObject uploadObject = uploadValue.toObject();
-            uploadList << Upload::fromJson(uploadObject);
+            uploads << Upload::fromJson(uploadObject);
         }
 
-        onDownloadKeyUploads(key, uploadList);
+        callback(uploads);
     });
 }
 
-void ItchioApi::downloadUpload(const DownloadKey &key, const Upload &upload)
+void ItchioApi::downloadUpload(const DownloadKey &key, const Upload &upload, std::function<void (QString)> callback)
 {
-    request(QString("download-key/%1/download/%2").arg(key.id).arg(upload.id), SLOT(getDownload()));
+    QNetworkReply* reply = sendRequest(QString("download-key/%1/download/%2").arg(key.id).arg(upload.id));
+    connect(reply, &QNetworkReply::finished, [=] {
+        QJsonDocument res = parseAndCloseReply(reply);
+        QJsonValue urlValue = res.object()["url"];
+        QString url = urlValue.toString();
+        callback(url);
+    });
 }
 
 QNetworkReply* ItchioApi::sendRequest(const QString& path) {
@@ -189,18 +195,4 @@ void ItchioApi::getLoginRequest()
             return;
         }
     }
-}
-
-void ItchioApi::getDownload()
-{
-    QNetworkReply* const reply = qobject_cast<QNetworkReply*>(sender());
-    reply->deleteLater();
-
-    QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
-    QJsonValue urlValue = res.object()["url"];
-    QString url = urlValue.toString();
-
-
-    // TODO: figure out how to get upload from original request
-    onUploadDownload(Upload(), url);
 }

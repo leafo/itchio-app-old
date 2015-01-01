@@ -29,7 +29,7 @@ private slots:
     void onDownloadThumbnail();
     void onTriggerMenu();
     void onTriggerUpload();
-    void onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& uploads);
+    void onUploads(const QList<Upload>& uploads);
 
 private:
     Game game;

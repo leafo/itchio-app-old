@@ -26,8 +26,6 @@ GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key
     downloadMenu = new QMenu("Choose download");
     downloadButton->setMenu(downloadMenu);
     connect(downloadMenu, SIGNAL(aboutToShow()), SLOT(onTriggerMenu()));
-    connect(controller->api, SIGNAL(onDownloadKeyUploads(DownloadKey,QList<Upload>)),
-            SLOT(onDownloadKeyUploads(DownloadKey,QList<Upload>)));
 
     imageHolder = new QLabel();
     double ratio = double(Game::COVER_WIDTH) / Game::COVER_HEIGHT;
@@ -95,24 +93,23 @@ void GameRow::onTriggerMenu()
     QAction* loaderAction = new QAction("Loading...", downloadMenu);
     loaderAction->setDisabled(true);
     downloadMenu->addAction(loaderAction);
-    controller->api->downloadKeyUploads(downloadKey);
+    controller->api->downloadKeyUploads(downloadKey, [this] (QList<Upload> uploads) {
+        onUploads(uploads);
+    });
 }
 
 void GameRow::onTriggerUpload()
 {
     QAction* action = qobject_cast<QAction*>(sender());
     int pos = action->data().toInt();
-    qDebug() << "triggered upload" << pos;
     Upload toDownload = pendingUploads[pos];
+    controller->api->downloadUpload(downloadKey, toDownload, [this] (QString url) {
+        qDebug() << "download:" << url;
+    });
 }
 
-void GameRow::onDownloadKeyUploads(const DownloadKey& key, const QList<Upload>& uploads)
+void GameRow::onUploads(const QList<Upload>& uploads)
 {
-    // need to pass correct download key first
-    // if (key.id != downloadKey.id) {
-    //     return;
-    // }
-
     pendingUploads = uploads;
     downloadMenu->clear();
 

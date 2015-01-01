@@ -1,6 +1,9 @@
 #ifndef ITCHIOAPI_H
 #define ITCHIOAPI_H
 
+#include <functional>
+
+
 #include <QObject>
 #include <QNetworkAccessManager>
 
@@ -21,8 +24,8 @@ public:
 
     void myGames();
     void myOwnedKeys();
-    void downloadKeyUploads(const DownloadKey& key);
-    void downloadUpload(const DownloadKey& key, const Upload& upload);
+    void downloadKeyUploads(const DownloadKey& key, std::function<void (QList<Upload>)> callback);
+    void downloadUpload(const DownloadKey& key, const Upload& upload, std::function<void (QString)> callback);
 
     QString userKey;
     QString userName;
@@ -42,14 +45,11 @@ signals:
     void onLoginFailure(QString reason);
     void onMyGames(QList<Game> games);
     void onMyOwnedKeys(QList<DownloadKey> games);
-    void onDownloadKeyUploads(DownloadKey key, QList<Upload> uploads);
-    void onUploadDownload(Upload upload, QString url);
 
 public slots:
     void getMyGamesRequest();
     void getMyOwnedKeys();
     void getLoginRequest();
-    void getDownload();
 
 };
 
