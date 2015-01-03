@@ -1,6 +1,6 @@
-#include <QApplication>
 #include <QSettings>
 #include <QIcon>
+#include <QFile>
 
 #include <QDebug>
 
@@ -11,19 +11,23 @@
 #include "widgets/secondary/loginwidget.h"
 #include "widgets/secondary/settingswidget.h"
 
-AppController::AppController(QObject* parent)
-    : QObject(parent)
+AppController::AppController(int& argc, char** argv)
+    : QApplication(argc, argv)
+    , settings("itchio.ini", QSettings::IniFormat)
+    , api(this, settings.apiUrl())
     , settingsWindow(NULL)
     , loginWithApiKey(false)
 {
-    setupSettings();
-    api = new ItchioApi(this, settings->apiUrl());
+    setOrganizationName("itch.io");
+    setOrganizationDomain("itch.io");
+    setApplicationName("itch.io");
+    setStyleSheet(AppController::loadStyleSheet());
 
     setupTrayIcon();
     setupAppWindow();
 
-    if (settings->autoLogin() && settings->hasValidApiKey()) {
-        api->loginWithApiKey(settings->apiKey(), [this](bool success, QString err) {
+    if (settings.autoLogin() && settings.hasValidApiKey()) {
+        api.loginWithApiKey(settings.apiKey(), [this](bool success, QString err) {
             if (success) {
                 onLogin();
             } else {
@@ -35,17 +39,6 @@ AppController::AppController(QObject* parent)
     } else {
         setupLogin();
     }
-}
-
-void AppController::setupSettings()
-{
-    settingsFile = "itchio.ini";
-    settings = new AppSettings(settingsFile, QSettings::IniFormat, this);
-}
-
-void AppController::quit()
-{
-    QCoreApplication::exit();
 }
 
 void AppController::showSettings()
@@ -65,16 +58,14 @@ void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason
 
 void AppController::setupTrayIcon()
 {
-    trayIcon = new QSystemTrayIcon(this);
-
-    trayIcon->setIcon(QIcon(":/images/images/itchio-icon-16.png"));
-    trayIcon->show();
+    trayIcon.setIcon(QIcon(":/images/images/itchio-icon-16.png"));
+    trayIcon.show();
 }
 
 void AppController::setupTrayIconMenu(bool beforeLogin)
 {
     trayIconMenu = new QMenu();
-    trayIcon->setContextMenu(trayIconMenu);
+    trayIcon.setContextMenu(trayIconMenu);
 
     if (!beforeLogin) {
         actionSettings = new QAction("Settings", this);
@@ -88,16 +79,16 @@ void AppController::setupTrayIconMenu(bool beforeLogin)
     trayIconMenu->addAction(actionQuit);
     connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
 
-    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+    connect(&trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
 }
 
 void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
 {
-    if (settings->showTrayNotifications()) {
+    if (settings.showTrayNotifications()) {
         switch (notification) {
         case NOTIFICATION_TEST:
-            trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
+            trayIcon.showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
             break;
         }
     }
@@ -105,8 +96,8 @@ void AppController::showTrayIconNotification(TrayNotifications notification, int
 
 void AppController::setupLogin()
 {
-    settings->setApiKey("");
-    api->userKey = "";
+    settings.setApiKey("");
+    api.userKey = "";
 
     setupTrayIconMenu(true);
 
@@ -121,9 +112,9 @@ void AppController::setupAppWindow()
 
 void AppController::onLogin()
 {
-    if (settings->autoLogin()) {
-        settings->setApiKey(api->userKey);
-        settings->setUsername(api->userName);
+    if (settings.autoLogin()) {
+        settings.setApiKey(api.userKey);
+        settings.setUsername(api.userName);
     }
 
     setupTrayIconMenu();
@@ -139,4 +130,19 @@ void AppController::onLogin()
 void AppController::onAutoLoginFailure(QString error)
 {
     setupLogin();
+}
+
+QString AppController::loadStyleSheet()
+{
+    QString result;
+
+    QFile file(":/stylesheet.qss");
+    if (file.open(QIODevice::ReadOnly)) {
+        result = QTextStream(&file).readAll();
+        file.close();
+    } else {
+        qWarning("Warning! Could not read 'stylesheet.qss'.");
+    }
+
+    return result;
 }

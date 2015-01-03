@@ -31,7 +31,6 @@ SOURCES += main.cpp \
 
 HEADERS += itchioapi.h \
     traynotifications.h \
-    settings.h \
     appcontroller.h \
     appsettings.h \
     appwindow.h \
