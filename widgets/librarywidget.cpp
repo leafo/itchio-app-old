@@ -12,7 +12,7 @@ LibraryWidget::LibraryWidget(QWidget* const parent, AppController* const control
 {
     ui->setupUi(this);
 
-    controller->api->myOwnedKeys([this](QList<DownloadKey> keys) {
+    controller->api.myOwnedKeys([this](QList<DownloadKey> keys) {
         onMyOwnedKeys(keys);
     });
 }

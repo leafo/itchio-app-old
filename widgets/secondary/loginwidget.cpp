@@ -35,7 +35,7 @@ void LoginWidget::onLoginTentative()
     }
 
     setStatus("Logging in...", true);
-    controller->api->loginWithPassword(username, password, [this](bool success, QString err) {
+    controller->api.loginWithPassword(username, password, [this](bool success, QString err) {
         if (success) {
             controller->onLogin();
         } else {

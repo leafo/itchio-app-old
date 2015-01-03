@@ -97,7 +97,7 @@ void GameRow::onTriggerDownloadMenu()
     QAction* loaderAction = new QAction("Loading...", downloadMenu);
     loaderAction->setDisabled(true);
     downloadMenu->addAction(loaderAction);
-    controller->api->downloadKeyUploads(downloadKey, [this](QList<Upload> uploads) {
+    controller->api.downloadKeyUploads(downloadKey, [this](QList<Upload> uploads) {
         onUploads(uploads);
     });
 }
@@ -107,34 +107,39 @@ void GameRow::onTriggerUpload()
     QAction* action = qobject_cast<QAction*>(sender());
     int pos = action->data().toInt();
     Upload upload = pendingUploads[pos];
-    controller->api->downloadUpload(downloadKey, upload, [=](QString url) {
+    controller->api.downloadUpload(downloadKey, upload, [=](QString url) {
+//TODO This is a temporary fix to support systems that don't have Qt 5.4 yet (e.g. Debian as of January 2, 2015).
+//TODO It should be removed when Qt 5.4 is readily available (e.g. via a package manager).
+//TODO Additionally, a minimum version check should be added to itchio.pri.
+#if QT_VERSION >= 0x050400
         QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-        QDir().mkpath(path);
+#else
+    QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+#endif
+    QDir().mkpath(path);
 
-        QString fname = QString::number(upload.id);
-        QString fullPath = path + "/" + fname;
+    QString fname = QString::number(upload.id);
+    QString fullPath = path + "/" + fname;
 
-        qDebug() << "Download: " << url << "to" << fullPath;
+    qDebug() << "Download: " << url << "to" << fullPath;
 
-        QFile* file = new QFile(fullPath);
-        file->open(QIODevice::WriteOnly);
+    QFile* file = new QFile(fullPath);
+    file->open(QIODevice::WriteOnly);
 
-        QNetworkRequest request;
-        request.setUrl(QUrl(url));
-        request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
-        QNetworkReply* reply = networkManager->get(request);
+    QNetworkRequest request;
+    request.setUrl(QUrl(url));
+    request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
+    QNetworkReply* reply = networkManager->get(request);
 
-        connect(reply, &QNetworkReply::readyRead, [=] {
+    connect(reply, &QNetworkReply::readyRead, [=] {
             qDebug() << "ready read" << reply->bytesAvailable();
-            file->write(reply->read(reply->bytesAvailable()));
-        });
+            file->write(reply->read(reply->bytesAvailable())); });
 
-        connect(reply, &QNetworkReply::finished, [=] {
+    connect(reply, &QNetworkReply::finished, [=] {
             reply->deleteLater();
             qDebug() << "finished" << fullPath;
             file->close();
-            delete file;
-        });
+            delete file; });
 
     });
 }

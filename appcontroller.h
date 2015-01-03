@@ -5,6 +5,7 @@
 #include <QSystemTrayIcon>
 #include <QMenu>
 #include <QAction>
+#include <QApplication>
 
 #include "itchioapi.h"
 #include "traynotifications.h"
@@ -13,16 +14,15 @@
 class AppWindow;
 class SecondaryWindow;
 
-class AppController : public QObject
+class AppController : public QApplication
 {
     Q_OBJECT
 
 public:
-    explicit AppController(QObject* const parent = 0);
+    AppController(int& argc, char** argv);
 
-    ItchioApi* api;
-
-    AppSettings* settings;
+    AppSettings settings;
+    ItchioApi api;
 
     void setupTrayIcon();
     void showTrayIconNotification(TrayNotifications notification, int duration);
@@ -30,8 +30,6 @@ public:
     void onLogin();
 
 private:
-    QString settingsFile;
-
     QAction* actionQuit;
     QAction* actionSettings;
 
@@ -39,19 +37,18 @@ private:
     SecondaryWindow* loginWindow;
     SecondaryWindow* settingsWindow;
 
-    QSystemTrayIcon* trayIcon;
+    QSystemTrayIcon trayIcon;
     QMenu* trayIconMenu;
 
     bool loginWithApiKey;
 
     void setupLogin();
-    void setupSettings();
     void onAutoLoginFailure(QString error);
 
+    static QString loadStyleSheet();
 signals:
 
 public slots:
-    void quit();
     void showSettings();
 
     void trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason);
