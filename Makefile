@@ -10,7 +10,7 @@ run: client
 	@$(BUILD_DIR)/$(TARGET)
 
 format:
-	clang-format -i $$(find . | grep cpp$$)
+	clang-format -i $$(git ls-files . | grep '.cpp$$')
 
 clean:
 	@rm -rf $(BUILD_DIR)
