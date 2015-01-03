@@ -6,16 +6,17 @@
 
 #include "itchioapi.h"
 
-const char* ItchioApi::USER_AGENT =  "itch.io app 0.0";
+const char* ItchioApi::USER_AGENT = "itch.io app 0.0";
 const char* ItchioApi::DEFAULT_API_URL = "https://itch.io/api/1";
 
-ItchioApi::ItchioApi(QObject* const parent, const QString& apiUrl) :
-    QObject(parent),
-    base(apiUrl),
-    networkManager(new QNetworkAccessManager(this))
-{}
+ItchioApi::ItchioApi(QObject* const parent, const QString& apiUrl)
+    : QObject(parent)
+    , base(apiUrl)
+    , networkManager(new QNetworkAccessManager(this))
+{
+}
 
-void ItchioApi::loginWithPassword(const QString& username, const QString& password, std::function<void (bool, QString)> callback)
+void ItchioApi::loginWithPassword(const QString& username, const QString& password, std::function<void(bool, QString)> callback)
 {
     userName = username;
 
@@ -60,10 +61,10 @@ void ItchioApi::loginWithPassword(const QString& username, const QString& passwo
     });
 }
 
-void ItchioApi::loginWithApiKey(const QString& apiKey, std::function<void (bool, QString)> callback)
+void ItchioApi::loginWithApiKey(const QString& apiKey, std::function<void(bool, QString)> callback)
 {
     userKey = apiKey;
-    request("me", [=] (QJsonDocument res) {
+    request("me", [=](QJsonDocument res) {
         QString error = parseJsonError(res);
         if (error != "") {
             callback(false, error);
@@ -80,9 +81,9 @@ void ItchioApi::loginWithApiKey(const QString& apiKey, std::function<void (bool,
     });
 }
 
-void ItchioApi::myGames(std::function<void (QList<Game>)> callback)
+void ItchioApi::myGames(std::function<void(QList<Game>)> callback)
 {
-    request("my-games", [=] (QJsonDocument res) {
+    request("my-games", [=](QJsonDocument res) {
         QJsonValue games = res.object()["games"];
         QList<Game> gameList;
         foreach (const QJsonValue& gameValue, games.toArray()) {
@@ -94,9 +95,9 @@ void ItchioApi::myGames(std::function<void (QList<Game>)> callback)
     });
 }
 
-void ItchioApi::myOwnedKeys(std::function<void (QList<DownloadKey> keys)> callback)
+void ItchioApi::myOwnedKeys(std::function<void(QList<DownloadKey> keys)> callback)
 {
-    request("my-owned-keys", [=] (QJsonDocument res) {
+    request("my-owned-keys", [=](QJsonDocument res) {
         QJsonValue keys = res.object()["owned_keys"];
 
         QList<DownloadKey> keyList;
@@ -109,9 +110,9 @@ void ItchioApi::myOwnedKeys(std::function<void (QList<DownloadKey> keys)> callba
     });
 }
 
-void ItchioApi::downloadKeyUploads(const DownloadKey& key, std::function<void (QList<Upload>)> callback)
+void ItchioApi::downloadKeyUploads(const DownloadKey& key, std::function<void(QList<Upload>)> callback)
 {
-    request(QString("download-key/%1/uploads").arg(key.id), [=] (QJsonDocument res) {
+    request(QString("download-key/%1/uploads").arg(key.id), [=](QJsonDocument res) {
         QJsonValue uploadsValue = res.object()["uploads"];
 
         QList<Upload> uploads;
@@ -124,9 +125,9 @@ void ItchioApi::downloadKeyUploads(const DownloadKey& key, std::function<void (Q
     });
 }
 
-void ItchioApi::downloadUpload(const DownloadKey &key, const Upload &upload, std::function<void (QString)> callback)
+void ItchioApi::downloadUpload(const DownloadKey& key, const Upload& upload, std::function<void(QString)> callback)
 {
-    request(QString("download-key/%1/download/%2").arg(key.id).arg(upload.id), [=] (QJsonDocument res) {
+    request(QString("download-key/%1/download/%2").arg(key.id).arg(upload.id), [=](QJsonDocument res) {
         QJsonValue urlValue = res.object()["url"];
         QString url = urlValue.toString();
         callback(url);
@@ -143,16 +144,16 @@ QString ItchioApi::parseJsonError(const QJsonDocument& document)
     return "";
 }
 
-void ItchioApi::request(const QString& path, std::function<void (QJsonDocument)> callback)
+void ItchioApi::request(const QString& path, std::function<void(QJsonDocument)> callback)
 {
-    QString url =  base + "/" + userKey + "/" + path;
+    QString url = base + "/" + userKey + "/" + path;
     qDebug() << "Requesting URL" << url;
 
     QNetworkRequest request;
     request.setUrl(QUrl(url));
     request.setHeader(QNetworkRequest::UserAgentHeader, USER_AGENT);
 
-    QNetworkReply* const reply =  networkManager->get(request);
+    QNetworkReply* const reply = networkManager->get(request);
 
     connect(reply, &QNetworkReply::finished, [=] {
         reply->deleteLater();

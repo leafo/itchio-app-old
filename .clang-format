@@ -1,0 +1,11 @@
+---
+BasedOnStyle:  LLVM
+IndentWidth:     4
+---
+Language: Cpp
+DerivePointerAlignment: false
+PointerAlignment: Left
+AllowShortFunctionsOnASingleLine: false
+BreakBeforeBraces: Linux
+ColumnLimit: 0
+BreakConstructorInitializersBeforeComma: true

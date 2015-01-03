@@ -10,7 +10,7 @@ run: client
 	@$(BUILD_DIR)/$(TARGET)
 
 format:
-	astyle -n --style=1tbs $$(git ls-files | grep cpp$$)
+	clang-format -i $$(find . | grep cpp$$)
 
 clean:
 	@rm -rf $(BUILD_DIR)

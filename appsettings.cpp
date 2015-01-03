@@ -3,8 +3,8 @@
 
 //using itchio::AppSettings;
 
-AppSettings::AppSettings(const QString& filename, const Format format, QObject* const parent) :
-    QSettings(filename, format, parent)
+AppSettings::AppSettings(const QString& filename, const Format format, QObject* const parent)
+    : QSettings(filename, format, parent)
 {
 }
 

@@ -5,10 +5,10 @@
 
 //TODO: Thread settings setting process to avoid interface delay.
 
-SettingsWidget::SettingsWidget(AppController *controller, QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::SettingsWidget),
-    controller(controller)
+SettingsWidget::SettingsWidget(AppController* controller, QWidget* parent)
+    : QWidget(parent)
+    , ui(new Ui::SettingsWidget)
+    , controller(controller)
 {
     ui->setupUi(this);
 

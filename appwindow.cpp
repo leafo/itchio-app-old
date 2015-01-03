@@ -9,16 +9,16 @@
 
 // TODO: Research better ways to handle CSS change during runtime.
 
-AppWindow::AppWindow(AppController* controller, QWidget* parent) :
-    QMainWindow(parent),
-    currentWidget(""),
-    desktop(QApplication::desktop()),
-    ui(new Ui::AppWindow),
-    controller(controller),
-    firstClicked(NULL),
-    isMaximized(false)
+AppWindow::AppWindow(AppController* controller, QWidget* parent)
+    : QMainWindow(parent)
+    , currentWidget("")
+    , desktop(QApplication::desktop())
+    , ui(new Ui::AppWindow)
+    , controller(controller)
+    , firstClicked(NULL)
+    , isMaximized(false)
 {
-    setWindowFlags( Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
+    setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
     ui->setupUi(this);
@@ -39,12 +39,12 @@ AppWindow::~AppWindow()
     delete ui;
 }
 
-void AppWindow::mousePressEvent(QMouseEvent *event)
+void AppWindow::mousePressEvent(QMouseEvent* event)
 {
-    if(firstClicked == NULL) {
+    if (firstClicked == NULL) {
         firstClicked = childAt(event->x(), event->y());
 
-        if(firstClicked == topBar) {
+        if (firstClicked == topBar) {
             dragClickX = event->x();
             dragClickY = event->y();
         }
@@ -53,26 +53,26 @@ void AppWindow::mousePressEvent(QMouseEvent *event)
     event->accept();
 }
 
-void AppWindow::mouseReleaseEvent(QMouseEvent *event)
+void AppWindow::mouseReleaseEvent(QMouseEvent* event)
 {
     firstClicked = NULL;
 
     event->accept();
 }
 
-void AppWindow::mouseMoveEvent(QMouseEvent *event)
+void AppWindow::mouseMoveEvent(QMouseEvent* event)
 {
-    if(firstClicked == topBar && !isMaximized) {
-        move(event->globalX()-dragClickX, event->globalY()-dragClickY);
+    if (firstClicked == topBar && !isMaximized) {
+        move(event->globalX() - dragClickX, event->globalY() - dragClickY);
     }
 
     event->accept();
 }
 
-void AppWindow::mouseDoubleClickEvent(QMouseEvent *event)
+void AppWindow::mouseDoubleClickEvent(QMouseEvent* event)
 {
-    if(childAt(event->x(), event->y()) == topBar) {
-        if(!isMaximized) {
+    if (childAt(event->x(), event->y()) == topBar) {
+        if (!isMaximized) {
             maximize();
         } else {
             restore();
@@ -95,7 +95,7 @@ void AppWindow::hideWindow()
     hide();
 }
 
-void AppWindow::closeEvent(QCloseEvent *event)
+void AppWindow::closeEvent(QCloseEvent* event)
 {
     event->ignore();
 
@@ -139,7 +139,7 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
     setWindowTitle(currentWidget + " - itch.io");
 
     for (int i = 0; i != topBarWidgetButtons.count(); i++) {
-        if(topBarWidgetButtons[i]->text() == currentWidget) {
+        if (topBarWidgetButtons[i]->text() == currentWidget) {
             topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
         } else {
             topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { color: #fff; } AppWindow #widgetButtonsWidget QPushButton:focus:!pressed, AppWindow #topBar QPushButton:hover:!pressed { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
@@ -152,12 +152,12 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
 
     QSize afterSize = size();
 
-    if(beforeSize.width() < afterSize.width()) {
-        move(x() + (beforeSize.width() - afterSize.width())/2, y());
+    if (beforeSize.width() < afterSize.width()) {
+        move(x() + (beforeSize.width() - afterSize.width()) / 2, y());
     }
 
-    if(beforeSize.height()< afterSize.height()) {
-        move(x(), y() + (beforeSize.height() - afterSize.height())/2);
+    if (beforeSize.height() < afterSize.height()) {
+        move(x(), y() + (beforeSize.height() - afterSize.height()) / 2);
     }
 
     oldSize = size();
@@ -182,7 +182,7 @@ void AppWindow::on_topBarCloseButton_clicked()
 
 void AppWindow::on_libraryButton_clicked()
 {
-    if(currentWidget != libraryWidget->windowTitle()) {
+    if (currentWidget != libraryWidget->windowTitle()) {
         onWidgetChange(libraryWidget);
     }
 }

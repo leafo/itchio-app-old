@@ -11,10 +11,10 @@
 #include "widgets/secondary/loginwidget.h"
 #include "widgets/secondary/settingswidget.h"
 
-AppController::AppController(QObject *parent) :
-    QObject(parent),
-    settingsWindow(NULL),
-    loginWithApiKey(false)
+AppController::AppController(QObject* parent)
+    : QObject(parent)
+    , settingsWindow(NULL)
+    , loginWithApiKey(false)
 {
     setupSettings();
     api = new ItchioApi(this, settings->apiUrl());
@@ -22,8 +22,8 @@ AppController::AppController(QObject *parent) :
     setupTrayIcon();
     setupAppWindow();
 
-    if(settings->autoLogin() && settings->hasValidApiKey()) {
-        api->loginWithApiKey(settings->apiKey(), [this] (bool success, QString err) {
+    if (settings->autoLogin() && settings->hasValidApiKey()) {
+        api->loginWithApiKey(settings->apiKey(), [this](bool success, QString err) {
             if (success) {
                 onLogin();
             } else {
@@ -58,7 +58,7 @@ void AppController::showSettings()
 
 void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
 {
-    if(reason == QSystemTrayIcon::DoubleClick && !appWindow->isVisible()) {
+    if (reason == QSystemTrayIcon::DoubleClick && !appWindow->isVisible()) {
         appWindow->showWindow();
     }
 }
@@ -74,9 +74,9 @@ void AppController::setupTrayIcon()
 void AppController::setupTrayIconMenu(bool beforeLogin)
 {
     trayIconMenu = new QMenu();
-    trayIcon->setContextMenu (trayIconMenu);
+    trayIcon->setContextMenu(trayIconMenu);
 
-    if(!beforeLogin) {
+    if (!beforeLogin) {
         actionSettings = new QAction("Settings", this);
         trayIconMenu->addAction(actionSettings);
         connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
@@ -88,14 +88,14 @@ void AppController::setupTrayIconMenu(bool beforeLogin)
     trayIconMenu->addAction(actionQuit);
     connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
 
-    connect(trayIcon,SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
+    connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
 }
 
 void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
 {
-    if(settings->showTrayNotifications()) {
-        switch(notification) {
+    if (settings->showTrayNotifications()) {
+        switch (notification) {
         case NOTIFICATION_TEST:
             trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
             break;
@@ -110,7 +110,7 @@ void AppController::setupLogin()
 
     setupTrayIconMenu(true);
 
-    loginWindow = new SecondaryWindow(new LoginWidget(qobject_cast<QWidget *>(this), this), this);
+    loginWindow = new SecondaryWindow(new LoginWidget(qobject_cast<QWidget*>(this), this), this);
     loginWindow->show();
 }
 
@@ -121,14 +121,14 @@ void AppController::setupAppWindow()
 
 void AppController::onLogin()
 {
-    if(settings->autoLogin()) {
+    if (settings->autoLogin()) {
         settings->setApiKey(api->userKey);
         settings->setUsername(api->userName);
     }
 
     setupTrayIconMenu();
 
-    if(!loginWithApiKey) {
+    if (!loginWithApiKey) {
         loginWindow->deleteLater();
         loginWindow->close();
     }

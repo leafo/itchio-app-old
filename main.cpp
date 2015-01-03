@@ -3,7 +3,7 @@
 
 #include "appcontroller.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
 
@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
 
     QFile styleFile(":/stylesheet.qss");
 
-    if(styleFile.open(QIODevice::ReadOnly)) {
+    if (styleFile.open(QIODevice::ReadOnly)) {
         QTextStream textStream(&styleFile);
         QString styleSheet = textStream.readAll();
         styleFile.close();

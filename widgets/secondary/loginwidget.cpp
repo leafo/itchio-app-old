@@ -3,10 +3,10 @@
 #include "loginwidget.h"
 #include "ui_loginwidget.h"
 
-LoginWidget::LoginWidget(QWidget *parent, AppController *controller) :
-    QWidget(parent),
-    ui(new Ui::LoginWidget),
-    controller(controller)
+LoginWidget::LoginWidget(QWidget* parent, AppController* controller)
+    : QWidget(parent)
+    , ui(new Ui::LoginWidget)
+    , controller(controller)
 {
     ui->setupUi(this);
 }
@@ -27,7 +27,7 @@ void LoginWidget::setStatus(const QString& status, bool disable)
 void LoginWidget::onLoginTentative()
 {
     QString username = ui->loginUsernameInput->text();
-    QString password =  ui->loginPasswordInput->text();
+    QString password = ui->loginPasswordInput->text();
 
     if (username == "" || password == "") {
         setStatus("Please enter username and password", false);
@@ -35,7 +35,7 @@ void LoginWidget::onLoginTentative()
     }
 
     setStatus("Logging in...", true);
-    controller->api->loginWithPassword(username, password, [this] (bool success, QString err) {
+    controller->api->loginWithPassword(username, password, [this](bool success, QString err) {
         if (success) {
             controller->onLogin();
         } else {

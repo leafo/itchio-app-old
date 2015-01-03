@@ -5,15 +5,15 @@
 
 #include <QtDebug>
 
-SecondaryWindow::SecondaryWindow(QWidget* const widget, AppController* const controller, QWidget* const parent) :
-    QDialog(parent),
-    name(""),
-    firstClicked(NULL),
-    ui(new Ui::SecondaryWindow),
-    controller(controller),
-    widget(widget)
+SecondaryWindow::SecondaryWindow(QWidget* const widget, AppController* const controller, QWidget* const parent)
+    : QDialog(parent)
+    , name("")
+    , firstClicked(NULL)
+    , ui(new Ui::SecondaryWindow)
+    , controller(controller)
+    , widget(widget)
 {
-    setWindowFlags(Qt::CustomizeWindowHint |  Qt::FramelessWindowHint );
+    setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
     ui->setupUi(this);
@@ -37,7 +37,7 @@ SecondaryWindow::~SecondaryWindow()
     delete ui;
 }
 
-void SecondaryWindow::closeEvent(QCloseEvent *event)
+void SecondaryWindow::closeEvent(QCloseEvent* event)
 {
     event->ignore();
 
@@ -50,29 +50,29 @@ void SecondaryWindow::closeWindow()
     close();
 }
 
-void SecondaryWindow::mousePressEvent(QMouseEvent *event)
+void SecondaryWindow::mousePressEvent(QMouseEvent* event)
 {
-    if(firstClicked == NULL) {
+    if (firstClicked == NULL) {
         firstClicked = childAt(event->x(), event->y());
 
-        if(firstClicked == topBar) {
+        if (firstClicked == topBar) {
             dragClickX = event->x();
             dragClickY = event->y();
         }
     }
 }
 
-void SecondaryWindow::mouseReleaseEvent(QMouseEvent *event)
+void SecondaryWindow::mouseReleaseEvent(QMouseEvent* event)
 {
     firstClicked = NULL;
 
     event->accept();
 }
 
-void SecondaryWindow::mouseMoveEvent(QMouseEvent *event)
+void SecondaryWindow::mouseMoveEvent(QMouseEvent* event)
 {
-    if(firstClicked == topBar) {
-        move(event->globalX()-dragClickX, event->globalY()-dragClickY);
+    if (firstClicked == topBar) {
+        move(event->globalX() - dragClickX, event->globalY() - dragClickY);
     }
 }
 

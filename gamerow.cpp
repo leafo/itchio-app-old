@@ -17,11 +17,11 @@
 #include <QDir>
 #include <QFile>
 
-GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller) :
-    QWidget(parent),
-    game(game),
-    downloadKey(key),
-    controller(controller)
+GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller)
+    : QWidget(parent)
+    , game(game)
+    , downloadKey(key)
+    , controller(controller)
 {
     networkManager = new QNetworkAccessManager(this);
 
@@ -45,7 +45,6 @@ GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key
     downloadProgress->setMaximum(100);
 
     rowLayout->addWidget(imageHolder);
-
 
     QWidget* infoWidget = new QWidget();
     QVBoxLayout* infoWidgetLayout = new QVBoxLayout();
@@ -98,7 +97,7 @@ void GameRow::onTriggerDownloadMenu()
     QAction* loaderAction = new QAction("Loading...", downloadMenu);
     loaderAction->setDisabled(true);
     downloadMenu->addAction(loaderAction);
-    controller->api->downloadKeyUploads(downloadKey, [this] (QList<Upload> uploads) {
+    controller->api->downloadKeyUploads(downloadKey, [this](QList<Upload> uploads) {
         onUploads(uploads);
     });
 }
@@ -108,7 +107,7 @@ void GameRow::onTriggerUpload()
     QAction* action = qobject_cast<QAction*>(sender());
     int pos = action->data().toInt();
     Upload upload = pendingUploads[pos];
-    controller->api->downloadUpload(downloadKey, upload, [=] (QString url) {
+    controller->api->downloadUpload(downloadKey, upload, [=](QString url) {
         QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
         QDir().mkpath(path);
 
@@ -153,7 +152,7 @@ void GameRow::onUploads(const QList<Upload>& uploads)
     }
 
     for (int i = 0; i < uploads.count(); i++) {
-        QAction* const uploadAction =  new QAction(uploads[i].filename, downloadMenu);
+        QAction* const uploadAction = new QAction(uploads[i].filename, downloadMenu);
         uploadAction->setData(i);
         connect(uploadAction, &QAction::triggered, this, &GameRow::onTriggerUpload);
         downloadMenu->addAction(uploadAction);

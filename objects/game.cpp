@@ -6,7 +6,7 @@ Game::Game()
 {
 }
 
-Game Game::fromJson(const QJsonObject &object)
+Game Game::fromJson(const QJsonObject& object)
 {
     Game game;
 

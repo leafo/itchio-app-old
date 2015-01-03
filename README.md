@@ -28,8 +28,8 @@ $ make help
 
 ## Coding style
 
-`astyle` is used to format the codebase. The 1TBS preset is used. To format all
-source files run:
+`clang-format` is used to format the codebase. To format all source files run:
+
 ```bash
 $ make format
 ```

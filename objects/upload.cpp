@@ -4,7 +4,7 @@ Upload::Upload()
 {
 }
 
-Upload Upload::fromJson(const QJsonObject &object)
+Upload Upload::fromJson(const QJsonObject& object)
 {
     Upload upload;
 
@@ -22,4 +22,3 @@ Upload Upload::fromJson(const QJsonObject &object)
 
     return upload;
 }
-

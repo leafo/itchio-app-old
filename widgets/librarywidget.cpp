@@ -5,14 +5,14 @@
 #include "librarywidget.h"
 #include "ui_librarywidget.h"
 
-LibraryWidget::LibraryWidget(QWidget* const parent, AppController* const controller) :
-    QWidget(parent),
-    ui(new Ui::LibraryWidget),
-    controller(controller)
+LibraryWidget::LibraryWidget(QWidget* const parent, AppController* const controller)
+    : QWidget(parent)
+    , ui(new Ui::LibraryWidget)
+    , controller(controller)
 {
     ui->setupUi(this);
 
-    controller->api->myOwnedKeys([this] (QList<DownloadKey> keys) {
+    controller->api->myOwnedKeys([this](QList<DownloadKey> keys) {
         onMyOwnedKeys(keys);
     });
 }
@@ -45,7 +45,6 @@ void LibraryWidget::addGamesTab(const QString& title, const QList<GameRow*>& gam
 
     ui->tabWidget->addTab(scroller, title);
 }
-
 
 LibraryWidget::~LibraryWidget()
 {

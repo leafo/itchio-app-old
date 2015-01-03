@@ -15,7 +15,7 @@ QString User::nameForDisplay() const
     }
 }
 
-User User::fromJson(const QJsonObject &object)
+User User::fromJson(const QJsonObject& object)
 {
     User user;
 
