@@ -35,6 +35,13 @@ public:
 
     QString currentWidget;
 
+    bool isMaximized;
+
+    QDesktopWidget* desktop;
+
+    QPoint oldPosition;
+    QSize oldSize;
+
     void setupSizeGrip();
     void setupLibrary();
 
@@ -53,8 +60,6 @@ private:
     void maximize();
     void restore();
 
-    QDesktopWidget* desktop;
-
     Ui::AppWindow* const ui;
     AppController* const controller;
 
@@ -62,10 +67,6 @@ private:
 
     QObject* firstClicked;
 
-    bool isMaximized;
-
-    QPoint oldPosition;
-    QSize oldSize;
     int dragClickX;
     int dragClickY;
 
@@ -81,7 +82,10 @@ signals:
 public slots:
 
 private slots:
+    void onScreenCountChange();
+    void onDesktopResize();
     void onWidgetChange(QWidget* newWidget);
+
     void on_topBarCloseButton_clicked();
     void on_libraryButton_clicked();
 };

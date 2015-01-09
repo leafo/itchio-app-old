@@ -2,6 +2,9 @@
 #define APPSETTINGS_H
 
 #include <QSettings>
+#include <QByteArray>
+#include <QSize>
+#include <QPoint>
 
 //namespace itchio {
 
@@ -29,6 +32,18 @@ public:
     bool showTrayNotifications() const;
     void enableTrayNotifications(const bool enable);
 
+    bool startMaximized() const;
+    void enableStartMaximized(const bool enable);
+
+    QByteArray windowGeometry() const;
+    void setWindowGeometry(const QByteArray geometry);
+
+    QSize windowOldSize() const;
+    void setWindowOldSize(const QSize size);
+
+    QPoint windowOldPosition() const;
+    void setWindowOldPosition(const QPoint position);
+
 private:
     enum class Key {
         API_KEY,
@@ -36,7 +51,11 @@ private:
         USERNAME,
         AUTO_LOGIN,
         AUTO_UPDATE_CHECKS,
-        SHOW_TRAY_NOTIFICATIONS
+        SHOW_TRAY_NOTIFICATIONS,
+        START_MAXIMIZED,
+        WINDOW_GEOMETRY,
+        WINDOW_OLD_SIZE,
+        WINDOW_OLD_POSITION
     };
 
     static QString toString(const Key& key);

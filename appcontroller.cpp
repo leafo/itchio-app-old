@@ -45,6 +45,11 @@ void AppController::setupSettings()
 
 void AppController::quit()
 {
+    settings->enableStartMaximized(appWindow->isMaximized);
+    settings->setWindowGeometry(appWindow->saveGeometry());
+    settings->setWindowOldSize(appWindow->oldSize);
+    settings->setWindowOldPosition(appWindow->oldPosition);
+
     QCoreApplication::exit();
 }
 

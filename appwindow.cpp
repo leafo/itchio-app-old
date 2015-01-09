@@ -12,11 +12,11 @@
 AppWindow::AppWindow(AppController* controller, QWidget* parent)
     : QMainWindow(parent)
     , currentWidget("")
+    , isMaximized(false)
     , desktop(QApplication::desktop())
     , ui(new Ui::AppWindow)
     , controller(controller)
     , firstClicked(NULL)
-    , isMaximized(false)
 {
     setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
@@ -31,7 +31,8 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent)
 
     setupSizeGrip();
 
-    move(QApplication::desktop()->screen(QApplication::desktop()->screenNumber(0))->rect().center() - rect().center());
+    connect(desktop, SIGNAL(workAreaResized(int)), this, SLOT(onDesktopResize()));
+    connect(desktop, SIGNAL(screenCountChanged (int)), this, SLOT(onScreenCountChange ()));
 }
 
 AppWindow::~AppWindow()
@@ -104,6 +105,8 @@ void AppWindow::closeEvent(QCloseEvent* event)
 
 void AppWindow::maximize()
 {
+    sizeGrip->hide();
+
     oldSize = size();
     oldPosition = pos();
 
@@ -115,6 +118,8 @@ void AppWindow::restore()
 {
     setGeometry(oldPosition.x(), oldPosition.y(), oldSize.width(), oldSize.height());
     isMaximized = false;
+
+    sizeGrip->show();
 }
 
 void AppWindow::setupSizeGrip()
@@ -131,6 +136,55 @@ void AppWindow::setupLibrary()
     libraryWidget->hide();
 
     onWidgetChange(libraryWidget);
+
+    if(!controller->settings->windowGeometry().isEmpty()) {
+        restoreGeometry(controller->settings->windowGeometry());
+    } else {
+        move(desktop->availableGeometry(0).center() - rect().center());
+    }
+
+    if(controller->settings->startMaximized()) {
+        maximize();
+    }
+
+    oldPosition = controller->settings->windowOldPosition();
+
+    if(oldSize.width() > desktop->availableGeometry(this).width()) {
+        oldSize.setWidth(desktop->availableGeometry(this).width());
+    }
+
+    if(oldSize.height() > desktop->availableGeometry(this).height()) {
+        oldSize.setHeight(desktop->availableGeometry(this).height());
+    }
+}
+
+void AppWindow::onScreenCountChange()
+{
+    restoreGeometry(saveGeometry());
+    if(isMaximized) {
+        oldPosition = desktop->availableGeometry(desktop->screenNumber(this)).center() - rect().center();
+
+        setGeometry(desktop->availableGeometry(desktop->screenNumber(this)));
+    }
+}
+
+void AppWindow::onDesktopResize()
+{
+    restoreGeometry(saveGeometry());
+
+    if(oldSize.width() > desktop->availableGeometry(this).width()) {
+        oldSize.setWidth(desktop->availableGeometry(this).width());
+    }
+
+    if(oldSize.height() > desktop->availableGeometry(this).height()) {
+        oldSize.setHeight(desktop->availableGeometry(this).height());
+    }
+
+    if(isMaximized) {
+        setGeometry(desktop->availableGeometry(desktop->screenNumber(this)));
+    }
+
+    oldPosition = desktop->availableGeometry(desktop->screenNumber(this)).center() - rect().center();
 }
 
 void AppWindow::onWidgetChange(QWidget* newWidget)
@@ -148,7 +202,8 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
 
     QSize beforeSize = size();
 
-    setMinimumSize(newWidget->minimumSize().width(), newWidget->minimumSize().height() + topBar->height());
+    setMinimumSize(newWidget->minimumSize().width() + 10,
+                   newWidget->minimumSize().height() + topBar->height() + 10);
 
     QSize afterSize = size();
 
