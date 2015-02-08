@@ -148,6 +148,7 @@ void AppWindow::setupLibrary()
     }
 
     oldPosition = controller->settings->windowOldPosition();
+    oldSize = controller->settings->windowOldSize();
 
     if(oldSize.width() > desktop->availableGeometry(this).width()) {
         oldSize.setWidth(desktop->availableGeometry(this).width());
