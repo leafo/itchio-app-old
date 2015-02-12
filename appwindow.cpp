@@ -11,7 +11,7 @@
 
 AppWindow::AppWindow(AppController* controller, QWidget* parent)
     : QMainWindow(parent)
-    , currentWidget("")
+    , currentWidget(NULL)
     , isMaximized(false)
     , desktop(QApplication::desktop())
     , ui(new Ui::AppWindow)
@@ -190,34 +190,47 @@ void AppWindow::onDesktopResize()
 
 void AppWindow::onWidgetChange(QWidget* newWidget)
 {
-    currentWidget = newWidget->windowTitle();
-    setWindowTitle(currentWidget + " - itch.io");
+    currentWidget = newWidget;
+    setWindowTitle(currentWidget->windowTitle() + " - itch.io");
 
     for (int i = 0; i != topBarWidgetButtons.count(); i++) {
-        if (topBarWidgetButtons[i]->text() == currentWidget) {
+        if (topBarWidgetButtons[i]->text() == currentWidget->windowTitle()) {
             topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
         } else {
             topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { color: #fff; } AppWindow #widgetButtonsWidget QPushButton:focus:!pressed, AppWindow #topBar QPushButton:hover:!pressed { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
         }
     }
 
-    QSize beforeSize = size();
+    if (isMaximized){
+        setMinimumSize(newWidget->minimumWidth() + 10, newWidget->minimumHeight() + topBar->height() + 10);
 
-    setMinimumSize(newWidget->minimumSize().width() + 10,
-                   newWidget->minimumSize().height() + topBar->height() + 10);
+        if(oldSize.width() < newWidget->minimumWidth()){
+            oldSize.setHeight(newWidget->minimumWidth());
+        }
 
-    QSize afterSize = size();
-
-    if (beforeSize.width() < afterSize.width()) {
-        move(x() + (beforeSize.width() - afterSize.width()) / 2, y());
+        if(oldSize.height() < newWidget->minimumHeight()){
+            oldSize.setHeight(newWidget->minimumHeight());
+        }
     }
+    else{
+        QSize beforeSize = size();
 
-    if (beforeSize.height() < afterSize.height()) {
-        move(x(), y() + (beforeSize.height() - afterSize.height()) / 2);
+        setMinimumSize(newWidget->minimumWidth() + 10, newWidget->minimumHeight() + topBar->height() + 10);
+
+        QSize afterSize = size();
+
+        if (beforeSize.width() < afterSize.width()) {
+            move(x() + (beforeSize.width() - afterSize.width()) / 2, y());
+
+            oldPosition = pos();
+        }
+
+        if (beforeSize.height() < afterSize.height()) {
+            move(x(), y() + (beforeSize.height() - afterSize.height()) / 2);
+
+            oldPosition = pos();
+        }
     }
-
-    oldSize = size();
-    oldPosition = pos();
 
     for (int i = 0; i != widgets.count(); i++) {
         widgets[i]->hide();
@@ -238,7 +251,7 @@ void AppWindow::on_topBarCloseButton_clicked()
 
 void AppWindow::on_libraryButton_clicked()
 {
-    if (currentWidget != libraryWidget->windowTitle()) {
+    if (currentWidget != libraryWidget) {
         onWidgetChange(libraryWidget);
     }
 }

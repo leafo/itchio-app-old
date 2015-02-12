@@ -33,7 +33,7 @@ public:
     LoginWidget* loginWidget;
     LibraryWidget* libraryWidget;
 
-    QString currentWidget;
+    QWidget* currentWidget;
 
     bool isMaximized;
 
