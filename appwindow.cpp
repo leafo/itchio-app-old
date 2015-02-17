@@ -23,10 +23,6 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent)
 
     ui->setupUi(this);
 
-    appWindowLayout = findChild<QGridLayout*>("appWindowLayout");
-    widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
-    topBar = findChild<QWidget*>("topBar");
-
     topBarWidgetButtons = findChild<QWidget*>("widgetButtonsWidget")->findChildren<QPushButton*>();
 
     setupSizeGrip();
@@ -45,7 +41,7 @@ void AppWindow::mousePressEvent(QMouseEvent* event)
     if (firstClicked == NULL) {
         firstClicked = childAt(event->x(), event->y());
 
-        if (firstClicked == topBar) {
+        if (firstClicked == ui->topBar) {
             dragClickX = event->x();
             dragClickY = event->y();
         }
@@ -63,7 +59,7 @@ void AppWindow::mouseReleaseEvent(QMouseEvent* event)
 
 void AppWindow::mouseMoveEvent(QMouseEvent* event)
 {
-    if (firstClicked == topBar && !isMaximized) {
+    if (firstClicked == ui->topBar && !isMaximized) {
         move(event->globalX() - dragClickX, event->globalY() - dragClickY);
     }
 
@@ -72,7 +68,7 @@ void AppWindow::mouseMoveEvent(QMouseEvent* event)
 
 void AppWindow::mouseDoubleClickEvent(QMouseEvent* event)
 {
-    if (childAt(event->x(), event->y()) == topBar) {
+    if (childAt(event->x(), event->y()) == ui->topBar) {
         if (!isMaximized) {
             maximize();
         } else {
@@ -125,13 +121,13 @@ void AppWindow::restore()
 void AppWindow::setupSizeGrip()
 {
     sizeGrip = new QSizeGrip(this);
-    appWindowLayout->addWidget(sizeGrip, 0, 0, 0, 0, Qt::AlignBottom | Qt::AlignRight);
+    ui->appWindowLayout->addWidget(sizeGrip, 0, 0, 0, 0, Qt::AlignBottom | Qt::AlignRight);
 }
 
 void AppWindow::setupLibrary()
 {
     libraryWidget = new LibraryWidget(this, controller);
-    widgetsLayout->addWidget(libraryWidget);
+    ui->widgetsLayout->addWidget(libraryWidget);
     widgets.append(libraryWidget);
     libraryWidget->hide();
 
@@ -202,7 +198,7 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
     }
 
     if (isMaximized){
-        setMinimumSize(newWidget->minimumWidth() + 10, newWidget->minimumHeight() + topBar->height() + 10);
+        setMinimumSize(newWidget->minimumWidth() + 10, newWidget->minimumHeight() + ui->topBar->height() + 10);
 
         if(oldSize.width() < newWidget->minimumWidth()){
             oldSize.setHeight(newWidget->minimumWidth());
@@ -215,7 +211,7 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
     else{
         QSize beforeSize = size();
 
-        setMinimumSize(newWidget->minimumWidth() + 10, newWidget->minimumHeight() + topBar->height() + 10);
+        setMinimumSize(newWidget->minimumWidth() + 10, newWidget->minimumHeight() + ui->topBar->height() + 10);
 
         QSize afterSize = size();
 

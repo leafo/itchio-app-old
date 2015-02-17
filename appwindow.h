@@ -71,9 +71,6 @@ private:
     int dragClickY;
 
     QSizeGrip* sizeGrip;
-    QWidget* topBar;
-    QGridLayout* appWindowLayout;
-    QGridLayout* widgetsLayout;
 
     QList<QPushButton*> topBarWidgetButtons;
 
