@@ -74,6 +74,46 @@ void AppSettings::enableTrayNotifications(const bool enable)
     setValue(Key::SHOW_TRAY_NOTIFICATIONS, enable);
 }
 
+bool AppSettings::startMaximized() const
+{
+    return value(Key::START_MAXIMIZED, false).toBool();
+}
+
+void AppSettings::enableStartMaximized(const bool enable)
+{
+    setValue(Key::START_MAXIMIZED, enable);
+}
+
+QByteArray AppSettings::windowGeometry() const
+{
+    return value(Key::WINDOW_GEOMETRY, ""   ).toByteArray();
+}
+
+void AppSettings::setWindowGeometry(const QByteArray geometry)
+{
+    setValue(Key::WINDOW_GEOMETRY, geometry);
+}
+
+QSize AppSettings::windowOldSize() const
+{
+    return value(Key::WINDOW_OLD_SIZE, 0).toSize();
+}
+
+void AppSettings::setWindowOldSize(const QSize size)
+{
+    setValue(Key::WINDOW_OLD_SIZE, size);
+}
+
+QPoint AppSettings::windowOldPosition() const
+{
+    return value(Key::WINDOW_OLD_POSITION, 0).toPoint();
+}
+
+void AppSettings::setWindowOldPosition(const QPoint position)
+{
+    setValue(Key::WINDOW_OLD_POSITION, position);
+}
+
 QString AppSettings::toString(const Key& key)
 {
     switch (key) {
@@ -89,6 +129,14 @@ QString AppSettings::toString(const Key& key)
         return "auto_update_checks";
     case Key::SHOW_TRAY_NOTIFICATIONS:
         return "show_tray_notifications";
+    case Key::START_MAXIMIZED:
+        return "start_maximized";
+    case Key::WINDOW_GEOMETRY:
+        return "window_geometry";
+    case Key::WINDOW_OLD_SIZE:
+        return "window_old_size";
+    case Key::WINDOW_OLD_POSITION:
+        return "window_old_position";
     default:
         // This is a guard to make sure any keys added later on are handled in this switch-case.
         qFatal("[AppSettings::toString] Undefined key!");

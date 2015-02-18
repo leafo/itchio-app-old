@@ -32,10 +32,6 @@ private slots:
 private:
     Ui::SettingsWidget* const ui;
     AppController* const controller;
-
-    QCheckBox* keepLoggedInBox;
-    QCheckBox* automaticallyCheckForUpdatesBox;
-    QCheckBox* showTrayNotificationsBox;
 };
 
 #endif // SETTINGSWIDGET_H

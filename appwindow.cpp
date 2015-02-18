@@ -11,27 +11,24 @@
 
 AppWindow::AppWindow(AppController* controller, QWidget* parent)
     : QMainWindow(parent)
-    , currentWidget("")
+    , currentWidget(NULL)
+    , isMaximized(false)
     , desktop(QApplication::desktop())
     , ui(new Ui::AppWindow)
     , controller(controller)
     , firstClicked(NULL)
-    , isMaximized(false)
 {
     setWindowFlags(Qt::CustomizeWindowHint | Qt::FramelessWindowHint);
     setWindowIcon(QIcon(":/images/images/itchio-icon-200.png"));
 
     ui->setupUi(this);
 
-    appWindowLayout = findChild<QGridLayout*>("appWindowLayout");
-    widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
-    topBar = findChild<QWidget*>("topBar");
-
     topBarWidgetButtons = findChild<QWidget*>("widgetButtonsWidget")->findChildren<QPushButton*>();
 
     setupSizeGrip();
 
-    move(QApplication::desktop()->screen(QApplication::desktop()->screenNumber(0))->rect().center() - rect().center());
+    connect(desktop, SIGNAL(workAreaResized(int)), this, SLOT(onDesktopResize()));
+    connect(desktop, SIGNAL(screenCountChanged (int)), this, SLOT(onScreenCountChange ()));
 }
 
 AppWindow::~AppWindow()
@@ -44,7 +41,7 @@ void AppWindow::mousePressEvent(QMouseEvent* event)
     if (firstClicked == NULL) {
         firstClicked = childAt(event->x(), event->y());
 
-        if (firstClicked == topBar) {
+        if (firstClicked == ui->topBar) {
             dragClickX = event->x();
             dragClickY = event->y();
         }
@@ -62,7 +59,7 @@ void AppWindow::mouseReleaseEvent(QMouseEvent* event)
 
 void AppWindow::mouseMoveEvent(QMouseEvent* event)
 {
-    if (firstClicked == topBar && !isMaximized) {
+    if (firstClicked == ui->topBar && !isMaximized) {
         move(event->globalX() - dragClickX, event->globalY() - dragClickY);
     }
 
@@ -71,7 +68,7 @@ void AppWindow::mouseMoveEvent(QMouseEvent* event)
 
 void AppWindow::mouseDoubleClickEvent(QMouseEvent* event)
 {
-    if (childAt(event->x(), event->y()) == topBar) {
+    if (childAt(event->x(), event->y()) == ui->topBar) {
         if (!isMaximized) {
             maximize();
         } else {
@@ -104,6 +101,8 @@ void AppWindow::closeEvent(QCloseEvent* event)
 
 void AppWindow::maximize()
 {
+    sizeGrip->hide();
+
     oldSize = size();
     oldPosition = pos();
 
@@ -115,53 +114,119 @@ void AppWindow::restore()
 {
     setGeometry(oldPosition.x(), oldPosition.y(), oldSize.width(), oldSize.height());
     isMaximized = false;
+
+    sizeGrip->show();
 }
 
 void AppWindow::setupSizeGrip()
 {
     sizeGrip = new QSizeGrip(this);
-    appWindowLayout->addWidget(sizeGrip, 0, 0, 0, 0, Qt::AlignBottom | Qt::AlignRight);
+    ui->appWindowLayout->addWidget(sizeGrip, 0, 0, 0, 0, Qt::AlignBottom | Qt::AlignRight);
 }
 
 void AppWindow::setupLibrary()
 {
     libraryWidget = new LibraryWidget(this, controller);
-    widgetsLayout->addWidget(libraryWidget);
+    ui->widgetsLayout->addWidget(libraryWidget);
     widgets.append(libraryWidget);
     libraryWidget->hide();
 
     onWidgetChange(libraryWidget);
+
+    if(!controller->settings->windowGeometry().isEmpty()) {
+        restoreGeometry(controller->settings->windowGeometry());
+    } else {
+        move(desktop->availableGeometry(0).center() - rect().center());
+    }
+
+    if(controller->settings->startMaximized()) {
+        maximize();
+    }
+
+    oldPosition = controller->settings->windowOldPosition();
+    oldSize = controller->settings->windowOldSize();
+
+    if(oldSize.width() > desktop->availableGeometry(this).width()) {
+        oldSize.setWidth(desktop->availableGeometry(this).width());
+    }
+
+    if(oldSize.height() > desktop->availableGeometry(this).height()) {
+        oldSize.setHeight(desktop->availableGeometry(this).height());
+    }
+}
+
+void AppWindow::onScreenCountChange()
+{
+    restoreGeometry(saveGeometry());
+    if(isMaximized) {
+        oldPosition = desktop->availableGeometry(desktop->screenNumber(this)).center() - rect().center();
+
+        setGeometry(desktop->availableGeometry(desktop->screenNumber(this)));
+    }
+}
+
+void AppWindow::onDesktopResize()
+{
+    restoreGeometry(saveGeometry());
+
+    if(oldSize.width() > desktop->availableGeometry(this).width()) {
+        oldSize.setWidth(desktop->availableGeometry(this).width());
+    }
+
+    if(oldSize.height() > desktop->availableGeometry(this).height()) {
+        oldSize.setHeight(desktop->availableGeometry(this).height());
+    }
+
+    if(isMaximized) {
+        setGeometry(desktop->availableGeometry(desktop->screenNumber(this)));
+    }
+
+    oldPosition = desktop->availableGeometry(desktop->screenNumber(this)).center() - rect().center();
 }
 
 void AppWindow::onWidgetChange(QWidget* newWidget)
 {
-    currentWidget = newWidget->windowTitle();
-    setWindowTitle(currentWidget + " - itch.io");
+    currentWidget = newWidget;
+    setWindowTitle(currentWidget->windowTitle() + " - itch.io");
 
     for (int i = 0; i != topBarWidgetButtons.count(); i++) {
-        if (topBarWidgetButtons[i]->text() == currentWidget) {
+        if (topBarWidgetButtons[i]->text() == currentWidget->windowTitle()) {
             topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
         } else {
             topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { color: #fff; } AppWindow #widgetButtonsWidget QPushButton:focus:!pressed, AppWindow #topBar QPushButton:hover:!pressed { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
         }
     }
 
-    QSize beforeSize = size();
+    if (isMaximized){
+        setMinimumSize(newWidget->minimumWidth() + 10, newWidget->minimumHeight() + ui->topBar->height() + 10);
 
-    setMinimumSize(newWidget->minimumSize().width(), newWidget->minimumSize().height() + topBar->height());
+        if(oldSize.width() < newWidget->minimumWidth()){
+            oldSize.setHeight(newWidget->minimumWidth());
+        }
 
-    QSize afterSize = size();
-
-    if (beforeSize.width() < afterSize.width()) {
-        move(x() + (beforeSize.width() - afterSize.width()) / 2, y());
+        if(oldSize.height() < newWidget->minimumHeight()){
+            oldSize.setHeight(newWidget->minimumHeight());
+        }
     }
+    else{
+        QSize beforeSize = size();
 
-    if (beforeSize.height() < afterSize.height()) {
-        move(x(), y() + (beforeSize.height() - afterSize.height()) / 2);
+        setMinimumSize(newWidget->minimumWidth() + 10, newWidget->minimumHeight() + ui->topBar->height() + 10);
+
+        QSize afterSize = size();
+
+        if (beforeSize.width() < afterSize.width()) {
+            move(x() + (beforeSize.width() - afterSize.width()) / 2, y());
+
+            oldPosition = pos();
+        }
+
+        if (beforeSize.height() < afterSize.height()) {
+            move(x(), y() + (beforeSize.height() - afterSize.height()) / 2);
+
+            oldPosition = pos();
+        }
     }
-
-    oldSize = size();
-    oldPosition = pos();
 
     for (int i = 0; i != widgets.count(); i++) {
         widgets[i]->hide();
@@ -182,7 +247,7 @@ void AppWindow::on_topBarCloseButton_clicked()
 
 void AppWindow::on_libraryButton_clicked()
 {
-    if (currentWidget != libraryWidget->windowTitle()) {
+    if (currentWidget != libraryWidget) {
         onWidgetChange(libraryWidget);
     }
 }

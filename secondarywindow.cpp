@@ -22,14 +22,13 @@ SecondaryWindow::SecondaryWindow(QWidget* const widget, AppController* const con
 
     name = widget->objectName();
 
-    topBar = findChild<QWidget*>("topBar");
-
     resize(widget->minimumSize());
-    setMinimumSize(widget->minimumSize().width(), widget->minimumSize().height() + topBar->height());
+    setMinimumSize(widget->minimumSize().width(), widget->minimumSize().height() + ui->topBar->height());
 
-    widgetsLayout = findChild<QGridLayout*>("widgetsLayout");
-    widgetsLayout->addWidget(widget);
+    ui->widgetsLayout->addWidget(widget);
     widget->show();
+
+    widget->setParent(this);
 }
 
 SecondaryWindow::~SecondaryWindow()
@@ -55,7 +54,7 @@ void SecondaryWindow::mousePressEvent(QMouseEvent* event)
     if (firstClicked == NULL) {
         firstClicked = childAt(event->x(), event->y());
 
-        if (firstClicked == topBar) {
+        if (firstClicked == ui->topBar) {
             dragClickX = event->x();
             dragClickY = event->y();
         }
@@ -71,7 +70,7 @@ void SecondaryWindow::mouseReleaseEvent(QMouseEvent* event)
 
 void SecondaryWindow::mouseMoveEvent(QMouseEvent* event)
 {
-    if (firstClicked == topBar) {
+    if (firstClicked == ui->topBar) {
         move(event->globalX() - dragClickX, event->globalY() - dragClickY);
     }
 }

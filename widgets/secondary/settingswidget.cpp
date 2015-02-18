@@ -12,10 +12,6 @@ SettingsWidget::SettingsWidget(AppController* controller, QWidget* parent)
 {
     ui->setupUi(this);
 
-    keepLoggedInBox = findChild<QCheckBox*>("keepLoggedInBox");
-    automaticallyCheckForUpdatesBox = findChild<QCheckBox*>("automaticallyCheckForUpdatesBox");
-    showTrayNotificationsBox = findChild<QCheckBox*>("showTrayNotificationsBox");
-
     refresh();
 }
 
@@ -26,22 +22,22 @@ SettingsWidget::~SettingsWidget()
 
 void SettingsWidget::refresh()
 {
-    keepLoggedInBox->setChecked(controller->settings->autoLogin());
-    automaticallyCheckForUpdatesBox->setChecked(controller->settings->autoUpdateChecks());
-    showTrayNotificationsBox->setChecked(controller->settings->showTrayNotifications());
+    ui->keepLoggedInBox->setChecked(controller->settings->autoLogin());
+    ui->automaticallyCheckForUpdatesBox->setChecked(controller->settings->autoUpdateChecks());
+    ui->showTrayNotificationsBox->setChecked(controller->settings->showTrayNotifications());
 }
 
 void SettingsWidget::on_keepLoggedInBox_clicked()
 {
-    controller->settings->enableAutoLogin(keepLoggedInBox->isChecked());
+    controller->settings->enableAutoLogin(ui->keepLoggedInBox->isChecked());
 }
 
 void SettingsWidget::on_automaticallyCheckForUpdatesBox_clicked()
 {
-    controller->settings->enableAutoUpdateChecks(automaticallyCheckForUpdatesBox->isChecked());
+    controller->settings->enableAutoUpdateChecks(ui->automaticallyCheckForUpdatesBox->isChecked());
 }
 
 void SettingsWidget::on_showTrayNotificationsBox_clicked()
 {
-    controller->settings->enableTrayNotifications(showTrayNotificationsBox->isChecked());
+    controller->settings->enableTrayNotifications(ui->showTrayNotificationsBox->isChecked());
 }

@@ -25,13 +25,13 @@ public:
 
     QString name;
 
+    void closeWindow();
+
 private:
     void closeEvent(QCloseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
-
-    void closeWindow();
 
     QObject* firstClicked;
 
@@ -41,9 +41,6 @@ private:
 
     int dragClickX;
     int dragClickY;
-
-    QWidget* topBar;
-    QGridLayout* widgetsLayout;
 
 signals:
 
