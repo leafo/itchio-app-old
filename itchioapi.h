@@ -25,6 +25,8 @@ public:
 
     void myGames(std::function<void (QList<Game>)> callback);
     void myOwnedKeys(std::function<void (QList<DownloadKey>)> callback);
+    void myClaimedKeys(std::function<void (QList<DownloadKey>)> callback);
+
     void downloadKeyUploads(const DownloadKey& key, std::function<void (QList<Upload>)> callback);
     void downloadUpload(const DownloadKey& key, const Upload& upload, std::function<void (QString)> callback);
 

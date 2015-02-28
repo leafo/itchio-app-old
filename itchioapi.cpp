@@ -110,6 +110,21 @@ void ItchioApi::myOwnedKeys(std::function<void(QList<DownloadKey> keys)> callbac
     });
 }
 
+void ItchioApi::myClaimedKeys(std::function<void(QList<DownloadKey> keys)> callback)
+{
+    request("my-claimed-keys", [=](QJsonDocument res) {
+        QJsonValue keys = res.object()["claimed_keys"];
+
+        QList<DownloadKey> keyList;
+        foreach (const QJsonValue& keyValue, keys.toArray()) {
+            QJsonObject keyObject = keyValue.toObject();
+            keyList <<  DownloadKey::fromJson(keyObject);
+        }
+
+        callback(keyList);
+    });
+}
+
 void ItchioApi::downloadKeyUploads(const DownloadKey& key, std::function<void(QList<Upload>)> callback)
 {
     request(QString("download-key/%1/uploads").arg(key.id), [=](QJsonDocument res) {

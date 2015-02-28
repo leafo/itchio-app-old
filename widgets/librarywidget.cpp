@@ -13,11 +13,15 @@ LibraryWidget::LibraryWidget(QWidget* const parent, AppController* const control
     ui->setupUi(this);
 
     controller->api->myOwnedKeys([this](QList<DownloadKey> keys) {
-        onMyOwnedKeys(keys);
+        onMyPurchasedKeys(keys);
+    });
+
+    controller->api->myClaimedKeys([this](QList<DownloadKey> keys) {
+        onMyClaimedKeys(keys);
     });
 }
 
-void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys)
+void LibraryWidget::onMyPurchasedKeys(QList<DownloadKey> downloadKeys)
 {
     QList<GameRow*> gameRows;
     foreach (DownloadKey key, downloadKeys) {
@@ -25,6 +29,16 @@ void LibraryWidget::onMyOwnedKeys(QList<DownloadKey> downloadKeys)
     }
 
     addGamesTab("My Purchases", gameRows);
+}
+
+void LibraryWidget::onMyClaimedKeys(QList<DownloadKey> downloadKeys)
+{
+    QList<GameRow*> gameRows;
+    foreach (DownloadKey key, downloadKeys) {
+        gameRows << new GameRow(this, key.game, key, controller);
+    }
+
+    addGamesTab("My Claimed Games", gameRows);
 }
 
 void LibraryWidget::addGamesTab(const QString& title, const QList<GameRow*>& gameRows)

@@ -21,7 +21,8 @@ public:
 
 
 public slots:
-    void onMyOwnedKeys(QList<DownloadKey> downloadKeys);
+    void onMyPurchasedKeys(QList<DownloadKey> downloadKeys);
+    void onMyClaimedKeys(QList<DownloadKey> downloadKeys);
 
 private:
     Ui::LibraryWidget* const ui;

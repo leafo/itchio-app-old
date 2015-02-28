@@ -88,6 +88,8 @@ QTabBar::tab
 {
 	background: #FA5C5C;
 	color: white;
+	padding: 10px;
+	margin-right: 10px;
 }
 
 QTabBar::tab:!selected
@@ -97,7 +99,8 @@ QTabBar::tab:!selected
 
 QTabWidget::tab-bar
 {
-	left: 10px;
+	margin-right: 40px;
+	alignment: right;
 }
 
 /* --- Custom Elements --- */
