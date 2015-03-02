@@ -1,5 +1,10 @@
 /* --- Default Qt Elements --- */
 
+QWidget
+{
+	font-family: sans-serif;
+}
+
 QMainWindow, QDialog
 {
 	background: #222;
@@ -15,13 +20,21 @@ QPushButton
 	border-radius: 1px;
 	border: 0;
 	text-align: center;
-	line-height: 30px;
-	height: 30px;
 	font-size: inherit;
 	padding: 0 10px;
 	background: #FA5C5C;
 	color: white;
 	outline: 0;
+	text-decoration: none;
+	padding: 0 10px;
+	border-radius: 1px;
+	line-height: 35px;
+}
+
+QPushButton::menu-indicator {
+	subcontrol-position: bottom right;
+	right: 3px;
+	bottom: 3px;
 }
 
 QPushButton:focus:!pressed, QPushButton:hover:!pressed
