@@ -93,7 +93,7 @@ void GameRow::onTriggerUpload()
     Upload upload = pendingUploads[pos];
 
     controller->api->downloadUpload(downloadKey, upload, [=](QString url) {
-        QString path = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        QString path = QCoreApplication::applicationDirPath() + "/Downloads";
         QDir().mkpath(path);
 
         QString fname = QString::number(upload.id);
