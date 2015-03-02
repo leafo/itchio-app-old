@@ -156,7 +156,7 @@
         <string notr="true"/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../resources.qrc">:/images/images/itchio-icon-200.png</pixmap>
+        <pixmap resource="../../resources.qrc">:/images/images/itchio-icon-200.png</pixmap>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -318,7 +318,7 @@
   <tabstop>loginButton</tabstop>
  </tabstops>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="../../resources.qrc"/>
  </resources>
  <connections/>
 </ui>
