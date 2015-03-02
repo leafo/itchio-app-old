@@ -39,7 +39,8 @@ void ItchioApi::loginWithPassword(const QString& username, const QString& passwo
     connect(reply, &QNetworkReply::finished, [=] {
         reply->deleteLater();
 
-        if (reply->error() != QNetworkReply::NoError) {
+        if (reply->error() != QNetworkReply::NoError)
+        {
             callback(false, reply->errorString());
             return;
         }
@@ -47,7 +48,8 @@ void ItchioApi::loginWithPassword(const QString& username, const QString& passwo
         QJsonDocument res = QJsonDocument::fromJson(reply->readAll());
 
         QString error = parseJsonError(res);
-        if (error != "") {
+        if (error != "")
+        {
             callback(false, error);
             return;
         }
@@ -172,7 +174,8 @@ void ItchioApi::request(const QString& path, std::function<void(QJsonDocument)> 
 
     connect(reply, &QNetworkReply::finished, [=] {
         reply->deleteLater();
-        if (reply->error() == QNetworkReply::NoError) {
+        if (reply->error() == QNetworkReply::NoError)
+        {
             callback(QJsonDocument::fromJson(reply->readAll()));
             return;
         }

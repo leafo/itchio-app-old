@@ -48,7 +48,7 @@ void LibraryWidget::addGamesTab(const QString& title, const QList<GameRow*>& gam
 
     QWidget* wrapper = new QWidget;
     wrapper->setObjectName("scrollWrapper");
-    QVBoxLayout* layout = new QVBoxLayout;
+    QHBoxLayout* layout = new QHBoxLayout;
 
     foreach (GameRow* row, gameRows) {
         layout->addWidget(row);

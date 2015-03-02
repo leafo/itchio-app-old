@@ -197,18 +197,17 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
         }
     }
 
-    if (isMaximized){
+    if (isMaximized) {
         setMinimumSize(newWidget->minimumWidth() + 10, newWidget->minimumHeight() + ui->topBar->height() + 10);
 
-        if(oldSize.width() < newWidget->minimumWidth()){
+        if(oldSize.width() < newWidget->minimumWidth()) {
             oldSize.setHeight(newWidget->minimumWidth());
         }
 
-        if(oldSize.height() < newWidget->minimumHeight()){
+        if(oldSize.height() < newWidget->minimumHeight()) {
             oldSize.setHeight(newWidget->minimumHeight());
         }
-    }
-    else{
+    } else {
         QSize beforeSize = size();
 
         setMinimumSize(newWidget->minimumWidth() + 10, newWidget->minimumHeight() + ui->topBar->height() + 10);

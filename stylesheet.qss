@@ -1,5 +1,15 @@
 /* --- Default Qt Elements --- */
 
+QMainWindow, QDialog
+{
+	background: #222;
+}
+
+QCheckBox
+{
+	color: #fff;
+}
+
 QPushButton
 {
 	border-radius: 1px;
@@ -52,7 +62,6 @@ QScrollBar::handle:vertical
 	min-height: 20px;
 }
 
-/* above */
 QScrollBar::add-line:vertical
 {
 	height: 0;
@@ -60,7 +69,6 @@ QScrollBar::add-line:vertical
 	subcontrol-origin: margin;
 }
 
-/* below */
 QScrollBar::sub-line:vertical
 {
 	height: 0;
@@ -103,17 +111,18 @@ QTabWidget::tab-bar
 	alignment: right;
 }
 
+QProgressBar
+{
+	border: 2px solid #444;
+}
+
+QProgressBar::chunk
+{
+	background-color: #9EDFE4;
+	width: 20px;
+}
+
 /* --- Custom Elements --- */
-
-AppWindow, SecondaryWindow
-{
-	background: #222;
-}
-
-SettingsWidget QCheckBox
-{
-	color: #fff;
-}
 
 QMainWindow #topBar
 {
@@ -139,27 +148,21 @@ AppWindow #widgetButtonsWidget QPushButton:pressed
 
 LibraryWidget #gamesScroller
 {
-	border: 2px solid #555;
+	border: none;
+	background-color: #222;
 }
 
 LibraryWidget #scrollWrapper
 {
-	background-color: #333;
+	background-color: #222;
 }
 
-LibraryWidget #imageHolder
+#gameRowFrame
 {
-	border: 1px solid #222;
-	border-radius: 2px;
-	background-color: rgba(1,0,0,0.1);
+	background-color: #444;
 }
 
-#tab
+#gameRowFrame:hover
 {
-	background-color: #333;
-}
-
-#tab_2
-{
-	background-color: #333;
+	border: 2px solid #555;
 }

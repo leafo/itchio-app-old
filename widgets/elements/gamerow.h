@@ -22,7 +22,20 @@ public:
     explicit GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller);
     ~GameRow();
 
-    static const int COVER_HEIGHT = 80;
+private:
+    Ui::GameRow *ui;
+
+    QNetworkAccessManager* networkManager;
+
+    Game game;
+    DownloadKey downloadKey;
+    AppController* const controller;
+
+    QMenu* downloadMenu;
+
+    QList<Upload> pendingUploads;
+
+    void refreshThumbnail();
 
 private slots:
     void onClickDownload();
@@ -30,22 +43,8 @@ private slots:
     void onTriggerDownloadMenu();
     void onTriggerUpload();
     void onUploads(const QList<Upload>& uploads);
+    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 
-private:
-    QNetworkAccessManager* networkManager;
-
-    Game game;
-    DownloadKey downloadKey;
-    AppController* const controller;
-
-    QLabel* imageHolder;
-    QProgressBar* downloadProgress;
-    QPushButton* downloadButton;
-    QMenu* downloadMenu;
-
-    QList<Upload> pendingUploads;
-
-    void refreshThumbnail();
 };
 
 #endif // GAMEROW_H

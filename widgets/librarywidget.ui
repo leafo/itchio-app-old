@@ -66,6 +66,9 @@
          <height>400</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
        <property name="currentIndex">
         <number>-1</number>
        </property>

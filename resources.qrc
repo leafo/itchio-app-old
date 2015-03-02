@@ -4,6 +4,7 @@
         <file>images/itchio-icon-16.png</file>
         <file>images/itchio-icon-30.png</file>
         <file>images/itchio-icon-100.png</file>
+        <file>images/gameRowLabel-placeholder.png</file>
     </qresource>
     <qresource prefix="/">
         <file>stylesheet.qss</file>
