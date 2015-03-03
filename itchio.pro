@@ -26,7 +26,7 @@ SOURCES += main.cpp \
     objects/user.cpp \
     objects/downloadkey.cpp \
     objects/upload.cpp \
-    widgets/elements/gamerow.cpp
+    elements/gamerow.cpp
 
 
 HEADERS += itchioapi.h \
@@ -43,7 +43,7 @@ HEADERS += itchioapi.h \
     objects/user.h \
     objects/downloadkey.h \
     objects/upload.h \
-    widgets/elements/gamerow.h
+    elements/gamerow.h
 
 
 FORMS += appwindow.ui \
@@ -51,7 +51,7 @@ FORMS += appwindow.ui \
     widgets/librarywidget.ui \
     widgets/secondary/loginwidget.ui \
     widgets/secondary/settingswidget.ui \
-    widgets/elements/gamerow.ui
+    elements/gamerow.ui
 
 RESOURCES += \
     resources.qrc \

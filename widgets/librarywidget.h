@@ -4,7 +4,7 @@
 #include <QWidget>
 
 #include "appcontroller.h"
-#include "widgets/elements/gamerow.h"
+#include "elements/gamerow.h"
 
 namespace Ui
 {
