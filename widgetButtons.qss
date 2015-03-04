@@ -1,14 +1,5 @@
 AppWindow #widgetButtonsWidget QPushButton
 {
 	color: #fff;
-}
-
-AppWindow #widgetButtonsWidget QPushButton:focus:!pressed
-{
-	color: #fff;
-}
-
-AppWindow #widgetButtonsWidget QPushButton:pressed
-{
-	color: #fff;
+	border-bottom: none;
 }

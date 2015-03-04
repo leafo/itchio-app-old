@@ -149,12 +149,14 @@ AppWindow #widgetButtonsWidget QPushButton
 AppWindow #widgetButtonsWidget QPushButton:focus:!pressed,
 AppWindow #widgetButtonsWidget QPushButton:hover:!pressed
 {
-	color: #fff;
+	background: #FA5C5C;
+	border-bottom: 2px solid rgba(255, 255, 255, 0.5);
 }
 
 AppWindow #widgetButtonsWidget QPushButton:pressed
 {
-	color: #fff;
+	background: #FA5C5C;
+	border-bottom: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 LibraryWidget #gamesScroller

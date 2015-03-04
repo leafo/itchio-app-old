@@ -190,7 +190,7 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
     for (int i = 0; i != topBarWidgetButtons.count(); i++) {
         if (topBarWidgetButtons[i]->text() == currentWidget->windowTitle()) {
 
-            QFile styleFile(":widgetButton.qss");
+            QFile styleFile(":/widgetButtonsActive.qss");
 
             if (styleFile.open(QIODevice::ReadOnly)) {
                 QTextStream textStream(&styleFile);
@@ -199,7 +199,7 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
                 topBarWidgetButtons[i]->setStyleSheet(styleSheet);
             }
         } else {
-            QFile styleFile(":widgetButtonActive.qss");
+            QFile styleFile(":/widgetButtons.qss");
 
             if (styleFile.open(QIODevice::ReadOnly)) {
                 QTextStream textStream(&styleFile);
