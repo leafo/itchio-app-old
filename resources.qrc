@@ -5,8 +5,11 @@
         <file>images/itchio-icon-30.png</file>
         <file>images/itchio-icon-100.png</file>
         <file>images/gameRowLabel-placeholder.png</file>
+        <file>images/itchio-text-white-21.png</file>
     </qresource>
     <qresource prefix="/">
         <file>stylesheet.qss</file>
+        <file>widgetButtons.qss</file>
+        <file>widgetButtonsActive.qss</file>
     </qresource>
 </RCC>

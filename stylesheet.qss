@@ -21,7 +21,6 @@ QPushButton
 	border: 0;
 	text-align: center;
 	font-size: inherit;
-	padding: 0 10px;
 	background: #FA5C5C;
 	color: white;
 	outline: 0;
@@ -139,24 +138,23 @@ QProgressBar::chunk
 
 QMainWindow #topBar
 {
-	background-color: #333;
+	background-color: #FA5C5C;
 }
 
 AppWindow #widgetButtonsWidget QPushButton
 {
-	background: #333;
 	color: #fff;
 }
 
 AppWindow #widgetButtonsWidget QPushButton:focus:!pressed,
 AppWindow #widgetButtonsWidget QPushButton:hover:!pressed
 {
-	color: #fa6666;
+	color: #fff;
 }
 
 AppWindow #widgetButtonsWidget QPushButton:pressed
 {
-	color: #e44949;
+	color: #fff;
 }
 
 LibraryWidget #gamesScroller

@@ -1,0 +1,9 @@
+AppWindow #widgetButtonsWidget QPushButton
+{
+	color: #fff;
+}
+
+AppWindow #widgetButtonsWidget QPushButton:pressed
+{
+	color: #fff;
+}

@@ -7,8 +7,6 @@
 #include "widgets/librarywidget.h"
 #include "widgets/secondary/loginwidget.h"
 
-// TODO: Research better ways to handle CSS change during runtime.
-
 AppWindow::AppWindow(AppController* controller, QWidget* parent)
     : QMainWindow(parent)
     , currentWidget(NULL)
@@ -191,9 +189,24 @@ void AppWindow::onWidgetChange(QWidget* newWidget)
 
     for (int i = 0; i != topBarWidgetButtons.count(); i++) {
         if (topBarWidgetButtons[i]->text() == currentWidget->windowTitle()) {
-            topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
+
+            QFile styleFile(":widgetButton.qss");
+
+            if (styleFile.open(QIODevice::ReadOnly)) {
+                QTextStream textStream(&styleFile);
+                QString styleSheet = textStream.readAll();
+                styleFile.close();
+                topBarWidgetButtons[i]->setStyleSheet(styleSheet);
+            }
         } else {
-            topBarWidgetButtons[i]->setStyleSheet("AppWindow #widgetButtonsWidget QPushButton { color: #fff; } AppWindow #widgetButtonsWidget QPushButton:focus:!pressed, AppWindow #topBar QPushButton:hover:!pressed { color: #fa6666; } AppWindow #widgetButtonsWidget QPushButton:pressed { color: #e44949; }");
+            QFile styleFile(":widgetButtonActive.qss");
+
+            if (styleFile.open(QIODevice::ReadOnly)) {
+                QTextStream textStream(&styleFile);
+                QString styleSheet = textStream.readAll();
+                styleFile.close();
+                topBarWidgetButtons[i]->setStyleSheet(styleSheet);
+            }
         }
     }
 
