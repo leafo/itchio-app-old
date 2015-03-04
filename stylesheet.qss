@@ -185,5 +185,5 @@ LibraryWidget #scrollWrapper
 
 #gameRowFrame:hover
 {
-	border: 2px solid #555;
+	border: 2px solid #FA5C5C;
 }
