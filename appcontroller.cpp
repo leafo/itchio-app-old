@@ -50,6 +50,11 @@ void AppController::quit()
     settings->setWindowOldSize(appWindow->oldSize);
     settings->setWindowOldPosition(appWindow->oldPosition);
 
+    if (settings->autoLogin()) {
+        settings->setApiKey(api->userKey);
+        settings->setUsername(api->userName);
+    }
+
     QCoreApplication::exit();
 }
 
@@ -126,11 +131,6 @@ void AppController::setupAppWindow()
 
 void AppController::onLogin()
 {
-    if (settings->autoLogin()) {
-        settings->setApiKey(api->userKey);
-        settings->setUsername(api->userName);
-    }
-
     setupTrayIconMenu();
 
     if (!loginWithApiKey) {
