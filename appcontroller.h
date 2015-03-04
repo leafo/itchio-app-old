@@ -32,9 +32,6 @@ public:
 private:
     QString settingsFile;
 
-    QAction* actionQuit;
-    QAction* actionSettings;
-
     AppWindow* appWindow;
     SecondaryWindow* loginWindow;
     SecondaryWindow* settingsWindow;

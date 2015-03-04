@@ -82,14 +82,14 @@ void AppController::setupTrayIconMenu(bool beforeLogin)
     trayIcon->setContextMenu(trayIconMenu);
 
     if (!beforeLogin) {
-        actionSettings = new QAction("Settings", this);
+        QAction* actionSettings = new QAction("Settings", this);
         trayIconMenu->addAction(actionSettings);
         connect(actionSettings, SIGNAL(triggered()), this, SLOT(showSettings()));
 
         trayIconMenu->addSeparator();
     }
 
-    actionQuit = new QAction("Quit", this);
+    QAction* actionQuit = new QAction("Quit", this);
     trayIconMenu->addAction(actionQuit);
     connect(actionQuit, SIGNAL(triggered()), this, SLOT(quit()));
 
