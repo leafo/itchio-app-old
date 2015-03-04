@@ -23,6 +23,8 @@ AppWindow::AppWindow(AppController* controller, QWidget* parent)
 
     topBarWidgetButtons = findChild<QWidget*>("widgetButtonsWidget")->findChildren<QPushButton*>();
 
+    ui->logo->setAttribute(Qt::WA_TransparentForMouseEvents);
+
     setupSizeGrip();
 
     connect(desktop, SIGNAL(workAreaResized(int)), this, SLOT(onDesktopResize()));
