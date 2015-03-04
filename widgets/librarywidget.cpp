@@ -28,7 +28,7 @@ void LibraryWidget::onMyPurchasedKeys(QList<DownloadKey> downloadKeys)
         gameRows << new GameRow(this, key.game, key, controller);
     }
 
-    addGamesTab("My Purchases", gameRows);
+    addGamesTab("Purchased", gameRows);
 }
 
 void LibraryWidget::onMyClaimedKeys(QList<DownloadKey> downloadKeys)
@@ -38,7 +38,7 @@ void LibraryWidget::onMyClaimedKeys(QList<DownloadKey> downloadKeys)
         gameRows << new GameRow(this, key.game, key, controller);
     }
 
-    addGamesTab("My Claimed Games", gameRows);
+    addGamesTab("Claimed", gameRows);
 }
 
 void LibraryWidget::addGamesTab(const QString& title, const QList<GameRow*>& gameRows)

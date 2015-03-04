@@ -101,26 +101,34 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 
 QTabWidget::pane
 {
-	background-color: #EA4C4C;
+	background-color: #333;
 }
 
 QTabBar::tab
 {
-	background: #FA5C5C;
+	height: 79px;
+	width: 15px;
+	background: #222;
 	color: white;
 	padding: 10px;
-	margin-right: 10px;
+	line-height: 35px;
+	font-size: 16px;
+	margin-top: 5px;
 }
 
-QTabBar::tab:!selected
+QTabBar::tab:selected
 {
-	background: #DA3C3C;
+	background: #333;
+}
+
+QTabBar::tab:hover:!selected, QTabBar::tab:focus:!selected
+{
+	background: #444;
 }
 
 QTabWidget::tab-bar
 {
-	margin-right: 40px;
-	alignment: right;
+	alignment: left;
 }
 
 QProgressBar
@@ -162,12 +170,12 @@ AppWindow #widgetButtonsWidget QPushButton:pressed
 LibraryWidget #gamesScroller
 {
 	border: none;
-	background-color: #222;
+	background-color: #333;
 }
 
 LibraryWidget #scrollWrapper
 {
-	background-color: #222;
+	background-color: #333;
 }
 
 #gameRowFrame
