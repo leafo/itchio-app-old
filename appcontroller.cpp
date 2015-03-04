@@ -141,7 +141,7 @@ void AppController::onLogin()
     appWindow->setupLibrary();
 }
 
-void AppController::onAutoLoginFailure(QString error)
+void AppController::onAutoLoginFailure(QString)
 {
     setupLogin();
 }
