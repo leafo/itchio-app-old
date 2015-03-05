@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>GameRow</class>
- <widget class="QWidget" name="GameRow">
+ <class>GameFrame</class>
+ <widget class="QWidget" name="GameFrame">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -24,7 +24,7 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>16777215</width>
+    <width>200</width>
     <height>350</height>
    </size>
   </property>
@@ -43,7 +43,7 @@
   <property name="locale">
    <locale language="English" country="UnitedStates"/>
   </property>
-  <layout class="QGridLayout" name="GameRowLayout">
+  <layout class="QGridLayout" name="GameFrameWidgetLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -60,11 +60,29 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QFrame" name="gameRowFrame">
-     <property name="focusPolicy">
-      <enum>Qt::StrongFocus</enum>
+    <widget class="QFrame" name="gameFrame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
-     <layout class="QVBoxLayout" name="gameRowFrameLayout">
+     <property name="minimumSize">
+      <size>
+       <width>200</width>
+       <height>340</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>200</width>
+       <height>340</height>
+      </size>
+     </property>
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+     <layout class="QVBoxLayout" name="gameFrameLayout">
       <property name="spacing">
        <number>10</number>
       </property>
@@ -104,7 +122,7 @@
          <string/>
         </property>
         <property name="pixmap">
-         <pixmap resource="../resources.qrc">:/images/images/gameRowLabel-placeholder.png</pixmap>
+         <pixmap resource="../resources.qrc">:/images/images/gameFrameLogoLabel-placeholder.png</pixmap>
         </property>
         <property name="scaledContents">
          <bool>true</bool>

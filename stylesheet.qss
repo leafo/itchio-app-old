@@ -174,18 +174,19 @@ LibraryWidget #gamesScroller
 	background-color: #333;
 }
 
+GameFrame,
 LibraryWidget #scrollWrapper
 {
 	background-color: #333;
 }
 
-#gameRowFrame
+#gameFrame
 {
 	background-color: #444;
 }
 
-#gameRowFrame:hover,
-#gameRowFrame:focus
+#gameFrame:hover,
+#gameFrame:focus
 {
 	border: 2px solid #FA5C5C;
 }

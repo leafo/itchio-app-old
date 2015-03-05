@@ -2,9 +2,12 @@
 #define LIBRARYWIDGET_H
 
 #include <QWidget>
+#include <QList>
+#include <QGridLayout>
+#include <QResizeEvent>
 
 #include "appcontroller.h"
-#include "elements/gamerow.h"
+#include "elements/gameframe.h"
 
 namespace Ui
 {
@@ -28,7 +31,18 @@ private:
     Ui::LibraryWidget* const ui;
     AppController* const controller;
 
-    void addGamesTab(const QString& title, const QList<GameRow *>& gameRows);
+    QList<QVBoxLayout*> tabLayouts;
+    QList<QList<QVBoxLayout*>*> tabRowLayouts;
+    QList<QList<QHBoxLayout*>*> tabColLayouts;
+    QList<QList<GameFrame*>*> tabWidgets;
+    int tabSetupCount = 0;
+    int gameFrameWidth;
+
+    void resizeEvent(QResizeEvent *event);
+
+    void adjustTabLayouts();
+
+    void addGamesTab(const QString& title, const QList<GameFrame *>& gameFrames, int tab);
 };
 
 #endif // LIBRARYWIDGET_H

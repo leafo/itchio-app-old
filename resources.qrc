@@ -4,7 +4,7 @@
         <file>images/itchio-icon-16.png</file>
         <file>images/itchio-icon-30.png</file>
         <file>images/itchio-icon-100.png</file>
-        <file>images/gameRowLabel-placeholder.png</file>
+        <file>images/gameFrameLogoLabel-placeholder.png</file>
         <file>images/itchio-text-white-21.png</file>
     </qresource>
     <qresource prefix="/">

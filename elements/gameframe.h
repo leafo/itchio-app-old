@@ -1,5 +1,5 @@
-#ifndef GAMEROW_H
-#define GAMEROW_H
+#ifndef GAMEFRAME_H
+#define GAMEFRAME_H
 
 #include <QWidget>
 #include <QLabel>
@@ -11,19 +11,19 @@
 
 namespace Ui
 {
-class GameRow;
+class GameFrame;
 }
 
-class GameRow : public QWidget
+class GameFrame : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller);
-    ~GameRow();
+    explicit GameFrame(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller);
+    ~GameFrame();
 
 private:
-    Ui::GameRow *ui;
+    Ui::GameFrame *ui;
 
     QNetworkAccessManager* networkManager;
 
@@ -47,4 +47,4 @@ private slots:
 
 };
 
-#endif // GAMEROW_H
+#endif // GAMEFRAME_H

@@ -1,5 +1,5 @@
-#include "gamerow.h"
-#include "ui_gamerow.h"
+#include "gameframe.h"
+#include "ui_gameframe.h"
 
 #include <QPushButton>
 #include <QLabel>
@@ -19,9 +19,9 @@
 #include <QDir>
 #include <QFile>
 
-GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller)
+GameFrame::GameFrame(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller)
     : QWidget(parent)
-    , ui(new Ui::GameRow)
+    , ui(new Ui::GameFrame)
     , game(game)
     , downloadKey(key)
     , controller(controller)
@@ -32,7 +32,7 @@ GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key
 
     downloadMenu = new QMenu("Choose Download");
     ui->downloadButton->setMenu(downloadMenu);
-    connect(downloadMenu, &QMenu::aboutToShow, this, &GameRow::onTriggerDownloadMenu);
+    connect(downloadMenu, &QMenu::aboutToShow, this, &GameFrame::onTriggerDownloadMenu);
 
     ui->gameCoverLabel->setFixedWidth(
         int(ui->gameCoverLabel->maximumHeight() * double(Game::COVER_WIDTH) / Game::COVER_HEIGHT));
@@ -43,17 +43,17 @@ GameRow::GameRow(QWidget* const parent, const Game& game, const DownloadKey& key
     refreshThumbnail();
 }
 
-GameRow::~GameRow()
+GameFrame::~GameFrame()
 {
     delete ui;
 }
 
-void GameRow::onClickDownload()
+void GameFrame::onClickDownload()
 {
     qDebug() << "clicked download" << game.title;
 }
 
-void GameRow::onDownloadThumbnail()
+void GameFrame::onDownloadThumbnail()
 {
     QNetworkReply* reply = qobject_cast<QNetworkReply*>(sender());
     reply->deleteLater();
@@ -70,7 +70,7 @@ void GameRow::onDownloadThumbnail()
     }
 }
 
-void GameRow::onTriggerDownloadMenu()
+void GameFrame::onTriggerDownloadMenu()
 {
     downloadMenu->clear();
 
@@ -84,7 +84,7 @@ void GameRow::onTriggerDownloadMenu()
     });
 }
 
-void GameRow::onTriggerUpload()
+void GameFrame::onTriggerUpload()
 {
     QAction* action = qobject_cast<QAction*>(sender());
 
@@ -109,7 +109,7 @@ void GameRow::onTriggerUpload()
         request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
         QNetworkReply* reply = networkManager->get(request);
 
-        connect(reply, &QNetworkReply::downloadProgress, this, &GameRow::downloadProgress);
+        connect(reply, &QNetworkReply::downloadProgress, this, &GameFrame::downloadProgress);
 
         connect(reply, &QNetworkReply::readyRead, [=] {
             qDebug() << "ready read" << reply->bytesAvailable();
@@ -126,7 +126,7 @@ void GameRow::onTriggerUpload()
     });
 }
 
-void GameRow::onUploads(const QList<Upload>& uploads)
+void GameFrame::onUploads(const QList<Upload>& uploads)
 {
     pendingUploads = uploads;
     downloadMenu->clear();
@@ -142,13 +142,13 @@ void GameRow::onUploads(const QList<Upload>& uploads)
         QAction* const uploadAction = new QAction(uploads[i].filename, downloadMenu);
         uploadAction->setData(i);
 
-        connect(uploadAction, &QAction::triggered, this, &GameRow::onTriggerUpload);
+        connect(uploadAction, &QAction::triggered, this, &GameFrame::onTriggerUpload);
 
         downloadMenu->addAction(uploadAction);
     }
 }
 
-void GameRow::refreshThumbnail()
+void GameFrame::refreshThumbnail()
 {
     if (game.coverImageUrl == "") {
         return;
@@ -161,10 +161,10 @@ void GameRow::refreshThumbnail()
     request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
 
     QNetworkReply* reply = networkManager->get(request);
-    connect(reply, &QNetworkReply::finished, this, &GameRow::onDownloadThumbnail);
+    connect(reply, &QNetworkReply::finished, this, &GameFrame::onDownloadThumbnail);
 }
 
-void GameRow::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
+void GameFrame::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     ui->progressBar->setMaximum(bytesTotal);
     ui->progressBar->setValue(bytesReceived);
