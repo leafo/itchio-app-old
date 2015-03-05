@@ -54,6 +54,9 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
@@ -173,6 +176,9 @@
          <height>17</height>
         </size>
        </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
+       </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
@@ -188,6 +194,9 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="mouseTracking">
+        <bool>false</bool>
        </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
@@ -233,6 +242,11 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>keepLoggedInBox</tabstop>
+  <tabstop>automaticallyCheckForUpdatesBox</tabstop>
+  <tabstop>showTrayNotificationsBox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

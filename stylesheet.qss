@@ -121,7 +121,8 @@ QTabBar::tab:selected
 	background: #333;
 }
 
-QTabBar::tab:hover:!selected, QTabBar::tab:focus:!selected
+QTabBar::tab:hover:!selected,
+QTabBar::tab:focus:!selected
 {
 	background: #444;
 }
@@ -183,7 +184,8 @@ LibraryWidget #scrollWrapper
 	background-color: #444;
 }
 
-#gameRowFrame:hover
+#gameRowFrame:hover,
+#gameRowFrame:focus
 {
 	border: 2px solid #FA5C5C;
 }

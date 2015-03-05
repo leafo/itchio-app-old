@@ -28,6 +28,9 @@
     <height>350</height>
    </size>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
+  </property>
   <property name="windowTitle">
    <string notr="true"/>
   </property>
@@ -58,6 +61,9 @@
    </property>
    <item row="0" column="0">
     <widget class="QFrame" name="gameRowFrame">
+     <property name="focusPolicy">
+      <enum>Qt::StrongFocus</enum>
+     </property>
      <layout class="QVBoxLayout" name="gameRowFrameLayout">
       <property name="spacing">
        <number>10</number>
