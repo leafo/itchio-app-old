@@ -17,8 +17,8 @@ public:
 
     static Game fromJson(const QJsonObject& object);
 
-    static const int COVER_WIDTH = 315;
-    static const int COVER_HEIGHT = 250;
+    static const int COVER_WIDTH = 180;
+    static const int COVER_HEIGHT = 150;
 };
 
 #endif // GAME_H
