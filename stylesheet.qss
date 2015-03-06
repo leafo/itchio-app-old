@@ -102,6 +102,7 @@ QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
 QTabWidget::pane
 {
 	background-color: #333;
+	border: none;
 }
 
 QTabBar::tab

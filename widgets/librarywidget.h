@@ -5,6 +5,7 @@
 #include <QList>
 #include <QGridLayout>
 #include <QResizeEvent>
+#include <QScrollArea>
 
 #include "appcontroller.h"
 #include "elements/gameframe.h"
@@ -31,18 +32,23 @@ private:
     Ui::LibraryWidget* const ui;
     AppController* const controller;
 
+    QList<QScrollArea*> tabScrollAreas;
+    QList<QWidget*> tabWrappers;
     QList<QVBoxLayout*> tabLayouts;
     QList<QList<QVBoxLayout*>*> tabRowLayouts;
     QList<QList<QHBoxLayout*>*> tabColLayouts;
-    QList<QList<GameFrame*>*> tabWidgets;
+    QList<QList<GameFrame*>*> tabGameFrames;
+
     int tabSetupCount = 0;
-    int gameFrameWidth;
+    int gameFrameWidth = 200;
+
+    int maxGamesFramesPerRow = 0;
 
     void resizeEvent(QResizeEvent *event);
 
     void adjustTabLayouts();
 
-    void addGamesTab(const QString& title, const QList<GameFrame *>& gameFrames, int tab);
+    void addGamesTab(const QString& title, int tab);
 };
 
 #endif // LIBRARYWIDGET_H
