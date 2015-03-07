@@ -6,6 +6,7 @@
         <file>images/itchio-icon-100.png</file>
         <file>images/gameFrameLogoLabel-placeholder.png</file>
         <file>images/itchio-text-white-21.png</file>
+        <file>images/gameFrameMenuIndicator.png</file>
     </qresource>
     <qresource prefix="/">
         <file>stylesheet.qss</file>

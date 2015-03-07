@@ -35,6 +35,8 @@ private:
 
     QList<Upload> pendingUploads;
 
+    bool isDownloading = false;
+
     void refreshThumbnail();
 
 private slots:

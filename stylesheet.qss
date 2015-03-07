@@ -30,10 +30,13 @@ QPushButton
 	line-height: 35px;
 }
 
-QPushButton::menu-indicator {
+QPushButton::menu-indicator,
+QPushButton::menu-indicator:!enabled
+{
+	image: url(:/images/images/gameFrameMenuIndicator.png);
 	subcontrol-position: bottom right;
-	right: 3px;
-	bottom: 3px;
+	right: 5px;
+	bottom: 7px;
 }
 
 QPushButton:focus:!pressed, QPushButton:hover:!pressed
@@ -45,6 +48,11 @@ QPushButton:focus:!pressed, QPushButton:hover:!pressed
 QPushButton:pressed
 {
 	background: #e44949;
+}
+
+QPushButton:!enabled
+{
+	background: #aea8a8;
 }
 
 QLineEdit

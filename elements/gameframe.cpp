@@ -86,6 +86,9 @@ void GameFrame::onTriggerDownloadMenu()
 
 void GameFrame::onTriggerUpload()
 {
+    isDownloading = true;
+    ui->downloadButton->setEnabled(false);
+
     QAction* action = qobject_cast<QAction*>(sender());
 
     int pos = action->data().toInt();
@@ -122,6 +125,9 @@ void GameFrame::onTriggerUpload()
             qDebug() << "finished" << fullPath;
             file->close();
             delete file;
+
+            isDownloading = false;
+            ui->downloadButton->setEnabled(true);
         });
 
     });
