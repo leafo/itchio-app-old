@@ -93,15 +93,16 @@ void GameFrame::onTriggerUpload()
     Upload upload = pendingUploads[pos];
 
     controller->api->downloadUpload(downloadKey, upload, [=](QString url) {
-        QString path = QCoreApplication::applicationDirPath() + "/Downloads";
-        QDir().mkpath(path);
+        QString path = QCoreApplication::applicationDirPath() + "/Downloads/" + game.title;
 
-        QString fname = QString::number(upload.id);
-        QString fullPath = path + "/" + fname;
+        QString fname = upload.filename;
+        QStringList fdName = fname.split(".");
+        QString fullPath = path + "/" + fdName.at(0)+ " " + fdName.at(1) + "/";
+        QDir().mkpath(fullPath);
 
         qDebug() << "Download: " << url << "to" << fullPath;
 
-        QFile* file = new QFile(fullPath);
+        QFile* file = new QFile(fullPath + fname);
         file->open(QIODevice::WriteOnly);
 
         QNetworkRequest request;
