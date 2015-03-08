@@ -22,7 +22,7 @@ QPushButton
 	text-align: center;
 	font-size: inherit;
 	background: #FA5C5C;
-	color: white;
+	color: #fff;
 	outline: 0;
 	text-decoration: none;
 	padding: 0 10px;
@@ -39,7 +39,8 @@ QPushButton::menu-indicator:!enabled
 	bottom: 7px;
 }
 
-QPushButton:focus:!pressed, QPushButton:hover:!pressed
+QPushButton:focus:!pressed,
+QPushButton:hover:!pressed
 {
 	background: #fa6666;
 
@@ -48,6 +49,7 @@ QPushButton:focus:!pressed, QPushButton:hover:!pressed
 QPushButton:pressed
 {
 	background: #e44949;
+	color: #ddd;
 }
 
 QPushButton:!enabled
@@ -96,13 +98,15 @@ QScrollBar::sub-line:vertical
 	subcontrol-origin: margin;
 }
 
-QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+QScrollBar::up-arrow:vertical,
+QScrollBar::down-arrow:vertical
 {
 	width: 0;
 	height: 0;
 }
 
-QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical
 {
 	background: none;
 }
@@ -144,6 +148,7 @@ QTabWidget::tab-bar
 QProgressBar
 {
 	border: 2px solid #444;
+	height: 20px;
 }
 
 QProgressBar::chunk
@@ -189,13 +194,23 @@ LibraryWidget #scrollWrapper
 	background-color: #333;
 }
 
-#gameFrame
+GameFrame #gameFrame
 {
 	background-color: #444;
 }
 
-#gameFrame:hover,
-#gameFrame:focus
+GameFrame #playButton
 {
-	border: 2px solid #FA5C5C;
+	background-color: #279C79;
+}
+
+GameFrame #playButton:focus:!pressed,
+GameFrame #playButton:hover:!pressed
+{
+	background-color: #24C091;
+}
+
+GameFrame #playButton:pressed
+{
+	background-color: #1c956f;
 }

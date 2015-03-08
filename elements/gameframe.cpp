@@ -73,6 +73,15 @@ void GameFrame::onTriggerUpload()
     isDownloading = true;
     ui->downloadButton->setEnabled(false);
 
+    QProgressBar* progressBar = new QProgressBar(this);
+    progressBar->setObjectName("progressBar");
+    progressBar->setTextVisible(false);
+    progressBar->setMaximumHeight(20);
+
+    ui->gameFrameLayout->removeWidget(ui->downloadButton);
+    ui->downloadButton->setVisible(false);
+    ui->gameFrameLayout->addWidget(progressBar, 0, Qt::AlignCenter);
+
     if(downloadPosition == -1){
         QAction* action = qobject_cast<QAction*>(sender());
         downloadPosition = action->data().toInt();
@@ -98,7 +107,10 @@ void GameFrame::onTriggerUpload()
         request.setHeader(QNetworkRequest::UserAgentHeader, ItchioApi::USER_AGENT);
         QNetworkReply* reply = networkManager->get(request);
 
-        connect(reply, &QNetworkReply::downloadProgress, this, &GameFrame::downloadProgress);
+        connect(reply, &QNetworkReply::downloadProgress, [=](qint64 bytesReceived, qint64 bytesTotal) {
+            progressBar->setMaximum(bytesTotal);
+            progressBar->setValue(bytesReceived);
+        });
 
         connect(reply, &QNetworkReply::readyRead, [=] {
             qDebug() << "ready read" << reply->bytesAvailable();
@@ -112,7 +124,14 @@ void GameFrame::onTriggerUpload()
             delete file;
 
             isDownloading = false;
+
+            ui->gameFrameLayout->removeWidget(progressBar);
+            progressBar->setVisible(false);
+            progressBar->deleteLater();
+
             ui->downloadButton->setEnabled(true);
+            ui->gameFrameLayout->addWidget(ui->downloadButton, 0, Qt::AlignCenter);
+            ui->downloadButton->setVisible(true);
 
             controller->showTrayIconNotification(TrayNotifications::DOWNLOAD_FINISHED,
                                                  game.title + " - " + fname);
@@ -137,12 +156,6 @@ void GameFrame::refreshThumbnail()
     connect(reply, &QNetworkReply::finished, this, &GameFrame::onDownloadThumbnail);
 }
 
-void GameFrame::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
-{
-    ui->progressBar->setMaximum(bytesTotal);
-    ui->progressBar->setValue(bytesReceived);
-}
-
 void GameFrame::getDownloads()
 {
     controller->api->downloadKeyUploads(downloadKey, [this](QList<Upload> uploads) {
@@ -157,7 +170,6 @@ void GameFrame::getDownloads()
             downloadPosition = 0;
 
             connect(ui->downloadButton, &QPushButton::pressed, this, &GameFrame::onTriggerUpload);
-            ui->downloadButton->setEnabled(true);
         }
         else{
             downloadMenu = new QMenu("Choose Download");
@@ -174,5 +186,12 @@ void GameFrame::getDownloads()
                 downloadMenu->addAction(uploadAction);
             }
         }
+
+        ui->downloadButton->setEnabled(true);
     });
+}
+
+void GameFrame::on_playButton_clicked()
+{
+
 }

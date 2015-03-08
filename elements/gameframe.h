@@ -33,6 +33,8 @@ private:
 
     QMenu* downloadMenu;
 
+    QProgressBar* progressBar;
+
     QList<Upload> pendingUploads;
 
     bool isDownloading = false;
@@ -45,7 +47,6 @@ private slots:
     void onClickDownload();
     void onDownloadThumbnail();
     void onTriggerUpload();
-    void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 
 };
 
