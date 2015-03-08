@@ -154,7 +154,7 @@ QProgressBar
 QProgressBar::chunk
 {
 	background-color: #9EDFE4;
-	width: 20px;
+	width: 1px;
 }
 
 /* --- Custom Elements --- */

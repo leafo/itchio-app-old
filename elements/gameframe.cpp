@@ -77,6 +77,7 @@ void GameFrame::onTriggerUpload()
     progressBar->setObjectName("progressBar");
     progressBar->setTextVisible(false);
     progressBar->setMaximumHeight(20);
+    progressBar->setMinimumWidth(180);
 
     ui->gameFrameLayout->removeWidget(ui->downloadButton);
     ui->downloadButton->setVisible(false);

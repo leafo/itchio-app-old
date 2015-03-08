@@ -48,6 +48,7 @@ private slots:
     void onDownloadThumbnail();
     void onTriggerUpload();
 
+    void on_playButton_clicked();
 };
 
 #endif // GAMEFRAME_H
