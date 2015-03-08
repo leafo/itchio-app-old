@@ -26,11 +26,11 @@ SOURCES += main.cpp \
     objects/user.cpp \
     objects/downloadkey.cpp \
     objects/upload.cpp \
-    elements/gameframe.cpp
+    elements/gameframe.cpp \
+    traynotifications.cpp
 
 
 HEADERS += itchioapi.h \
-    traynotifications.h \
     settings.h \
     appcontroller.h \
     appsettings.h \
@@ -43,7 +43,8 @@ HEADERS += itchioapi.h \
     objects/user.h \
     objects/downloadkey.h \
     objects/upload.h \
-    elements/gameframe.h
+    elements/gameframe.h \
+    traynotifications.h
 
 
 FORMS += appwindow.ui \

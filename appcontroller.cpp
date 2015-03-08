@@ -102,14 +102,19 @@ void AppController::setupTrayIconMenu(bool beforeLogin)
             this, SLOT(trayIconDoubleClick(QSystemTrayIcon::ActivationReason)));
 }
 
-void AppController::showTrayIconNotification(TrayNotifications notification, int duration)
+void AppController::showTrayIconNotification(TrayNotifications::Notifications notification, QString data)
 {
     if (settings->showTrayNotifications()) {
-        switch (notification) {
-        case NOTIFICATION_TEST:
-            trayIcon->showMessage("Title", "Test", QSystemTrayIcon::Information, duration);
-            break;
+        if((notification == TrayNotifications::LIBRARY_UPDATE_AVAILABLE &&
+            settings->showLibraryUpdateAvailableNotifications()) ||
+                (notification == TrayNotifications::DOWNLOAD_FINISHED &&
+                 settings->showDownloadFinishedNotifications())){
+
+            trayIcon->showMessage(TrayNotifications::toString(notification),
+                                  data, QSystemTrayIcon::NoIcon, 5000);
         }
+
+
     }
 }
 

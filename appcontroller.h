@@ -25,7 +25,7 @@ public:
     AppSettings* settings;
 
     void setupTrayIcon();
-    void showTrayIconNotification(TrayNotifications notification, int duration);
+    void showTrayIconNotification(TrayNotifications::Notifications notification, QString data);
     void setupAppWindow();
     void onLogin();
 

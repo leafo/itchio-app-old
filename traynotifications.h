@@ -1,9 +1,20 @@
-#ifndef TRAYNOTIFICATIONS
-#define TRAYNOTIFICATIONS
+#ifndef TRAYNOTIFICATIONS_H
+#define TRAYNOTIFICATIONS_H
 
-enum TrayNotifications {
-    NOTIFICATION_TEST = 0
+#include <QStringList>
+
+class TrayNotifications
+{
+public:
+    TrayNotifications();
+    ~TrayNotifications();
+
+    enum Notifications {
+        LIBRARY_UPDATE_AVAILABLE,
+        DOWNLOAD_FINISHED
+    };
+
+    static QString toString(const Notifications& notification);
 };
 
-#endif // TRAYNOTIFICATIONS
-
+#endif // TRAYNOTIFICATIONS_H

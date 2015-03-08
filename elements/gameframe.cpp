@@ -15,6 +15,7 @@
 #include <QDebug>
 
 #include "itchioapi.h"
+#include "traynotifications.h"
 #include <QStandardPaths>
 #include <QDir>
 #include <QFile>
@@ -112,6 +113,9 @@ void GameFrame::onTriggerUpload()
 
             isDownloading = false;
             ui->downloadButton->setEnabled(true);
+
+            controller->showTrayIconNotification(TrayNotifications::DOWNLOAD_FINISHED,
+                                                 game.title + " - " + fname);
         });
 
     });
