@@ -22,9 +22,16 @@ SettingsWidget::~SettingsWidget()
 
 void SettingsWidget::refresh()
 {
-    ui->keepLoggedInBox->setChecked(controller->settings->autoLogin());
-    ui->automaticallyCheckForUpdatesBox->setChecked(controller->settings->autoUpdateChecks());
-    ui->showTrayNotificationsBox->setChecked(controller->settings->showTrayNotifications());
+    ui->keepLoggedInBox->
+            setChecked(controller->settings->autoLogin());
+    ui->automaticallyCheckForUpdatesBox->
+            setChecked(controller->settings->autoUpdateChecks());
+    ui->showTrayNotificationsBox->
+            setChecked(controller->settings->showTrayNotifications());
+    ui->showDownloadFinishedNotificationsBox->
+            setChecked(controller->settings->showDownloadFinishedNotifications());
+    ui->showLibraryUpdateAvailableNotificationsBox->
+            setChecked(controller->settings->showLibraryUpdateAvailableNotifications());
 }
 
 void SettingsWidget::on_keepLoggedInBox_clicked()
@@ -40,4 +47,19 @@ void SettingsWidget::on_automaticallyCheckForUpdatesBox_clicked()
 void SettingsWidget::on_showTrayNotificationsBox_clicked()
 {
     controller->settings->enableTrayNotifications(ui->showTrayNotificationsBox->isChecked());
+
+    ui->showDownloadFinishedNotificationsBox->setEnabled(ui->showTrayNotificationsBox->isChecked());
+    ui->showLibraryUpdateAvailableNotificationsBox->setEnabled(ui->showTrayNotificationsBox->isChecked());
+}
+
+void SettingsWidget::on_showDownloadFinishedNotificationsBox_clicked()
+{
+    controller->settings->
+            enableDownloadFinishedNotifications(ui->showDownloadFinishedNotificationsBox->isChecked());
+}
+
+void SettingsWidget::on_showLibraryUpdateAvailableNotificationsBox_clicked()
+{
+    controller->settings->
+            enableLibraryUpdateAvailableNotifications(ui->showLibraryUpdateAvailableNotificationsBox->isChecked());
 }

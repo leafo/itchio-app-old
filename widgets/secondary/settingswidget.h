@@ -29,6 +29,10 @@ private slots:
 
     void on_showTrayNotificationsBox_clicked();
 
+    void on_showDownloadFinishedNotificationsBox_clicked();
+
+    void on_showLibraryUpdateAvailableNotificationsBox_clicked();
+
 private:
     Ui::SettingsWidget* const ui;
     AppController* const controller;

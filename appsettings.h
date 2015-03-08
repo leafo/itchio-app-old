@@ -32,6 +32,12 @@ public:
     bool showTrayNotifications() const;
     void enableTrayNotifications(const bool enable);
 
+    bool showLibraryUpdateAvailableNotifications() const;
+    void enableLibraryUpdateAvailableNotifications(const bool enable);
+
+    bool showDownloadFinishedNotifications() const;
+    void enableDownloadFinishedNotifications(const bool enable);
+
     bool startMaximized() const;
     void enableStartMaximized(const bool enable);
 
@@ -52,6 +58,8 @@ private:
         AUTO_LOGIN,
         AUTO_UPDATE_CHECKS,
         SHOW_TRAY_NOTIFICATIONS,
+        SHOW_LIBRARY_UPDATE_AVAILABLE_NOTIFICATIONS,
+        SHOW_DOWNLOAD_FINISHED_NOTIFICATIONS,
         START_MAXIMIZED,
         WINDOW_GEOMETRY,
         WINDOW_OLD_SIZE,
@@ -72,6 +80,8 @@ private:
 
     constexpr static const bool DEFAULT_AUTO_LOGIN = true;
     constexpr static const bool DEFAULT_SHOW_TRAY_NOTIFICATIONS = true;
+    constexpr static const bool DEFAULT_SHOW_LIBRARY_UPDATE_AVAILABLE_NOTIFICATIONS = true;
+    constexpr static const bool DEFAULT_SHOW_DOWNLOAD_FINISHED_NOTIFICATIONS = true;
     constexpr static const bool DEFAULT_AUTO_UPDATE_CHECKS = true;
 };
 

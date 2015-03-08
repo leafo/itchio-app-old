@@ -74,6 +74,28 @@ void AppSettings::enableTrayNotifications(const bool enable)
     setValue(Key::SHOW_TRAY_NOTIFICATIONS, enable);
 }
 
+bool AppSettings::showLibraryUpdateAvailableNotifications() const
+{
+    return value(Key::SHOW_LIBRARY_UPDATE_AVAILABLE_NOTIFICATIONS,
+                 AppSettings::DEFAULT_SHOW_LIBRARY_UPDATE_AVAILABLE_NOTIFICATIONS).toBool();
+}
+
+void AppSettings::enableLibraryUpdateAvailableNotifications(const bool enable)
+{
+    setValue(Key::SHOW_LIBRARY_UPDATE_AVAILABLE_NOTIFICATIONS, enable);
+}
+
+bool AppSettings::showDownloadFinishedNotifications() const
+{
+    return value(Key::SHOW_DOWNLOAD_FINISHED_NOTIFICATIONS,
+                 AppSettings::DEFAULT_SHOW_DOWNLOAD_FINISHED_NOTIFICATIONS).toBool();
+}
+
+void AppSettings::enableDownloadFinishedNotifications(const bool enable)
+{
+    setValue(Key::SHOW_DOWNLOAD_FINISHED_NOTIFICATIONS, enable);
+}
+
 bool AppSettings::startMaximized() const
 {
     return value(Key::START_MAXIMIZED, false).toBool();
@@ -129,6 +151,10 @@ QString AppSettings::toString(const Key& key)
         return "auto_update_checks";
     case Key::SHOW_TRAY_NOTIFICATIONS:
         return "show_tray_notifications";
+    case Key::SHOW_LIBRARY_UPDATE_AVAILABLE_NOTIFICATIONS:
+        return "show_library_update_available_notifications";
+    case Key::SHOW_DOWNLOAD_FINISHED_NOTIFICATIONS:
+        return "show_download_finished_notifications";
     case Key::START_MAXIMIZED:
         return "start_maximized";
     case Key::WINDOW_GEOMETRY:
