@@ -116,19 +116,19 @@
              </property>
              <property name="minimumSize">
               <size>
-               <width>30</width>
-               <height>30</height>
+               <width>40</width>
+               <height>40</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>30</width>
-               <height>30</height>
+               <width>40</width>
+               <height>40</height>
               </size>
              </property>
              <property name="font">
               <font>
-               <pointsize>10</pointsize>
+               <pointsize>15</pointsize>
                <weight>75</weight>
                <bold>true</bold>
                <kerning>false</kerning>
@@ -144,19 +144,6 @@
               <string>X</string>
              </property>
             </widget>
-           </item>
-           <item row="1" column="8">
-            <spacer name="verticalSpacer">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
            </item>
            <item row="0" column="7" rowspan="2">
             <spacer name="hs3">
