@@ -30,10 +30,6 @@ GameFrame::GameFrame(QWidget* const parent, const Game& game, const DownloadKey&
 
     networkManager = new QNetworkAccessManager(this);
 
-    downloadMenu = new QMenu("Choose Download");
-    ui->downloadButton->setMenu(downloadMenu);
-    connect(downloadMenu, &QMenu::aboutToShow, this, &GameFrame::onTriggerDownloadMenu);
-
     ui->gameCoverLabel->setFixedWidth(
         int(ui->gameCoverLabel->maximumHeight() * double(Game::COVER_WIDTH) / Game::COVER_HEIGHT));
 
@@ -41,6 +37,7 @@ GameFrame::GameFrame(QWidget* const parent, const Game& game, const DownloadKey&
     ui->gameCreatorLabel->setText(game.user.nameForDisplay());
 
     refreshThumbnail();
+    getDownloads();
 }
 
 GameFrame::~GameFrame()
@@ -70,30 +67,17 @@ void GameFrame::onDownloadThumbnail()
     }
 }
 
-void GameFrame::onTriggerDownloadMenu()
-{
-    downloadMenu->clear();
-
-    QAction* loaderAction = new QAction("Loading...", downloadMenu);
-
-    loaderAction->setDisabled(true);
-    downloadMenu->addAction(loaderAction);
-
-    controller->api->downloadKeyUploads(downloadKey, [this](QList<Upload> uploads) {
-        onUploads(uploads);
-    });
-}
-
 void GameFrame::onTriggerUpload()
 {
     isDownloading = true;
     ui->downloadButton->setEnabled(false);
 
-    QAction* action = qobject_cast<QAction*>(sender());
+    if(downloadPosition == -1){
+        QAction* action = qobject_cast<QAction*>(sender());
+        downloadPosition = action->data().toInt();
+    }
 
-    int pos = action->data().toInt();
-
-    Upload upload = pendingUploads[pos];
+    Upload upload = pendingUploads[downloadPosition];
 
     controller->api->downloadUpload(downloadKey, upload, [=](QString url) {
         QString path = QCoreApplication::applicationDirPath() + "/Downloads/" + game.title;
@@ -133,28 +117,6 @@ void GameFrame::onTriggerUpload()
     });
 }
 
-void GameFrame::onUploads(const QList<Upload>& uploads)
-{
-    pendingUploads = uploads;
-    downloadMenu->clear();
-
-    if (uploads.empty()) {
-        QAction* loaderAction = new QAction("No files", downloadMenu);
-        loaderAction->setDisabled(true);
-        downloadMenu->addAction(loaderAction);
-        return;
-    }
-
-    for (int i = 0; i < uploads.count(); i++) {
-        QAction* const uploadAction = new QAction(uploads[i].filename, downloadMenu);
-        uploadAction->setData(i);
-
-        connect(uploadAction, &QAction::triggered, this, &GameFrame::onTriggerUpload);
-
-        downloadMenu->addAction(uploadAction);
-    }
-}
-
 void GameFrame::refreshThumbnail()
 {
     if (game.coverImageUrl == "") {
@@ -177,3 +139,36 @@ void GameFrame::downloadProgress(qint64 bytesReceived, qint64 bytesTotal)
     ui->progressBar->setValue(bytesReceived);
 }
 
+void GameFrame::getDownloads()
+{
+    controller->api->downloadKeyUploads(downloadKey, [this](QList<Upload> uploads) {
+        if(uploads.size() == 0){
+            QAction* emptyAction = new QAction("No files", downloadMenu);
+            emptyAction->setDisabled(true);
+            downloadMenu->addAction(emptyAction);
+        }
+        else if(uploads.size() == 1){
+            pendingUploads = uploads;
+
+            downloadPosition = 0;
+
+            connect(ui->downloadButton, &QPushButton::pressed, this, &GameFrame::onTriggerUpload);
+            ui->downloadButton->setEnabled(true);
+        }
+        else{
+            downloadMenu = new QMenu("Choose Download");
+            ui->downloadButton->setMenu(downloadMenu);
+
+            pendingUploads = uploads;
+
+            for (int i = 0; i < uploads.count(); i++) {
+                QAction* const uploadAction = new QAction(uploads[i].filename, downloadMenu);
+                uploadAction->setData(i);
+
+                connect(uploadAction, &QAction::triggered, this, &GameFrame::onTriggerUpload);
+
+                downloadMenu->addAction(uploadAction);
+            }
+        }
+    });
+}

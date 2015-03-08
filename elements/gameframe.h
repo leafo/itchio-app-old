@@ -36,15 +36,15 @@ private:
     QList<Upload> pendingUploads;
 
     bool isDownloading = false;
+    int downloadPosition = -1;
 
     void refreshThumbnail();
+    void getDownloads();
 
 private slots:
     void onClickDownload();
     void onDownloadThumbnail();
-    void onTriggerDownloadMenu();
     void onTriggerUpload();
-    void onUploads(const QList<Upload>& uploads);
     void downloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 
 };
