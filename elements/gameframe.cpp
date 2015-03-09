@@ -62,9 +62,18 @@ void GameFrame::onDownloadThumbnail()
     }
 
     QByteArray imageData = reply->readAll();
+
     QPixmap pixmap;
     if (pixmap.loadFromData(imageData)) {
         ui->gameCoverLabel->setPixmap(pixmap);
+    }
+
+    QDir().mkpath(coverCachePath);
+    QFile coverCache(coverCachePath + QString::number(game.id));
+
+    if(coverCache.open(QIODevice::WriteOnly)) {
+        coverCache.write(imageData);
+        coverCache.close();
     }
 }
 
@@ -91,7 +100,7 @@ void GameFrame::onTriggerUpload()
     Upload upload = pendingUploads[downloadPosition];
 
     controller->api->downloadUpload(downloadKey, upload, [=](QString url) {
-        QString path = QCoreApplication::applicationDirPath() + "/Downloads/" + game.title;
+        QString path = downloadPath + game.title;
 
         QString fname = upload.filename;
         QStringList fdName = fname.split(".");
@@ -145,6 +154,22 @@ void GameFrame::refreshThumbnail()
 {
     if (game.coverImageUrl == "") {
         return;
+    }
+    else{
+        QFile coverCache(coverCachePath + QString::number(game.id));
+
+        if(coverCache.exists() && coverCache.open(QIODevice::ReadOnly)) {
+            QPixmap pixmap;
+            if (pixmap.loadFromData(coverCache.readAll())) {
+                ui->gameCoverLabel->setPixmap(pixmap);
+            }
+
+            coverCache.close();
+
+            return;
+        }
+
+
     }
 
     qDebug() << "Fetching cover" << game.coverImageUrl;

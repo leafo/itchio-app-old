@@ -1,6 +1,7 @@
 #ifndef GAMEFRAME_H
 #define GAMEFRAME_H
 
+#include <QCoreApplication>
 #include <QWidget>
 #include <QLabel>
 #include <QProgressBar>
@@ -22,9 +23,12 @@ public:
     explicit GameFrame(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller);
     ~GameFrame();
 
-        Game game;
+    Game game;
 
 private:
+    const QString downloadPath = QCoreApplication::applicationDirPath() + "/Downloads/";
+    const QString coverCachePath = QCoreApplication::applicationDirPath() + "/Cache/Game Covers/";
+
     Ui::GameFrame *ui;
 
     QNetworkAccessManager* networkManager;
