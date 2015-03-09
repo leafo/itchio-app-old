@@ -39,7 +39,7 @@ AppController::AppController(QObject* parent)
 
 void AppController::setupSettings()
 {
-    settingsFile = "itchio.ini";
+    settingsFile = QCoreApplication::applicationDirPath() + "/itchio.ini";
     settings = new AppSettings(settingsFile, QSettings::IniFormat, this);
 }
 
