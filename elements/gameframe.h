@@ -22,12 +22,13 @@ public:
     explicit GameFrame(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller);
     ~GameFrame();
 
+        Game game;
+
 private:
     Ui::GameFrame *ui;
 
     QNetworkAccessManager* networkManager;
 
-    Game game;
     DownloadKey downloadKey;
     AppController* const controller;
 

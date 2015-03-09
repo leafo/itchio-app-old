@@ -33,31 +33,63 @@ LibraryWidget::LibraryWidget(QWidget* const parent, AppController* const control
     controller->api->myClaimedKeys([this](QList<DownloadKey> keys) {
         onMyClaimedKeys(keys);
     });
+
+    updateTimer = new QTimer(this);
+
+    connect(updateTimer, &QTimer::timeout, this, &LibraryWidget::onUpdate);
+    updateTimer->start(60000);
 }
 
 void LibraryWidget::onMyPurchasedKeys(QList<DownloadKey> downloadKeys)
 {
     QList<GameFrame*> gameFrames;
 
+    int repeatCount = 0;
+
     foreach (DownloadKey key, downloadKeys) {
-        gameFrames << new GameFrame(this, key.game, key, controller);
+        for(int i = 0; i < tabGameFrames.at(0)->size(); i++){
+            if(key.game.id == tabGameFrames.at(0)->at(i)->game.id){
+                repeatCount++;
+            }
+        }
+
+        if(repeatCount == 0){
+            gameFrames << new GameFrame(this, key.game, key, controller);
+        }
     }
 
-    tabGameFrames.at(0)->append(gameFrames);
-    addGamesTab("Purchased", 0);
-
+    if(!gameFrames.isEmpty()){
+        tabGameFrames.at(0)->append(gameFrames);
+    }
+    if(tabSetupCount < 2){
+        addGamesTab("Purchased", 0);
+    }
 }
 
 void LibraryWidget::onMyClaimedKeys(QList<DownloadKey> downloadKeys)
 {
     QList<GameFrame*> gameFrames;
 
+    int repeatCount = 0;
+
     foreach (DownloadKey key, downloadKeys) {
-        gameFrames << new GameFrame(this, key.game, key, controller);
+        for(int i = 0; i < tabGameFrames.at(1)->size(); i++){
+            if(key.game.id == tabGameFrames.at(1)->at(i)->game.id){
+                repeatCount++;
+            }
+        }
+
+        if(repeatCount == 0){
+            gameFrames << new GameFrame(this, key.game, key, controller);
+        }
     }
 
-    tabGameFrames.at(1)->append(gameFrames);
-    addGamesTab("Claimed", 1);
+    if(!gameFrames.isEmpty()){
+        tabGameFrames.at(1)->append(gameFrames);
+    }
+    if(tabSetupCount < 2){
+        addGamesTab("Claimed", 1);
+    }
 }
 
 void LibraryWidget::addGamesTab(const QString& title, int tab)
@@ -165,6 +197,30 @@ void LibraryWidget::adjustTabLayouts()
 
             tabWrappers.at(k)->setLayout(tabLayouts.at(k));
             tabScrollAreas.at(k)->setWidget(tabWrappers.at(k));
+        }
+    }
+}
+
+void LibraryWidget::onUpdate()
+{
+    QList<int> gameCount;
+
+    for(int i = 0; i < tabGameFrames.size(); i++){
+        gameCount.append(tabGameFrames.at(i)->size());
+    }
+
+    controller->api->myOwnedKeys([this](QList<DownloadKey> keys) {
+        onMyPurchasedKeys(keys);
+    });
+
+    controller->api->myClaimedKeys([this](QList<DownloadKey> keys) {
+        onMyClaimedKeys(keys);
+    });
+
+    for(int i = 0; i < tabGameFrames.size(); i++){
+        if(gameCount.at(i) != tabGameFrames.at(i)->size()){
+            adjustTabLayouts();
+            break;
         }
     }
 }

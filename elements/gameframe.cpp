@@ -22,8 +22,8 @@
 
 GameFrame::GameFrame(QWidget* const parent, const Game& game, const DownloadKey& key, AppController* const controller)
     : QWidget(parent)
-    , ui(new Ui::GameFrame)
     , game(game)
+    , ui(new Ui::GameFrame)
     , downloadKey(key)
     , controller(controller)
 {

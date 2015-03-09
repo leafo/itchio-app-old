@@ -6,6 +6,7 @@
 #include <QGridLayout>
 #include <QResizeEvent>
 #include <QScrollArea>
+#include <QTimer>
 
 #include "appcontroller.h"
 #include "elements/gameframe.h"
@@ -44,11 +45,17 @@ private:
 
     int maxGamesFramesPerRow = 0;
 
+    QTimer* updateTimer;
+
     void resizeEvent(QResizeEvent *event);
 
     void adjustTabLayouts();
 
     void addGamesTab(const QString& title, int tab);
+
+private slots:
+
+    void onUpdate();
 };
 
 #endif // LIBRARYWIDGET_H
