@@ -105,10 +105,12 @@ void AppController::setupTrayIconMenu(bool beforeLogin)
 void AppController::showTrayIconNotification(TrayNotifications::Notifications notification, QString data)
 {
     if (settings->showTrayNotifications()) {
-        if((notification == TrayNotifications::LIBRARY_UPDATE_AVAILABLE &&
-            settings->showLibraryUpdateAvailableNotifications()) ||
+        if((notification == TrayNotifications::LIBRARY_UPDATE &&
+            settings->showLibraryUpdateNotifications()) ||
                 (notification == TrayNotifications::DOWNLOAD_FINISHED &&
-                 settings->showDownloadFinishedNotifications())){
+                 settings->showDownloadFinishedNotifications()) ||
+                (notification == TrayNotifications::GAME_UPDATE_AVAILABLE &&
+                 settings->showGameUpdateAvailableNotifications())){
 
             trayIcon->showMessage(TrayNotifications::toString(notification),
                                   data, QSystemTrayIcon::NoIcon, 5000);

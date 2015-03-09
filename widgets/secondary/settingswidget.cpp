@@ -30,8 +30,10 @@ void SettingsWidget::refresh()
             setChecked(controller->settings->showTrayNotifications());
     ui->showDownloadFinishedNotificationsBox->
             setChecked(controller->settings->showDownloadFinishedNotifications());
-    ui->showLibraryUpdateAvailableNotificationsBox->
-            setChecked(controller->settings->showLibraryUpdateAvailableNotifications());
+    ui->showLibraryUpdateNotificationsBox->
+            setChecked(controller->settings->showLibraryUpdateNotifications());
+    ui->showGameUpdateAvailableNotificationsBox->
+            setChecked(controller->settings->showGameUpdateAvailableNotifications());
 }
 
 void SettingsWidget::on_keepLoggedInBox_clicked()
@@ -49,7 +51,8 @@ void SettingsWidget::on_showTrayNotificationsBox_clicked()
     controller->settings->enableTrayNotifications(ui->showTrayNotificationsBox->isChecked());
 
     ui->showDownloadFinishedNotificationsBox->setEnabled(ui->showTrayNotificationsBox->isChecked());
-    ui->showLibraryUpdateAvailableNotificationsBox->setEnabled(ui->showTrayNotificationsBox->isChecked());
+    ui->showLibraryUpdateNotificationsBox->setEnabled(ui->showTrayNotificationsBox->isChecked());
+    ui->showGameUpdateAvailableNotificationsBox->setEnabled(ui->showTrayNotificationsBox->isChecked());
 }
 
 void SettingsWidget::on_showDownloadFinishedNotificationsBox_clicked()
@@ -58,8 +61,14 @@ void SettingsWidget::on_showDownloadFinishedNotificationsBox_clicked()
             enableDownloadFinishedNotifications(ui->showDownloadFinishedNotificationsBox->isChecked());
 }
 
-void SettingsWidget::on_showLibraryUpdateAvailableNotificationsBox_clicked()
+void SettingsWidget::on_showLibraryUpdateNotificationsBox_clicked()
 {
     controller->settings->
-            enableLibraryUpdateAvailableNotifications(ui->showLibraryUpdateAvailableNotificationsBox->isChecked());
+            enableLibraryUpdateNotifications(ui->showLibraryUpdateNotificationsBox->isChecked());
+}
+
+void SettingsWidget::on_showGameUpdateAvailableNotificationsBox_clicked()
+{
+    controller->settings->
+            enableGameUpdateAvailableNotifications(ui->showGameUpdateAvailableNotificationsBox->isChecked());
 }

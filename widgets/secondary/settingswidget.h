@@ -31,7 +31,9 @@ private slots:
 
     void on_showDownloadFinishedNotificationsBox_clicked();
 
-    void on_showLibraryUpdateAvailableNotificationsBox_clicked();
+    void on_showLibraryUpdateNotificationsBox_clicked();
+
+    void on_showGameUpdateAvailableNotificationsBox_clicked();
 
 private:
     Ui::SettingsWidget* const ui;

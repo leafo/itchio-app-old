@@ -74,15 +74,15 @@ void AppSettings::enableTrayNotifications(const bool enable)
     setValue(Key::SHOW_TRAY_NOTIFICATIONS, enable);
 }
 
-bool AppSettings::showLibraryUpdateAvailableNotifications() const
+bool AppSettings::showLibraryUpdateNotifications() const
 {
-    return value(Key::SHOW_LIBRARY_UPDATE_AVAILABLE_NOTIFICATIONS,
+    return value(Key::SHOW_LIBRARY_UPDATE_NOTIFICATIONS,
                  AppSettings::DEFAULT_SHOW_LIBRARY_UPDATE_AVAILABLE_NOTIFICATIONS).toBool();
 }
 
-void AppSettings::enableLibraryUpdateAvailableNotifications(const bool enable)
+void AppSettings::enableLibraryUpdateNotifications(const bool enable)
 {
-    setValue(Key::SHOW_LIBRARY_UPDATE_AVAILABLE_NOTIFICATIONS, enable);
+    setValue(Key::SHOW_LIBRARY_UPDATE_NOTIFICATIONS, enable);
 }
 
 bool AppSettings::showDownloadFinishedNotifications() const
@@ -93,7 +93,18 @@ bool AppSettings::showDownloadFinishedNotifications() const
 
 void AppSettings::enableDownloadFinishedNotifications(const bool enable)
 {
-    setValue(Key::SHOW_DOWNLOAD_FINISHED_NOTIFICATIONS, enable);
+    setValue(Key::SHOW_GAME_UPDATE_AVAILABLE_NOTIFICATIONS, enable);
+}
+
+bool AppSettings::showGameUpdateAvailableNotifications() const
+{
+    return value(Key::SHOW_GAME_UPDATE_AVAILABLE_NOTIFICATIONS,
+                 AppSettings::DEFAULT_SHOW_GAME_UPDATE_AVAILABLE_NOTIFICATIONS).toBool();
+}
+
+void AppSettings::enableGameUpdateAvailableNotifications(const bool enable)
+{
+    setValue(Key::SHOW_GAME_UPDATE_AVAILABLE_NOTIFICATIONS, enable);
 }
 
 bool AppSettings::startMaximized() const
@@ -151,10 +162,12 @@ QString AppSettings::toString(const Key& key)
         return "auto_update_checks";
     case Key::SHOW_TRAY_NOTIFICATIONS:
         return "show_tray_notifications";
-    case Key::SHOW_LIBRARY_UPDATE_AVAILABLE_NOTIFICATIONS:
+    case Key::SHOW_LIBRARY_UPDATE_NOTIFICATIONS:
         return "show_library_update_available_notifications";
     case Key::SHOW_DOWNLOAD_FINISHED_NOTIFICATIONS:
         return "show_download_finished_notifications";
+    case Key::SHOW_GAME_UPDATE_AVAILABLE_NOTIFICATIONS:
+        return "show_game_update_available_notifications";
     case Key::START_MAXIMIZED:
         return "start_maximized";
     case Key::WINDOW_GEOMETRY:

@@ -13,7 +13,7 @@ TrayNotifications::~TrayNotifications()
 QString TrayNotifications::toString(const Notifications& notification)
 {
     switch (notification) {
-    case TrayNotifications::LIBRARY_UPDATE_AVAILABLE:
+    case TrayNotifications::LIBRARY_UPDATE:
         return "Library Update Available!";
     case TrayNotifications::DOWNLOAD_FINISHED:
         return "Download Finished!";

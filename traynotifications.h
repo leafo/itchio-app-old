@@ -10,7 +10,8 @@ public:
     ~TrayNotifications();
 
     enum Notifications {
-        LIBRARY_UPDATE_AVAILABLE,
+        LIBRARY_UPDATE,
+        GAME_UPDATE_AVAILABLE,
         DOWNLOAD_FINISHED
     };
 

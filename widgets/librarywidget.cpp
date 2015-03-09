@@ -203,10 +203,10 @@ void LibraryWidget::adjustTabLayouts()
 
 void LibraryWidget::onUpdate()
 {
-    QList<int> gameCount;
+    int gameCount = 0;
 
     for(int i = 0; i < tabGameFrames.size(); i++){
-        gameCount.append(tabGameFrames.at(i)->size());
+        gameCount += tabGameFrames.at(i)->size();
     }
 
     controller->api->myOwnedKeys([this](QList<DownloadKey> keys) {
@@ -217,15 +217,21 @@ void LibraryWidget::onUpdate()
         onMyClaimedKeys(keys);
     });
 
+    int newGameCount = 0;
+
     for(int i = 0; i < tabGameFrames.size(); i++){
-        if(gameCount.at(i) != tabGameFrames.at(i)->size()){
-            adjustTabLayouts();
+        newGameCount += tabGameFrames.at(i)->size();
+    }
 
-            controller->showTrayIconNotification(TrayNotifications::LIBRARY_UPDATE_AVAILABLE,
-                                                 "New games are available to download.");
+    if(gameCount != newGameCount){
+        adjustTabLayouts();
 
-            break;
-        }
+        int gameCountDifference = newGameCount - gameCount;
+        QString notificationMessage = ((gameCountDifference > 1) ?
+                         (gameCountDifference + " new games available.") :
+                         ("1 new game available."));
+
+        controller->showTrayIconNotification(TrayNotifications::LIBRARY_UPDATE, notificationMessage);
     }
 }
 
