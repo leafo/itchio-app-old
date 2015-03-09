@@ -220,6 +220,10 @@ void LibraryWidget::onUpdate()
     for(int i = 0; i < tabGameFrames.size(); i++){
         if(gameCount.at(i) != tabGameFrames.at(i)->size()){
             adjustTabLayouts();
+
+            controller->showTrayIconNotification(TrayNotifications::LIBRARY_UPDATE_AVAILABLE,
+                                                 "New games are available to download.");
+
             break;
         }
     }
