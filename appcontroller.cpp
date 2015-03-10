@@ -60,10 +60,14 @@ void AppController::quit()
 
 void AppController::showSettings()
 {
+    if(settingsWindow != NULL){
+        settingsWindow->hide();
+        settingsWindow->close();
+    }
+
     settingsWindow = new SecondaryWindow(new SettingsWidget(this), this);
 
     settingsWindow->show();
-    settingsWindow->raise();
 }
 
 void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)
