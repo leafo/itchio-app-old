@@ -64,7 +64,7 @@ void AppController::quit()
 void AppController::showSettings()
 {
     settingsWindow->show();
-    settingsWindow->raise();
+    settingsWindow->activateWindow();
 }
 
 void AppController::trayIconDoubleClick(QSystemTrayIcon::ActivationReason reason)

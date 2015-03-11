@@ -49,8 +49,7 @@ void SecondaryWindow::closeEvent(QCloseEvent* event)
 
 void SecondaryWindow::closeWindow()
 {
-    deleteLater();
-    close();
+    hide();
 }
 
 void SecondaryWindow::mousePressEvent(QMouseEvent* event)
