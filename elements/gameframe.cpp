@@ -100,7 +100,9 @@ void GameFrame::onTriggerUpload()
     Upload upload = pendingUploads[downloadPosition];
 
     controller->api->downloadUpload(downloadKey, upload, [=](QString url) {
-        QString path = downloadPath + game.title;
+        QString gameSafeTitle = game.title.remove(
+                    QRegExp(QString::fromUtf8("[-`~!@#$%^&*()_—+=|:;<>«»,.?/{}\'\"\\\[\\\]\\\\]")));;
+        QString path = downloadPath + gameSafeTitle;
 
         QString fname = upload.filename;
         QStringList fdName = fname.split(".");
