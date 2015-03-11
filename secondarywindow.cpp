@@ -5,7 +5,8 @@
 
 #include <QtDebug>
 
-SecondaryWindow::SecondaryWindow(QWidget* const widget, AppController* const controller, QWidget* const parent)
+SecondaryWindow::SecondaryWindow(QWidget* const widget, AppController* const controller,
+                                 bool startsVisible, QWidget* const parent)
     : QDialog(parent)
     , name("")
     , firstClicked(NULL)
@@ -26,9 +27,12 @@ SecondaryWindow::SecondaryWindow(QWidget* const widget, AppController* const con
     setMinimumSize(widget->minimumSize().width(), widget->minimumSize().height() + ui->topBar->height());
 
     ui->widgetsLayout->addWidget(widget);
+
     widget->show();
 
     widget->setParent(this);
+
+    setVisible(startsVisible);
 }
 
 SecondaryWindow::~SecondaryWindow()

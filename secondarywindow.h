@@ -20,7 +20,8 @@ class SecondaryWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit SecondaryWindow(QWidget* const widget, AppController* const controller, QWidget* const parent = 0);
+    explicit SecondaryWindow(QWidget* const widget, AppController* const controller,
+                             bool startsVisible = true, QWidget* const parent = 0);
     ~SecondaryWindow();
 
     QString name;
