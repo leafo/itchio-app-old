@@ -93,7 +93,7 @@ bool AppSettings::showDownloadFinishedNotifications() const
 
 void AppSettings::enableDownloadFinishedNotifications(const bool enable)
 {
-    setValue(Key::SHOW_GAME_UPDATE_AVAILABLE_NOTIFICATIONS, enable);
+    setValue(Key::SHOW_DOWNLOAD_FINISHED_NOTIFICATIONS, enable);
 }
 
 bool AppSettings::showGameUpdateAvailableNotifications() const
