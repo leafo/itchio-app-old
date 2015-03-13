@@ -55,8 +55,6 @@ private:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
 
-    void setStatus(QString status, bool disable);
-
     void maximize();
     void restore();
 
