@@ -16,7 +16,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.91 r13725"
-   sodipodi:docname="login.svg">
+   sodipodi:docname="login.svg"
+   inkscape:export-filename="/home/leafo/qt/itchio/design/login.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
   <defs
      id="defs4">
     <clipPath
@@ -1954,7 +1957,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="405.1292"
+     inkscape:cx="386.6292"
      inkscape:cy="186.55663"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
