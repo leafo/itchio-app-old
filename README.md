@@ -48,3 +48,10 @@ WIP Dev Log
 ## License
 
 Licensed under MIT License, see `LICENSE` for details.
+
+## Other apps
+
+Here are some other apps people have started:
+
+* Android: https://github.com/gotosleep/ItchDroid
+* iOS: https://github.com/khwang/cantaloupe
