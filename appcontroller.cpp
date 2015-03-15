@@ -53,10 +53,12 @@ void AppController::quit()
     appWindow->hideWindow();
     trayIcon->hide();
 
-    settings->enableStartMaximized(appWindow->isMaximized);
-    settings->setWindowGeometry(appWindow->saveGeometry());
-    settings->setWindowOldSize(appWindow->oldSize);
-    settings->setWindowOldPosition(appWindow->oldPosition);
+    if(api->userName != ""){
+        settings->enableStartMaximized(appWindow->isMaximized);
+        settings->setWindowGeometry(appWindow->saveGeometry());
+        settings->setWindowOldSize(appWindow->oldSize);
+        settings->setWindowOldPosition(appWindow->oldPosition);
+    }
 
     if (settings->autoLogin()) {
         settings->setApiKey(api->userKey);
