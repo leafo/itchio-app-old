@@ -28,6 +28,11 @@
     <height>482</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <stylestrategy>PreferAntialias</stylestrategy>
+   </font>
+  </property>
   <property name="windowTitle">
    <string notr="true">Login</string>
   </property>
@@ -195,10 +200,12 @@
               <widget class="QLabel" name="loginLabel">
                <property name="font">
                 <font>
-                 <pointsize>18</pointsize>
+                 <family>Lato</family>
+                 <pointsize>17</pointsize>
                  <weight>75</weight>
                  <bold>true</bold>
-                 <kerning>true</kerning>
+                 <stylestrategy>PreferAntialias</stylestrategy>
+                 <kerning>false</kerning>
                 </font>
                </property>
                <property name="text">
@@ -297,7 +304,12 @@ border: none;</string>
                </property>
                <property name="font">
                 <font>
-                 <pointsize>14</pointsize>
+                 <family>Lato</family>
+                 <pointsize>12</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                 <stylestrategy>PreferAntialias</stylestrategy>
+                 <kerning>false</kerning>
                 </font>
                </property>
                <property name="text">
@@ -343,7 +355,9 @@ border: none;</string>
                </property>
                <property name="font">
                 <font>
+                 <family>Lato</family>
                  <pointsize>10</pointsize>
+                 <kerning>false</kerning>
                 </font>
                </property>
               </widget>
@@ -374,7 +388,12 @@ border: none;</string>
                </property>
                <property name="font">
                 <font>
-                 <pointsize>14</pointsize>
+                 <family>Lato</family>
+                 <pointsize>12</pointsize>
+                 <weight>75</weight>
+                 <bold>true</bold>
+                 <stylestrategy>PreferAntialias</stylestrategy>
+                 <kerning>false</kerning>
                 </font>
                </property>
                <property name="text">
@@ -420,7 +439,9 @@ border: none;</string>
                </property>
                <property name="font">
                 <font>
+                 <family>Lato</family>
                  <pointsize>10</pointsize>
+                 <kerning>false</kerning>
                 </font>
                </property>
                <property name="inputMask">
@@ -480,7 +501,10 @@ border: none;</string>
                  </property>
                  <property name="font">
                   <font>
-                   <pointsize>12</pointsize>
+                   <family>Lato</family>
+                   <pointsize>13</pointsize>
+                   <stylestrategy>PreferAntialias</stylestrategy>
+                   <kerning>false</kerning>
                   </font>
                  </property>
                  <property name="text">
@@ -492,7 +516,10 @@ border: none;</string>
                 <widget class="QLabel" name="orLabel">
                  <property name="font">
                   <font>
-                   <pointsize>12</pointsize>
+                   <family>Lato</family>
+                   <pointsize>13</pointsize>
+                   <stylestrategy>PreferAntialias</stylestrategy>
+                   <kerning>false</kerning>
                   </font>
                  </property>
                  <property name="text">
@@ -504,8 +531,11 @@ border: none;</string>
                 <widget class="QLabel" name="label_2">
                  <property name="font">
                   <font>
-                   <pointsize>12</pointsize>
+                   <family>Lato</family>
+                   <pointsize>13</pointsize>
                    <underline>true</underline>
+                   <stylestrategy>PreferAntialias</stylestrategy>
+                   <kerning>false</kerning>
                   </font>
                  </property>
                  <property name="text">

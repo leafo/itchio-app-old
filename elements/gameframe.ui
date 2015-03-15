@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>200</width>
-    <height>360</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>200</width>
-    <height>360</height>
+    <height>400</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>200</width>
-    <height>360</height>
+    <height>400</height>
    </size>
   </property>
   <property name="baseSize">
@@ -79,13 +79,13 @@
      <property name="minimumSize">
       <size>
        <width>200</width>
-       <height>340</height>
+       <height>360</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>200</width>
-       <height>340</height>
+       <height>360</height>
       </size>
      </property>
      <property name="focusPolicy">
@@ -158,20 +158,23 @@
         <property name="minimumSize">
          <size>
           <width>180</width>
-          <height>50</height>
+          <height>60</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>180</width>
-          <height>50</height>
+          <height>60</height>
          </size>
         </property>
         <property name="font">
          <font>
-          <pointsize>13</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
+          <family>Lato</family>
+          <pointsize>12</pointsize>
+          <weight>75</weight>
+          <bold>true</bold>
+          <stylestrategy>PreferAntialias</stylestrategy>
+          <kerning>false</kerning>
          </font>
         </property>
         <property name="text">
@@ -207,7 +210,11 @@
         </property>
         <property name="font">
          <font>
+          <family>Lato</family>
+          <pointsize>9</pointsize>
           <italic>false</italic>
+          <stylestrategy>PreferAntialias</stylestrategy>
+          <kerning>false</kerning>
          </font>
         </property>
         <property name="text">
@@ -231,21 +238,24 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>100</width>
+          <width>120</width>
           <height>30</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>120</width>
           <height>30</height>
          </size>
         </property>
         <property name="font">
          <font>
+          <family>Lato Black</family>
           <pointsize>12</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <weight>50</weight>
+          <bold>false</bold>
+          <stylestrategy>PreferAntialias</stylestrategy>
+          <kerning>true</kerning>
          </font>
         </property>
         <property name="focusPolicy">
@@ -266,13 +276,13 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>80</width>
+          <width>90</width>
           <height>20</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>80</width>
+          <width>90</width>
           <height>20</height>
          </size>
         </property>
@@ -284,7 +294,12 @@
         </property>
         <property name="font">
          <font>
+          <family>Lato</family>
           <pointsize>8</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
+          <stylestrategy>PreferAntialias</stylestrategy>
+          <kerning>false</kerning>
          </font>
         </property>
         <property name="focusPolicy">

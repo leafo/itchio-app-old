@@ -1,10 +1,5 @@
 /* --- Default Qt Elements --- */
 
-QWidget
-{
-	font-family: sans-serif;
-}
-
 QMainWindow, QDialog
 {
 	background: #222;
@@ -119,14 +114,14 @@ QTabWidget::pane
 
 QTabBar::tab
 {
-	height: 79px;
+	height: 100px;
 	width: 15px;
 	background: #222;
 	color: white;
 	padding: 10px;
-	line-height: 35px;
 	font-size: 16px;
 	margin-top: 5px;
+	font-family: sans-serif;
 }
 
 QTabBar::tab:selected
@@ -197,6 +192,11 @@ SecondaryWindow #topBar QPushButton
 	padding: 0;
 }
 
+#SettingsWidget QCheckBox
+{
+	font-family: sans-serif;
+}
+
 QMainWindow #topBar
 {
 	background-color: #FA5C5C;
@@ -224,6 +224,11 @@ LibraryWidget #gamesScroller
 {
 	border: none;
 	background-color: #333;
+}
+
+GameFrame QLabel
+{
+	line-height:20px;
 }
 
 GameFrame,

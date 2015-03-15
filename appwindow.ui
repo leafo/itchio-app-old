@@ -128,9 +128,11 @@
              </property>
              <property name="font">
               <font>
+               <family>Lato</family>
                <pointsize>15</pointsize>
                <weight>75</weight>
                <bold>true</bold>
+               <stylestrategy>PreferAntialias</stylestrategy>
                <kerning>false</kerning>
               </font>
              </property>
@@ -202,12 +204,17 @@
                 <property name="maximumSize">
                  <size>
                   <width>200</width>
-                  <height>50</height>
+                  <height>30</height>
                  </size>
                 </property>
                 <property name="font">
                  <font>
+                  <family>Lato</family>
                   <pointsize>14</pointsize>
+                  <weight>50</weight>
+                  <bold>false</bold>
+                  <stylestrategy>PreferAntialias</stylestrategy>
+                  <kerning>false</kerning>
                  </font>
                 </property>
                 <property name="focusPolicy">
@@ -262,6 +269,11 @@
                <width>100</width>
                <height>30</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <stylestrategy>PreferAntialias</stylestrategy>
+              </font>
              </property>
              <property name="text">
               <string notr="true"/>

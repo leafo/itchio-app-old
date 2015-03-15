@@ -102,6 +102,12 @@
      </item>
      <item row="8" column="1" colspan="2" alignment="Qt::AlignLeft">
       <widget class="QCheckBox" name="showDownloadFinishedNotificationsBox">
+       <property name="font">
+        <font>
+         <stylestrategy>PreferAntialias</stylestrategy>
+         <kerning>false</kerning>
+        </font>
+       </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
@@ -128,6 +134,12 @@
      </item>
      <item row="9" column="1" colspan="2" alignment="Qt::AlignLeft">
       <widget class="QCheckBox" name="showLibraryUpdateNotificationsBox">
+       <property name="font">
+        <font>
+         <stylestrategy>PreferAntialias</stylestrategy>
+         <kerning>false</kerning>
+        </font>
+       </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
@@ -159,6 +171,12 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <stylestrategy>PreferAntialias</stylestrategy>
+         <kerning>false</kerning>
+        </font>
        </property>
        <property name="mouseTracking">
         <bool>false</bool>
@@ -214,6 +232,12 @@
          <height>17</height>
         </size>
        </property>
+       <property name="font">
+        <font>
+         <stylestrategy>PreferAntialias</stylestrategy>
+         <kerning>false</kerning>
+        </font>
+       </property>
        <property name="mouseTracking">
         <bool>false</bool>
        </property>
@@ -248,6 +272,12 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <stylestrategy>PreferAntialias</stylestrategy>
+         <kerning>false</kerning>
+        </font>
        </property>
        <property name="mouseTracking">
         <bool>false</bool>
@@ -308,13 +338,15 @@
        </property>
        <property name="font">
         <font>
+         <family>Lato</family>
          <pointsize>20</pointsize>
          <weight>50</weight>
          <italic>false</italic>
          <bold>false</bold>
          <underline>false</underline>
          <strikeout>false</strikeout>
-         <kerning>true</kerning>
+         <stylestrategy>PreferAntialias</stylestrategy>
+         <kerning>false</kerning>
         </font>
        </property>
        <property name="text">
@@ -364,7 +396,10 @@
       <widget class="QLabel" name="notificationsLabel">
        <property name="font">
         <font>
+         <family>Lato</family>
          <pointsize>13</pointsize>
+         <stylestrategy>PreferAntialias</stylestrategy>
+         <kerning>false</kerning>
         </font>
        </property>
        <property name="text">
@@ -376,7 +411,10 @@
       <widget class="QLabel" name="generalLabel">
        <property name="font">
         <font>
+         <family>Lato</family>
          <pointsize>13</pointsize>
+         <stylestrategy>PreferAntialias</stylestrategy>
+         <kerning>false</kerning>
         </font>
        </property>
        <property name="text">
@@ -386,6 +424,12 @@
      </item>
      <item row="10" column="1" colspan="2" alignment="Qt::AlignLeft">
       <widget class="QCheckBox" name="showGameUpdateAvailableNotificationsBox">
+       <property name="font">
+        <font>
+         <stylestrategy>PreferAntialias</stylestrategy>
+         <kerning>false</kerning>
+        </font>
+       </property>
        <property name="layoutDirection">
         <enum>Qt::RightToLeft</enum>
        </property>
