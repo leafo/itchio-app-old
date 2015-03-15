@@ -130,6 +130,9 @@ void LibraryWidget::addGamesTab(const QString& title, int tab)
     tabScrollAreas.at(tab)->setWidget(tabWrappers.at(tab));
 
     ui->tabWidget->addTab(tabScrollAreas.at(tab), title);
+    QFont font("sans-serif", 12);
+    font.setStyleStrategy(QFont::PreferAntialias);
+    ui->tabWidget->setFont(font);
 
     tabSetupCount++;
 }
