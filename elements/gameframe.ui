@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>200</width>
-    <height>400</height>
+    <height>370</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,13 +19,13 @@
   <property name="minimumSize">
    <size>
     <width>200</width>
-    <height>400</height>
+    <height>370</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>200</width>
-    <height>400</height>
+    <height>370</height>
    </size>
   </property>
   <property name="baseSize">
@@ -51,7 +51,7 @@
   </property>
   <layout class="QGridLayout" name="GameFrameWidgetLayout">
    <property name="sizeConstraint">
-    <enum>QLayout::SetMaximumSize</enum>
+    <enum>QLayout::SetFixedSize</enum>
    </property>
    <property name="leftMargin">
     <number>0</number>
@@ -68,10 +68,10 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <item row="0" column="0" alignment="Qt::AlignLeft">
+   <item row="0" column="0" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
     <widget class="QFrame" name="gameFrame">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -79,13 +79,13 @@
      <property name="minimumSize">
       <size>
        <width>200</width>
-       <height>360</height>
+       <height>370</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
        <width>200</width>
-       <height>360</height>
+       <height>370</height>
       </size>
      </property>
      <property name="focusPolicy">
@@ -99,19 +99,19 @@
        <number>10</number>
       </property>
       <property name="sizeConstraint">
-       <enum>QLayout::SetMaximumSize</enum>
+       <enum>QLayout::SetFixedSize</enum>
       </property>
       <property name="leftMargin">
        <number>10</number>
       </property>
       <property name="topMargin">
-       <number>10</number>
+       <number>20</number>
       </property>
       <property name="rightMargin">
        <number>10</number>
       </property>
       <property name="bottomMargin">
-       <number>10</number>
+       <number>20</number>
       </property>
       <item>
        <widget class="QLabel" name="gameCoverLabel">
@@ -150,7 +150,7 @@
       <item>
        <widget class="QLabel" name="gameTitleLabel">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -158,27 +158,30 @@
         <property name="minimumSize">
          <size>
           <width>180</width>
-          <height>60</height>
+          <height>80</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>180</width>
-          <height>60</height>
+          <height>80</height>
          </size>
         </property>
         <property name="font">
          <font>
           <family>Lato</family>
-          <pointsize>12</pointsize>
-          <weight>75</weight>
-          <bold>true</bold>
+          <pointsize>13</pointsize>
+          <weight>50</weight>
+          <bold>false</bold>
           <stylestrategy>PreferAntialias</stylestrategy>
           <kerning>false</kerning>
          </font>
         </property>
         <property name="text">
          <string>Title</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -191,7 +194,7 @@
       <item>
        <widget class="QLabel" name="gameCreatorLabel">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -199,13 +202,13 @@
         <property name="minimumSize">
          <size>
           <width>180</width>
-          <height>30</height>
+          <height>40</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>180</width>
-          <height>30</height>
+          <height>40</height>
          </size>
         </property>
         <property name="font">
@@ -217,8 +220,20 @@
           <kerning>false</kerning>
          </font>
         </property>
+        <property name="mouseTracking">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>a</string>
+        </property>
+        <property name="whatsThis">
+         <string/>
+        </property>
         <property name="text">
          <string>Author</string>
+        </property>
+        <property name="scaledContents">
+         <bool>false</bool>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -228,102 +243,116 @@
         </property>
        </widget>
       </item>
-      <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-       <widget class="QPushButton" name="playButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item>
+       <layout class="QHBoxLayout" name="downloadPlayLayout">
+        <property name="spacing">
+         <number>0</number>
         </property>
-        <property name="minimumSize">
-         <size>
-          <width>120</width>
-          <height>30</height>
-         </size>
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
         </property>
-        <property name="maximumSize">
-         <size>
-          <width>120</width>
-          <height>30</height>
-         </size>
+        <property name="topMargin">
+         <number>0</number>
         </property>
-        <property name="font">
-         <font>
-          <family>Lato Black</family>
-          <pointsize>12</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-          <stylestrategy>PreferAntialias</stylestrategy>
-          <kerning>true</kerning>
-         </font>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text">
-         <string>PLAY</string>
-        </property>
-       </widget>
-      </item>
-      <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
-       <widget class="QPushButton" name="downloadButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>90</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>90</width>
-          <height>20</height>
-         </size>
-        </property>
-        <property name="baseSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <family>Lato</family>
-          <pointsize>8</pointsize>
-          <weight>50</weight>
-          <bold>false</bold>
-          <stylestrategy>PreferAntialias</stylestrategy>
-          <kerning>false</kerning>
-         </font>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-        <property name="text">
-         <string>Download</string>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
+        <item alignment="Qt::AlignLeft|Qt::AlignVCenter">
+         <widget class="QPushButton" name="downloadButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>40</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>40</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Lato</family>
+            <pointsize>8</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+            <stylestrategy>PreferAntialias</stylestrategy>
+            <kerning>false</kerning>
+           </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../resources.qrc">
+            <normaloff>:/images/images/gameFrame-downloadButton.png</normaloff>:/images/images/gameFrame-downloadButton.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item alignment="Qt::AlignRight|Qt::AlignVCenter">
+         <widget class="QPushButton" name="playButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>130</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>130</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Lato Black</family>
+            <pointsize>12</pointsize>
+            <weight>50</weight>
+            <bold>false</bold>
+            <stylestrategy>PreferAntialias</stylestrategy>
+            <kerning>true</kerning>
+           </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="text">
+           <string>PLAY</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
- <tabstops>
-  <tabstop>playButton</tabstop>
- </tabstops>
  <resources>
   <include location="../resources.qrc"/>
  </resources>

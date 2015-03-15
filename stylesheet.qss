@@ -25,15 +25,6 @@ QPushButton
 	line-height: 35px;
 }
 
-QPushButton::menu-indicator,
-QPushButton::menu-indicator:!enabled
-{
-	image: url(:/images/images/gameFrameMenuIndicator.png);
-	subcontrol-position: bottom right;
-	right: 5px;
-	bottom: 7px;
-}
-
 QPushButton:focus:!pressed,
 QPushButton:hover:!pressed
 {
@@ -256,4 +247,20 @@ GameFrame #pxlayButton:hover:!pressed
 GameFrame #playButton:pressed
 {
 	background-color: #1c956f;
+}
+
+GameFrame #playButton:!enabled
+{
+	background: #aea8a8;
+}
+
+GameFrame QPushButton
+{
+	padding: 0;
+}
+
+GameFrame QPushButton::menu-indicator,
+GameFrame QPushButton::menu-indicator:!enabled
+{
+	image: none;
 }

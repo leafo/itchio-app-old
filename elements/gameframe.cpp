@@ -36,6 +36,7 @@ GameFrame::GameFrame(QWidget* const parent, const Game& game, const DownloadKey&
 
     ui->gameTitleLabel->setText(game.title);
     ui->gameCreatorLabel->setText(game.user.nameForDisplay());
+    ui->playButton->setEnabled(false);
 
     refreshThumbnail();
     getDownloads();
@@ -79,18 +80,17 @@ void GameFrame::onDownloadThumbnail()
 
 void GameFrame::onTriggerUpload()
 {
-    isDownloading = true;
     ui->downloadButton->setEnabled(false);
 
     QProgressBar* progressBar = new QProgressBar(this);
     progressBar->setObjectName("progressBar");
     progressBar->setTextVisible(false);
     progressBar->setMaximumHeight(20);
-    progressBar->setMinimumWidth(180);
+    progressBar->setMinimumWidth(130);
 
-    ui->gameFrameLayout->removeWidget(ui->downloadButton);
-    ui->downloadButton->setVisible(false);
-    ui->gameFrameLayout->addWidget(progressBar, 0, Qt::AlignCenter);
+    ui->downloadPlayLayout->removeWidget(ui->playButton);
+    ui->playButton->setVisible(false);
+    ui->downloadPlayLayout->addWidget(progressBar, 0, Qt::AlignCenter);
 
     if(downloadPosition == -1){
         QAction* action = qobject_cast<QAction*>(sender());
@@ -135,18 +135,18 @@ void GameFrame::onTriggerUpload()
             file->close();
             delete file;
 
-            isDownloading = false;
-
-            ui->gameFrameLayout->removeWidget(progressBar);
+            ui->downloadPlayLayout->removeWidget(progressBar);
             progressBar->setVisible(false);
             progressBar->deleteLater();
+            ui->downloadPlayLayout->addWidget(ui->playButton, 0, Qt::AlignCenter);
+            ui->playButton->setVisible(true);
 
-            ui->downloadButton->setEnabled(true);
-            ui->gameFrameLayout->addWidget(ui->downloadButton, 0, Qt::AlignCenter);
-            ui->downloadButton->setVisible(true);
 
             controller->showTrayIconNotification(TrayNotifications::DOWNLOAD_FINISHED,
                                                  game.title + " - " + fname);
+
+            ui->downloadButton->setEnabled(true);
+            ui->playButton->setEnabled(true);
         });
 
     });

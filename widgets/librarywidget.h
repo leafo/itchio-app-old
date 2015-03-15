@@ -41,15 +41,14 @@ private:
     QList<QList<GameFrame*>*> tabGameFrames;
 
     int tabSetupCount = 0;
-    int gameFrameWidth = 200;
 
-    int maxGamesFramesPerRow = 0;
-
+    int gameFrameWidth = 0;
+    int maxGameFramesPerRow = 0;
     QTimer* updateTimer;
 
     void resizeEvent(QResizeEvent *event);
 
-    void adjustTabLayouts();
+    void adjustTabLayouts(bool forceAdjust = false);
 
     void addGamesTab(const QString& title, int tab);
 

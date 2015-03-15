@@ -23,7 +23,7 @@ LibraryWidget::LibraryWidget(QWidget* const parent, AppController* const control
 
     for(int i = 0; i < tabScrollAreas.size(); i++){
         tabScrollAreas.at(i)->setObjectName("gamesScroller");
-        tabWrappers.at(i)->setObjectName("scrollWrapper");
+        tabScrollAreas.at(i)->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     }
 
     controller->api->myOwnedKeys([this](QList<DownloadKey> keys) {
@@ -94,47 +94,19 @@ void LibraryWidget::onMyClaimedKeys(QList<DownloadKey> downloadKeys)
 
 void LibraryWidget::addGamesTab(const QString& title, int tab)
 {
-    tabRowLayouts.at(tab)->append(new QVBoxLayout);
-    tabColLayouts.at(tab)->append(new QHBoxLayout);
-
-    tabLayouts.at(tab)->addLayout(tabRowLayouts.at(tab)->at(0));
-    tabRowLayouts.at(tab)->at(0)->addLayout(tabColLayouts.at(tab)->at(0));
-
-    maxGamesFramesPerRow = (ui->tabWidget->width() - 80) / gameFrameWidth;
-    int i = 1;
-    int j = 0;
-
-    while(i < tabGameFrames.at(tab)->size() + 1) {
-        tabColLayouts.at(tab)->at(j)->addWidget(tabGameFrames.at(tab)->at(i - 1));
-
-        if(i % maxGamesFramesPerRow == 0) {
-            tabColLayouts.at(tab)->append(new QHBoxLayout);
-
-            j++;
-
-            tabRowLayouts.at(tab)->at(0)->addLayout(tabColLayouts.at(tab)->at(j));
-        }
-
-        i++;
-    }
-
-    int p = maxGamesFramesPerRow - (tabGameFrames.at(tab)->size() % maxGamesFramesPerRow);
-
-    while(p > 0) {
-        tabColLayouts.at(tab)->at(j)->addSpacerItem(new QSpacerItem(gameFrameWidth, 0));
-
-        p--;
-    }
-
-    tabWrappers.at(tab)->setLayout(tabLayouts.at(tab));
-    tabScrollAreas.at(tab)->setWidget(tabWrappers.at(tab));
-
     ui->tabWidget->addTab(tabScrollAreas.at(tab), title);
     QFont font("sans-serif", 12);
     font.setStyleStrategy(QFont::PreferAntialias);
     ui->tabWidget->setFont(font);
 
     tabSetupCount++;
+
+    if(tabSetupCount == 2) {
+        gameFrameWidth = tabGameFrames.at(0)->at(0)->width();
+        maxGameFramesPerRow = (ui->tabWidget->width() - 80) / gameFrameWidth;
+
+        adjustTabLayouts(true);
+    }
 }
 
 void LibraryWidget::resizeEvent(QResizeEvent *event)
@@ -146,11 +118,9 @@ void LibraryWidget::resizeEvent(QResizeEvent *event)
     }
 }
 
-void LibraryWidget::adjustTabLayouts()
+void LibraryWidget::adjustTabLayouts(bool forceAdjust)
 {
-    if((ui->tabWidget->width() - 80) / gameFrameWidth != maxGamesFramesPerRow){
-        maxGamesFramesPerRow = (ui->tabWidget->width() - 80) / gameFrameWidth;
-
+    if(forceAdjust || ((ui->tabWidget->width() - 80) / gameFrameWidth != maxGameFramesPerRow)){
         tabWrappers.clear();
         tabLayouts.clear();
 
@@ -166,6 +136,7 @@ void LibraryWidget::adjustTabLayouts()
 
         for(int k = 0; k < tabScrollAreas.size(); k++){
             tabWrappers.at(k)->setObjectName("scrollWrapper");
+            maxGameFramesPerRow = (ui->tabWidget->width() - 80) / gameFrameWidth;
 
             tabRowLayouts.at(k)->append(new QVBoxLayout);
             tabColLayouts.at(k)->append(new QHBoxLayout);
@@ -179,7 +150,7 @@ void LibraryWidget::adjustTabLayouts()
             while(i < tabGameFrames.at(k)->size() + 1) {
                 tabColLayouts.at(k)->at(j)->addWidget(tabGameFrames.at(k)->at(i - 1));
 
-                if(i % maxGamesFramesPerRow == 0) {
+                if(i % maxGameFramesPerRow == 0) {
                     tabColLayouts.at(k)->append(new QHBoxLayout);
 
                     j++;
@@ -190,13 +161,16 @@ void LibraryWidget::adjustTabLayouts()
                 i++;
             }
 
-            int p = maxGamesFramesPerRow - (tabGameFrames.at(k)->size() % maxGamesFramesPerRow);
-            while(p > 0) {
-                tabColLayouts.at(k)->at(j)->addSpacerItem(new QSpacerItem(gameFrameWidth, 0));
+            int o = tabGameFrames.at(k)->size() % maxGameFramesPerRow;
 
-                p--;
+            if(o > 0){
+                int p = maxGameFramesPerRow - (tabGameFrames.at(k)->size() % maxGameFramesPerRow);
+                while(p > 0) {
+                    tabColLayouts.at(k)->at(j)->addSpacerItem(new QSpacerItem(gameFrameWidth + 5, 0));
+
+                    p--;
+                }
             }
-
 
             tabWrappers.at(k)->setLayout(tabLayouts.at(k));
             tabScrollAreas.at(k)->setWidget(tabWrappers.at(k));
@@ -231,8 +205,8 @@ void LibraryWidget::onUpdate()
 
         int gameCountDifference = newGameCount - gameCount;
         QString notificationMessage = ((gameCountDifference > 1) ?
-                         (gameCountDifference + " new games available.") :
-                         ("1 new game available."));
+                                           (gameCountDifference + " new games available.") :
+                                           ("1 new game available."));
 
         controller->showTrayIconNotification(TrayNotifications::LIBRARY_UPDATE, notificationMessage);
     }

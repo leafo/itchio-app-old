@@ -42,7 +42,6 @@ private:
 
     QList<Upload> pendingUploads;
 
-    bool isDownloading = false;
     int downloadPosition = -1;
 
     void refreshThumbnail();
