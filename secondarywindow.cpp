@@ -6,7 +6,7 @@
 #include <QtDebug>
 
 SecondaryWindow::SecondaryWindow(QWidget* const widget, AppController* const controller,
-                                 bool startsVisible, QWidget* const parent)
+                                 bool startsVisible, bool showTopBar, QWidget* const parent)
     : QDialog(parent)
     , name("")
     , firstClicked(NULL)
@@ -33,6 +33,7 @@ SecondaryWindow::SecondaryWindow(QWidget* const widget, AppController* const con
     widget->setParent(this);
 
     setVisible(startsVisible);
+    ui->topBar->setVisible(showTopBar);
 }
 
 SecondaryWindow::~SecondaryWindow()
@@ -45,6 +46,10 @@ void SecondaryWindow::closeEvent(QCloseEvent* event)
     event->ignore();
 
     closeWindow();
+
+    if(widget->windowTitle() == "Login" && controller->api->userName == ""){
+        controller->quit();
+    }
 }
 
 void SecondaryWindow::closeWindow()

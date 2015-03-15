@@ -159,6 +159,44 @@ QProgressBar::chunk
 
 /* --- Custom Elements --- */
 
+#loginFrame
+{
+	background-image: url(:/images/images/login-bg.png);
+}
+
+#loginFormFrame
+{
+	background-color: #fff;
+	border-radius: 3px;
+}
+
+#loginFormLine
+{
+	background-color: #dadada;
+}
+
+#loginFormFrame QLabel
+{
+	color: #000;
+}
+
+#loginFormFrame QLineEdit
+{
+	border: 2px solid #d3d3d3;
+	border-radius: 4px;
+	padding: 0 10px;
+}
+
+#loginFormFrame #orLabel
+{
+	color: #999;
+}
+
+SecondaryWindow #topBar QPushButton
+{
+	padding: 0;
+}
+
 QMainWindow #topBar
 {
 	background-color: #FA5C5C;
@@ -205,7 +243,7 @@ GameFrame #playButton
 }
 
 GameFrame #playButton:focus:!pressed,
-GameFrame #playButton:hover:!pressed
+GameFrame #pxlayButton:hover:!pressed
 {
 	background-color: #24C091;
 }

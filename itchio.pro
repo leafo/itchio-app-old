@@ -55,7 +55,7 @@ FORMS += appwindow.ui \
     elements/gameframe.ui
 
 RESOURCES += \
-    resources.qrc \
+    resources.qrc
 
 
 include(itchio.pri)

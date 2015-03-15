@@ -21,7 +21,7 @@ class SecondaryWindow : public QDialog
 
 public:
     explicit SecondaryWindow(QWidget* const widget, AppController* const controller,
-                             bool startsVisible = true, QWidget* const parent = 0);
+                             bool startsVisible = true, bool showTopBar = true, QWidget* const parent = 0);
     ~SecondaryWindow();
 
     QString name;

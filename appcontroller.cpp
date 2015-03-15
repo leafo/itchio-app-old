@@ -11,6 +11,8 @@
 #include "widgets/secondary/loginwidget.h"
 #include "widgets/secondary/settingswidget.h"
 
+#include "ui_secondarywindow.h"
+
 AppController::AppController(QObject* parent)
     : QObject(parent)
     , settingsWindow(NULL)
@@ -48,6 +50,9 @@ void AppController::setupSettings()
 
 void AppController::quit()
 {
+    appWindow->hideWindow();
+    trayIcon->hide();
+
     settings->enableStartMaximized(appWindow->isMaximized);
     settings->setWindowGeometry(appWindow->saveGeometry());
     settings->setWindowOldSize(appWindow->oldSize);
@@ -56,6 +61,10 @@ void AppController::quit()
     if (settings->autoLogin()) {
         settings->setApiKey(api->userKey);
         settings->setUsername(api->userName);
+    }
+    else{
+        settings->setApiKey("");
+        settings->setUsername("");
     }
 
     QCoreApplication::exit();
@@ -128,7 +137,7 @@ void AppController::setupLogin()
 
     setupTrayIconMenu(true);
 
-    loginWindow = new SecondaryWindow(new LoginWidget(qobject_cast<QWidget*>(this), this), this);
+    loginWindow = new SecondaryWindow(new LoginWidget(qobject_cast<QWidget*>(this), this), this, true);
     loginWindow->show();
 }
 
